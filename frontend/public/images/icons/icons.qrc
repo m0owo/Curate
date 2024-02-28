@@ -1,0 +1,10 @@
+<RCC>
+  <qresource prefix="icon_images">
+    <file>filter_icon.png</file>
+    <file>history_icon.png</file>
+    <file>home_icon.png</file>
+    <file>profile_icon.png</file>
+    <file>search_icon.png</file>
+    <file>wishlist_icon.png</file>
+  </qresource>
+</RCC>
