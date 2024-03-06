@@ -17,9 +17,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QLabel, QMainWindow,
     QPushButton, QSizePolicy, QTextEdit, QWidget)
-
-from .icons_rc import *
-from .logo_rc import *
+import icons_rc
+import logo_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -166,3 +165,4 @@ class Ui_MainWindow(object):
         self.page_label.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700; color:#000000\">Home</span></p></body></html>", None))
         self.curate_label.setText("")
     # retranslateUi
+
