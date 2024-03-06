@@ -25,15 +25,14 @@ QFrame {
    <widget class="QWidget" name="header" native="true">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>10</y>
       <width>1056</width>
       <height>696</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">
-</string>
+     <string notr="true"/>
     </property>
     <widget class="QFrame" name="frame">
      <property name="geometry">
@@ -253,9 +252,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <widget class="QLabel" name="page_label">
       <property name="geometry">
        <rect>
-        <x>50</x>
+        <x>40</x>
         <y>20</y>
-        <width>58</width>
+        <width>71</width>
         <height>30</height>
        </rect>
       </property>
@@ -285,19 +284,26 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <widget class="QLabel" name="curate_label">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>20</y>
-        <width>81</width>
-        <height>31</height>
+        <x>-20</x>
+        <y>-10</y>
+        <width>171</width>
+        <height>91</height>
        </rect>
       </property>
       <property name="font">
        <font>
+        <family>Mogena</family>
         <pointsize>18</pointsize>
        </font>
       </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; color:#000000;&quot;&gt;C u r a t e&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="../../../public/images/logos/logo.qrc">:/logos/curatelogo.png</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -309,6 +315,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
  </widget>
  <resources>
   <include location="../../../public/images/icons/icons.qrc"/>
+  <include location="../../../public/images/logos/logo.qrc"/>
  </resources>
  <connections/>
 </ui>

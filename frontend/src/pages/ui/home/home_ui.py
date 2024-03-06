@@ -17,7 +17,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QLabel, QMainWindow,
     QPushButton, QSizePolicy, QTextEdit, QWidget)
-import home_icons_rc
+import icons_rc
+import logo_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -34,7 +35,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.header = QWidget(self.centralwidget)
         self.header.setObjectName(u"header")
-        self.header.setGeometry(QRect(10, 10, 1056, 696))
+        self.header.setGeometry(QRect(20, 10, 1056, 696))
         self.header.setStyleSheet(u"")
         self.frame = QFrame(self.header)
         self.frame.setObjectName(u"frame")
@@ -115,7 +116,7 @@ class Ui_MainWindow(object):
         self.profile_button.setIconSize(QSize(20, 20))
         self.page_label = QLabel(self.frame)
         self.page_label.setObjectName(u"page_label")
-        self.page_label.setGeometry(QRect(50, 20, 58, 30))
+        self.page_label.setGeometry(QRect(40, 20, 71, 30))
         self.page_label.setAlignment(Qt.AlignCenter)
         self.frame_2 = QFrame(self.header)
         self.frame_2.setObjectName(u"frame_2")
@@ -124,10 +125,13 @@ class Ui_MainWindow(object):
         self.frame_2.setFrameShadow(QFrame.Raised)
         self.curate_label = QLabel(self.frame_2)
         self.curate_label.setObjectName(u"curate_label")
-        self.curate_label.setGeometry(QRect(20, 20, 81, 31))
+        self.curate_label.setGeometry(QRect(-20, -10, 171, 91))
         font = QFont()
+        font.setFamilies([u"Mogena"])
         font.setPointSize(18)
         self.curate_label.setFont(font)
+        self.curate_label.setPixmap(QPixmap(u":/logos/curatelogo.png"))
+        self.curate_label.setScaledContents(True)
         self.curate_label.setAlignment(Qt.AlignCenter)
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -153,6 +157,6 @@ class Ui_MainWindow(object):
         self.wishlist_button.setText("")
         self.profile_button.setText("")
         self.page_label.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700; color:#000000\">Home</span></p></body></html>", None))
-        self.curate_label.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700; color:#000000;\">C u r a t e</span></p></body></html>", None))
+        self.curate_label.setText("")
     # retranslateUi
 
