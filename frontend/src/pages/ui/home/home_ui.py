@@ -43,7 +43,6 @@ class Ui_MainWindow(object):
         self.frame.setStyleSheet(u"QFrame#search_frame{\n"
 "    background-color: #FFFBF3;\n"
 "    border-radius: 10px;\n"
-"    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2); \n"
 "}\n"
 "\n"
 "QPushButton#filter_button{\n"
@@ -73,6 +72,9 @@ class Ui_MainWindow(object):
         self.search_edit = QTextEdit(self.search_frame)
         self.search_edit.setObjectName(u"search_edit")
         self.search_edit.setGeometry(QRect(40, 3, 471, 20))
+        font = QFont()
+        font.setFamilies([u"Manrope"])
+        self.search_edit.setFont(font)
         self.search_edit.setStyleSheet(u"")
         self.search_icon = QLabel(self.search_frame)
         self.search_icon.setObjectName(u"search_icon")
@@ -89,6 +91,10 @@ class Ui_MainWindow(object):
         self.home_button = QPushButton(self.frame)
         self.home_button.setObjectName(u"home_button")
         self.home_button.setGeometry(QRect(760, 20, 41, 30))
+        font1 = QFont()
+        font1.setFamilies([u"Manrope"])
+        font1.setBold(True)
+        self.home_button.setFont(font1)
         icon1 = QIcon()
         icon1.addFile(u":/icon_images/home_icon.png", QSize(), QIcon.Normal, QIcon.Off)
         self.home_button.setIcon(icon1)
@@ -125,11 +131,11 @@ class Ui_MainWindow(object):
         self.frame_2.setFrameShadow(QFrame.Raised)
         self.curate_label = QLabel(self.frame_2)
         self.curate_label.setObjectName(u"curate_label")
-        self.curate_label.setGeometry(QRect(-20, -10, 171, 91))
-        font = QFont()
-        font.setFamilies([u"Mogena"])
-        font.setPointSize(18)
-        self.curate_label.setFont(font)
+        self.curate_label.setGeometry(QRect(-30, -20, 181, 101))
+        font2 = QFont()
+        font2.setFamilies([u"Mogena"])
+        font2.setPointSize(18)
+        self.curate_label.setFont(font2)
         self.curate_label.setPixmap(QPixmap(u":/logos/curatelogo.png"))
         self.curate_label.setScaledContents(True)
         self.curate_label.setAlignment(Qt.AlignCenter)
@@ -148,8 +154,8 @@ class Ui_MainWindow(object):
 "hr { height: 1px; border-width: 0; }\n"
 "li.unchecked::marker { content: \"\\2610\"; }\n"
 "li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#d5bbd6;\">Tell us what you're looking for...</span></p></body></html>", None))
+"</style></head><body style=\" font-family:'Manrope'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'.AppleSystemUIFont'; color:#d5bbd6;\">Tell us what you're looking for...</span></p></body></html>", None))
         self.search_icon.setText("")
         self.filter_button.setText("")
         self.home_button.setText("")
