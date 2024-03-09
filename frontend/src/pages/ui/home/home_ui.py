@@ -16,7 +16,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QLabel, QMainWindow,
-    QPushButton, QSizePolicy, QTextEdit, QWidget)
+    QPushButton, QSizePolicy, QTextEdit, QWidget, QLineEdit)
 
 from .icons_rc import *
 from .logo_rc import *
