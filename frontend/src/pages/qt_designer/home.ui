@@ -10,6 +10,12 @@
     <height>720</height>
    </rect>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>1080</width>
+    <height>720</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -27,9 +33,20 @@ QFrame {
      <rect>
       <x>20</x>
       <y>10</y>
-      <width>1056</width>
-      <height>696</height>
+      <width>1080</width>
+      <height>720</height>
      </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>1080</width>
+      <height>720</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>.AppleSystemUIFont</family>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true"/>
@@ -64,6 +81,9 @@ QTextEdit#search_edit{
 QLabel#page_label{
     background-color: #E8F3F2;
     border-radius: 10px;
+    border: solid;
+    border-width: 1px;
+    border-color:rgb(154, 152, 148)
 }</string>
      </property>
      <property name="frameShape">
@@ -78,11 +98,29 @@ QLabel#page_label{
       </property>
       <property name="geometry">
        <rect>
-        <x>150</x>
+        <x>130</x>
         <y>20</y>
         <width>581</width>
         <height>30</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Manrope</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLineEdit{
+    color: rgb(190, 123, 193);
+    background-color: transparent;
+    border: none;
+}
+
+#search_frame{
+    border: solid;
+    border-width: 1px;
+    border-color: rgb(154, 152, 148);
+}</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
@@ -90,34 +128,6 @@ QLabel#page_label{
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QTextEdit" name="search_edit">
-       <property name="geometry">
-        <rect>
-         <x>40</x>
-         <y>3</y>
-         <width>471</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Manrope</family>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="html">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'.AppleSystemUIFont'; color:#d5bbd6;&quot;&gt;Tell us what you're looking for...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
       <widget class="QLabel" name="search_icon">
        <property name="geometry">
         <rect>
@@ -160,11 +170,29 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </size>
        </property>
       </widget>
+      <widget class="QLineEdit" name="search_edit">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>5</y>
+         <width>491</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Manrope</family>
+        </font>
+       </property>
+       <property name="placeholderText">
+        <string>tell us what you're looking for...</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QPushButton" name="home_button">
       <property name="geometry">
        <rect>
-        <x>760</x>
+        <x>740</x>
         <y>20</y>
         <width>41</width>
         <height>30</height>
@@ -193,7 +221,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <widget class="QPushButton" name="history_button">
       <property name="geometry">
        <rect>
-        <x>800</x>
+        <x>780</x>
         <y>20</y>
         <width>41</width>
         <height>30</height>
@@ -216,7 +244,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <widget class="QPushButton" name="wishlist_button">
       <property name="geometry">
        <rect>
-        <x>840</x>
+        <x>820</x>
         <y>20</y>
         <width>41</width>
         <height>30</height>
@@ -239,7 +267,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <widget class="QPushButton" name="profile_button">
       <property name="geometry">
        <rect>
-        <x>880</x>
+        <x>860</x>
         <y>20</y>
         <width>41</width>
         <height>30</height>
@@ -262,11 +290,17 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <widget class="QLabel" name="page_label">
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>30</x>
         <y>20</y>
         <width>71</width>
         <height>30</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Manrope</family>
+        <bold>true</bold>
+       </font>
       </property>
       <property name="text">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; color:#000000&quot;&gt;Home&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -294,10 +328,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <widget class="QLabel" name="curate_label">
       <property name="geometry">
        <rect>
-        <x>-30</x>
-        <y>-20</y>
-        <width>181</width>
-        <height>101</height>
+        <x>-10</x>
+        <y>-10</y>
+        <width>161</width>
+        <height>91</height>
        </rect>
       </property>
       <property name="font">
