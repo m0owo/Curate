@@ -1,0 +1,10 @@
+<RCC>
+  <qresource prefix="post_images">
+    <file>IMG_7102.jpg</file>
+    <file>IMG_7105.jpg</file>
+    <file>IMG_7106.jpg</file>
+    <file>IMG_7107.jpg</file>
+    <file>IMG_7108.jpg</file>
+    <file>IMG_7109.jpg</file>
+  </qresource>
+</RCC>

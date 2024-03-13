@@ -3,6 +3,9 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from .home_ui import Ui_MainWindow
 
+# from .icons_rc import *
+# from .logo_rc import *
+# from .post_images_rc import *
 
 class HomeUI(QMainWindow):
     def __init__(self):
