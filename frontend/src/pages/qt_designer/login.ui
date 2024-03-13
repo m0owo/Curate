@@ -12,7 +12,7 @@
   </property>
   <property name="font">
    <font>
-    <family>Nirmala UI Semilight</family>
+    <family>Manrope</family>
    </font>
   </property>
   <property name="windowTitle">
@@ -32,7 +32,7 @@
    </property>
    <property name="font">
     <font>
-     <family>Montserrat</family>
+     <family>Manrope</family>
      <pointsize>11</pointsize>
     </font>
    </property>
@@ -90,7 +90,7 @@
    </property>
    <property name="font">
     <font>
-     <family>Montserrat</family>
+     <family>Manrope</family>
      <pointsize>11</pointsize>
     </font>
    </property>
@@ -125,7 +125,7 @@
    </property>
    <property name="font">
     <font>
-     <family>Montserrat</family>
+     <family>Manrope</family>
      <pointsize>14</pointsize>
     </font>
    </property>
@@ -161,7 +161,7 @@ background-color: rgb(180, 235, 255)</string>
    </property>
    <property name="font">
     <font>
-     <family>Montserrat</family>
+     <family>Manrope</family>
      <pointsize>14</pointsize>
     </font>
    </property>
