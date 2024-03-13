@@ -15,9 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QLabel, QMainWindow,
-    QPushButton, QSizePolicy, QTextEdit, QWidget, QLineEdit)
-
+from PySide6.QtWidgets import (QApplication, QFrame, QLabel, QLineEdit,
+    QMainWindow, QPushButton, QSizePolicy, QWidget)
 from .icons_rc import *
 from .logo_rc import *
 
@@ -25,8 +24,9 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1080, 720)
-        MainWindow.setMaximumSize(QSize(1080, 720))
+        MainWindow.resize(1200, 800)
+        MainWindow.setMinimumSize(QSize(1200, 800))
+        MainWindow.setMaximumSize(QSize(1200, 800))
         MainWindow.setStyleSheet(u"#centralwidget {\n"
 "    background-color: #FFFFFF;\n"
 "}\n"
@@ -37,8 +37,11 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.header = QWidget(self.centralwidget)
         self.header.setObjectName(u"header")
-        self.header.setGeometry(QRect(20, 10, 1080, 720))
+        self.header.setGeometry(QRect(60, 20, 1080, 720))
         self.header.setMaximumSize(QSize(1080, 720))
+        font = QFont()
+        font.setFamilies([u".AppleSystemUIFont"])
+        self.header.setFont(font)
         self.header.setStyleSheet(u"")
         self.frame = QFrame(self.header)
         self.frame.setObjectName(u"frame")
@@ -73,9 +76,9 @@ class Ui_MainWindow(object):
         self.search_frame.setObjectName(u"search_frame")
         self.search_frame.setEnabled(True)
         self.search_frame.setGeometry(QRect(130, 20, 581, 30))
-        font = QFont()
-        font.setFamilies([u"Manrope"])
-        self.search_frame.setFont(font)
+        font1 = QFont()
+        font1.setFamilies([u"Manrope"])
+        self.search_frame.setFont(font1)
         self.search_frame.setStyleSheet(u"QLineEdit{\n"
 "    color: rgb(190, 123, 193);\n"
 "    background-color: transparent;\n"
@@ -104,14 +107,14 @@ class Ui_MainWindow(object):
         self.search_edit = QLineEdit(self.search_frame)
         self.search_edit.setObjectName(u"search_edit")
         self.search_edit.setGeometry(QRect(40, 5, 491, 16))
-        self.search_edit.setFont(font)
+        self.search_edit.setFont(font1)
         self.home_button = QPushButton(self.frame)
         self.home_button.setObjectName(u"home_button")
         self.home_button.setGeometry(QRect(740, 20, 41, 30))
-        font1 = QFont()
-        font1.setFamilies([u"Manrope"])
-        font1.setBold(True)
-        self.home_button.setFont(font1)
+        font2 = QFont()
+        font2.setFamilies([u"Manrope"])
+        font2.setBold(True)
+        self.home_button.setFont(font2)
         icon1 = QIcon()
         icon1.addFile(u":/icon_images/home_icon.png", QSize(), QIcon.Normal, QIcon.Off)
         self.home_button.setIcon(icon1)
@@ -140,7 +143,7 @@ class Ui_MainWindow(object):
         self.page_label = QLabel(self.frame)
         self.page_label.setObjectName(u"page_label")
         self.page_label.setGeometry(QRect(30, 20, 71, 30))
-        self.page_label.setFont(font1)
+        self.page_label.setFont(font2)
         self.page_label.setAlignment(Qt.AlignCenter)
         self.frame_2 = QFrame(self.header)
         self.frame_2.setObjectName(u"frame_2")
@@ -150,10 +153,10 @@ class Ui_MainWindow(object):
         self.curate_label = QLabel(self.frame_2)
         self.curate_label.setObjectName(u"curate_label")
         self.curate_label.setGeometry(QRect(-10, -10, 161, 91))
-        font2 = QFont()
-        font2.setFamilies([u"Mogena"])
-        font2.setPointSize(18)
-        self.curate_label.setFont(font2)
+        font3 = QFont()
+        font3.setFamilies([u"Mogena"])
+        font3.setPointSize(18)
+        self.curate_label.setFont(font3)
         self.curate_label.setPixmap(QPixmap(u":/logos/curatelogo.png"))
         self.curate_label.setScaledContents(True)
         self.curate_label.setAlignment(Qt.AlignCenter)
@@ -176,3 +179,4 @@ class Ui_MainWindow(object):
         self.page_label.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:700; color:#000000\">Home</span></p></body></html>", None))
         self.curate_label.setText("")
     # retranslateUi
+

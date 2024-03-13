@@ -6,14 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1080</width>
-    <height>720</height>
+    <width>1200</width>
+    <height>800</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1200</width>
+    <height>800</height>
+   </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>1080</width>
-    <height>720</height>
+    <width>1200</width>
+    <height>800</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -31,8 +37,8 @@ QFrame {
    <widget class="QWidget" name="header" native="true">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>10</y>
+      <x>60</x>
+      <y>20</y>
       <width>1080</width>
       <height>720</height>
      </rect>

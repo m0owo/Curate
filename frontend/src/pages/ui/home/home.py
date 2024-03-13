@@ -18,6 +18,6 @@ class HomeUI(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    home_ui = HomeUI(None)
+    home_ui = HomeUI()
     home_ui.show()
     sys.exit(app.exec())
