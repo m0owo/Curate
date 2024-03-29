@@ -33,3 +33,9 @@ if  __name__ == "__main__":
     for a in admins:
         admin = admins[a]
         print(admin.get_email())
+        
+    import sys
+    print(sys.path)
+
+        
+    
