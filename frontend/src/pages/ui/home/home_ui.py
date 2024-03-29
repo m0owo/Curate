@@ -20,7 +20,7 @@ from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QFrame, QGridL
     QScrollArea, QSizePolicy, QWidget)
 from .icons_rc import *
 from .logo_rc import *
-from .post_images_rc import *
+from .posts_images_rc import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -108,7 +108,7 @@ class Ui_MainWindow(object):
         self.filter_button.setIconSize(QSize(20, 20))
         self.search_edit = QLineEdit(self.search_frame)
         self.search_edit.setObjectName(u"search_edit")
-        self.search_edit.setGeometry(QRect(40, 5, 491, 16))
+        self.search_edit.setGeometry(QRect(40, 5, 491, 21))
         self.search_edit.setFont(font1)
         self.home_button = QPushButton(self.nav_frame)
         self.home_button.setObjectName(u"home_button")
@@ -117,6 +117,13 @@ class Ui_MainWindow(object):
         font2.setFamilies([u"Manrope"])
         font2.setBold(True)
         self.home_button.setFont(font2)
+        self.home_button.setStyleSheet(u"QPushButton:hover {\n"
+"box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);\n"
+"}")
         icon1 = QIcon()
         icon1.addFile(u":/icon_images/home_icon.png", QSize(), QIcon.Normal, QIcon.Off)
         self.home_button.setIcon(icon1)

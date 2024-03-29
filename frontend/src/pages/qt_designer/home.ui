@@ -182,7 +182,7 @@ QLabel#page_label{
          <x>40</x>
          <y>5</y>
          <width>491</width>
-         <height>16</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -209,6 +209,15 @@ QLabel#page_label{
         <family>Manrope</family>
         <bold>true</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton:hover {
+box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+QPushButton:pressed {
+box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);
+}</string>
       </property>
       <property name="text">
        <string/>
