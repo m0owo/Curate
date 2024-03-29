@@ -32,7 +32,11 @@ class LoginUI(QDialog):
     def login(self):
         email = self.ui.gmail_input.text()
         password = self.ui.password_input.text()
-
+        
+        if not email or not password:
+            self.ui.error_txt.setText('Please enter both email and password')
+            return
+        
         # Create a socket connection to the server
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             try:
