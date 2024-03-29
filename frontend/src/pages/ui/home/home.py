@@ -3,9 +3,32 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from .home_ui import Ui_MainWindow
 
+sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
+from backend import *
+
 # from .icons_rc import *
 # from .logo_rc import *
 # from .post_images_rc import *
+
+class TagButton():
+    def __init__(self, text, container, tag = None):
+        if tag:
+            self.tag_text = tag.get_tag_text()
+            self.get_link = tag.get_link()
+        self.temp_text = text #i cant pass Tag object yet so this is just the text
+        self.container = container
+    
+        self.tag_button = QPushButton(self.container)
+        self.tag_button.setText(self.temp_text)
+        self.tag_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+    def get_drawing(self):
+        return self.tag_button
+
+class CollectionPost():
+    pass
+
+class ItemPost():
+    pass
 
 class HomeUI(QMainWindow):
     def __init__(self):
@@ -53,12 +76,13 @@ class HomeUI(QMainWindow):
             if widget:
                 widget.deleteLater()
 
+        #in reality, use Tag objects from database
         pop_tags = {"Coquette Fashion", "Crochet", "Y2K", "Summer Outfit", "Jewelry"}
         for pop_tag in pop_tags:
-            tag_item = Tag(pop_tag, self.ui.tags_frame)
-            self.tags_layout.addWidget(tag_item.tagbutton)
-        
-
+            tag_button = TagButton(pop_tag, self.ui.tags_frame)
+            self.tags_layout.addWidget(tag_button.get_drawing())
+        # Post
+        # pop_posts = {}
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     home_ui = HomeUI()

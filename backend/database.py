@@ -7,44 +7,67 @@ from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QFrame, QGridL
     QLabel, QLineEdit, QMainWindow, QPushButton,
     QScrollArea, QSizePolicy, QWidget)
 
+#topic tags, link is the placeholder for what the button would do
+class Tag():
+    def __init__(self, tag_text, link):
+        self.tag_text = tag_text
+        self.link = link #what does the tag do
+    def get_tag_text(self):
+        return self.tag_text
+    def get_link(self):
+        return self.link
+
 #product in the post
 class Product():
-    def __init__(self, p_name, p_title, seller, start_date, end_date, status):
-        self.p_name = p_name
-        self.p_title = p_title
+    def __init__(self, pr_name, pr_title, seller, status):
+        self.pr_name = pr_name
+        self.pr_title = pr_title
         self.seller = seller
-        self.start_date = start_date
-        self.end_date = end_date
         self.status = status
-
-#collection of items in a post
+    def get_name(self):
+        return self.pr_name
+    def get_title(self):
+        return self.pr_title
+    def get_seller(self):
+        return self.seller
+    def get_status(self):
+        return self.status
+    
+#collection of items in a post, items would be persistent list in real??
 class Collection(Product):
-    def __init__(self, c_name, c_title, seller, start_date, end_date, status, items = persistent.PersistentList()):
-        super.__init__(c_name, c_title, seller, start_date, end_date, status)
-        self.items = items
+    def __init__(self, c_name, c_title, seller, status, items = {}):
+        super.__init__(c_name, c_title, seller, status)
+        self.items = items #Item objects in the collection
+    def get_items(self):
+        return self.items
 
 #individual items in a post
 class Item(Product):
-    def __init__(self, i_name, i_title, seller, start_date, end_date, status, price):
-        super.__init__(i_name, i_title, seller, start_date, end_date, status)
+    def __init__(self, i_name, i_title, seller, status, price, image):
+        super.__init__(i_name, i_title, seller, status)
         self.price = price
+        self.image = image
+    def get_price(self):
+        return self.price
+    def get_image(self):
+        return self.image #how to store images in a class
 
-class Tag():
-    def __init__(self, tag_text, container):
-        self.tag_text = tag_text
-        self.container = container
-        self.tagbutton = QPushButton(self.container)
-
-        self.tagbutton.setText(self.tag_text)
-        self.tagbutton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
+#post that can be clicked
 class Post():
-    def __init__(self, seller, product):
-        self.seller = seller
-        self.created = datetime.now().date()
-        self.modified = None
-        self.product = product
-
+    def __init__(self, p_author, p_info, p_title, product = persistent.PersistentList()):
+        self.author = p_author
+        self.product = product #a single item is a collection size 1
+        self.info = p_info
+        self.title = p_title
+    def get_author(self):
+        return self.author
+    def get_product(self):
+        return self.product
+    def get_info(self):
+        return self.info
+    def get_title(self):
+        return self.title
+        
 class Account(persistent.Persistent):
     def __init__(self, gmail, password):
         self.gmail = gmail
