@@ -18,7 +18,7 @@ if __name__ == "__main__":
     profile_ui = ProfileUI(widget)
     profileaddress_ui = ProfileAddressUI(widget)
 
-    widget.addWidget(login_ui)
+    # widget.addWidget(login_ui)
     widget.addWidget(home_ui)
     widget.addWidget(register_ui)
     widget.addWidget(profile_ui)

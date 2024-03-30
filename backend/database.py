@@ -21,7 +21,6 @@ class Tag(persistent.Persistent):
 
 #product in the post
 class Product(persistent.Persistent):
-    def __init__(self, pr_name, pr_id, seller, status, start, tags, end = None):
     def __init__(self, pr_name, pr_id, seller, status, start, end = None):
         self.pr_name = pr_name
         self.pr_id = pr_id
@@ -77,7 +76,7 @@ class Item(Product):
 #info to display in post
 class PostDetails(persistent.Persistent):
     def __init__(self, p_id, p_author, p_info, p_title,
-                 product, type = "CF no CC"):
+                 product, type = "cf no cc"): #types can be cf no cc, preorder, or bidding
         self.id = p_id
         self.author = p_author
         self.product = persistent.PersistentList() #a single item is a collection size 1
@@ -140,12 +139,14 @@ root.tags = BTrees.OOBTree.BTree()
 root.tags[1000] = Tag("secondhand")
 root.tags[1001] = Tag("fashion")
 
+root.items = BTrees.OOBTree.BTree()
+root.items[1000] = Item()
+
 root.products = BTrees.OOBTree.BTree()
 root.product[1000] = Collection("Mona Tops Collection",
                                 1000, "Mona", "Upcoming",
-                                date(2024, 5, 16), ,
-                                []
-)
+                                date(2024, 5, 16),
+                                [root.items[1000], root.items[1001]])
 
 transaction.commit()
 
