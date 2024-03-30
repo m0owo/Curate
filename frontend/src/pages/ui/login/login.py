@@ -5,7 +5,9 @@ from .login_ui import Ui_Dialog
 from ..home.home import HomeUI
 import socket
 import pickle
+
 sys.path.append(r'C:\Users\Miki Ajiki\Desktop\Curate')
+
 from backend import *
 class LoginUI(QDialog):
     def __init__(self, stacked_widget):

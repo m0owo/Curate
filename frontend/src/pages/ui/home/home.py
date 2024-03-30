@@ -1,13 +1,15 @@
 import sys
+import os
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import QPixmap, QPainterPath
 from .home_ui import *
 
+current_directory = os.getcwd()
+print("Current directory:", current_directory)
+sys.path.append(current_directory)
 
-sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
-from backend import *
-from backend.database import PostDetails
+from backend.database import *
 
 # from .icons_rc import *
 # from .logo_rc import *
