@@ -23,7 +23,7 @@ class TagButton():
         if tag:
             self.tag_text = tag.get_tag_text()
             self.get_link = tag.get_link()
-        self.temp_text = text #i cant pass Tag object yet so this is just the text
+        self.temp_text = text.lower() #i cant pass Tag object yet so this is just the text
         self.container = container
 
         self.tag_button = QPushButton(self.container)
@@ -38,7 +38,6 @@ class TagButton():
         return self.tag_button
     def get_tag_button(self):
         return self.tag_button
-    
 class PostTagButton(TagButton):
     def __init__(self, text, container, tag = None):
         super().__init__(text, container, tag)
@@ -61,11 +60,9 @@ class ProductTypeTagButton(PostTagButton):
 def clear_frame(frame):
         for widget in frame.findChildren(QPushButton):
             widget.deleteLater()
-
 def clear_widget(widget):
     for i in reversed(range(widget.layout().count())):
         widget.layout().itemAt(i).widget().setParent(None)
-        
 def border_radius(pixmap, radius):
     mask = QPixmap(pixmap.size())
     mask.fill(Qt.transparent)
@@ -76,7 +73,6 @@ def border_radius(pixmap, radius):
     painter.fillPath(path, QColor(Qt.white))
     painter.end()
     pixmap.setMask(mask)
-
 def set_preferred_size(w, padding = 20, hpadding = 8):
     preferred_size = w.sizeHint()
     w.setFixedWidth(preferred_size.width())
@@ -85,7 +81,6 @@ def set_preferred_size(w, padding = 20, hpadding = 8):
     w.setMinimumWidth(min_width)
     min_height = w.fontMetrics().boundingRect(w.text()).height() + hpadding
     w.setMinimumHeight(min_height)
-
 class Post():
     def __init__(self, details, container):
         if details:
@@ -93,12 +88,12 @@ class Post():
             self.product = details.get_product()
             self.info = details.get_info()
             self.title = details.get_title()
-            self.p_type = details.get_product_type()
+            self.p_type = details.get_product_type().lower()
             self.tags = details.get_tags()
             self.created = details.get_created()
             self.modified = details.get_modified()
             self.container = container
-            self.s_type = details.get_sales_type()
+            self.s_type = details.get_sales_type().lower()
  
             post_layout = QVBoxLayout()
             post_layout.setAlignment(Qt.AlignCenter)
@@ -190,12 +185,12 @@ class Post():
             post_details_layout.setSpacing(10)
 
             self.created_date = QLabel()
-            self.created_date.setText("Date Created: ")
+            self.created_date.setText("date created: ")
             self.created_date.setAlignment(Qt.AlignCenter)
             post_details_layout.addWidget(self.created_date)
 
             self.live_date = QLabel()
-            self.live_date.setText("Live Date:")
+            self.live_date.setText("live date: ")
             self.live_date.setAlignment(Qt.AlignCenter)
             post_details_layout.addWidget(self.live_date)
     def get_post(self):
