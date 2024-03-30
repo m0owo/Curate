@@ -10,39 +10,48 @@
     <height>800</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Manrope</family>
+    <weight>75</weight>
+    <bold>true</bold>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color:rgb(241, 208, 215);</string>
   </property>
-  <widget class="QLabel" name="gmail">
+  <widget class="QLabel" name="gmail_lable">
    <property name="geometry">
     <rect>
-     <x>430</x>
-     <y>250</y>
+     <x>440</x>
+     <y>180</y>
      <width>71</width>
      <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Montserrat</family>
-     <pointsize>11</pointsize>
+     <family>Manrope</family>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: None</string>
    </property>
    <property name="text">
-    <string>Gmail: </string>
+    <string>Gmail</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="password_input">
    <property name="geometry">
     <rect>
-     <x>500</x>
-     <y>400</y>
+     <x>440</x>
+     <y>370</y>
      <width>261</width>
      <height>41</height>
     </rect>
@@ -51,56 +60,59 @@
     <string notr="true">background-color: rgb(234, 234, 234)</string>
    </property>
   </widget>
-  <widget class="QLabel" name="gmail_3">
+  <widget class="QLabel" name="password_label">
    <property name="geometry">
     <rect>
-     <x>400</x>
-     <y>400</y>
+     <x>440</x>
+     <y>340</y>
      <width>141</width>
      <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Montserrat</family>
-     <pointsize>11</pointsize>
+     <family>Manrope</family>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: None</string>
    </property>
    <property name="text">
-    <string>Password: </string>
+    <string>Password</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>170</y>
+     <x>490</x>
+     <y>100</y>
      <width>181</width>
      <height>61</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>21</pointsize>
+     <family>Manrope</family>
+     <pointsize>22</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: None;</string>
+    <string notr="true">background-color: None; color: white;</string>
    </property>
    <property name="text">
     <string>REGISTER</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="new_gmail_input">
+  <widget class="QLineEdit" name="gmail_input">
    <property name="geometry">
     <rect>
-     <x>500</x>
-     <y>240</y>
+     <x>440</x>
+     <y>210</y>
      <width>261</width>
      <height>41</height>
     </rect>
@@ -109,70 +121,52 @@
     <string notr="true">background-color: rgb(234, 234, 234)</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="consent_cb">
+  <widget class="QLabel" name="username_label">
    <property name="geometry">
     <rect>
-     <x>450</x>
-     <y>550</y>
-     <width>261</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: None;
-</string>
-   </property>
-   <property name="text">
-    <string>Recieve our news and update via email</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="gmail_2">
-   <property name="geometry">
-    <rect>
-     <x>390</x>
-     <y>330</y>
+     <x>440</x>
+     <y>260</y>
      <width>141</width>
      <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Montserrat</family>
-     <pointsize>11</pointsize>
+     <family>Manrope</family>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: None</string>
    </property>
    <property name="text">
-    <string>Username:</string>
+    <string>Username</string>
    </property>
   </widget>
-  <widget class="QLabel" name="gmail_4">
+  <widget class="QLabel" name="reconfirm_label">
    <property name="geometry">
     <rect>
-     <x>380</x>
-     <y>480</y>
+     <x>440</x>
+     <y>420</y>
      <width>241</width>
      <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Montserrat</family>
-     <pointsize>11</pointsize>
+     <family>Manrope</family>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: None</string>
    </property>
    <property name="text">
-    <string>Re-confirm: </string>
+    <string>Re-confirm password</string>
    </property>
   </widget>
   <widget class="QGraphicsView" name="graphicsView">
@@ -191,8 +185,8 @@
   <widget class="QLineEdit" name="reconfirm_input">
    <property name="geometry">
     <rect>
-     <x>500</x>
-     <y>490</y>
+     <x>440</x>
+     <y>450</y>
      <width>261</width>
      <height>41</height>
     </rect>
@@ -201,12 +195,12 @@
     <string notr="true">background-color: rgb(234, 234, 234)</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="register_btn">
+  <widget class="QPushButton" name="register_button">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>590</y>
-     <width>211</width>
+     <x>450</x>
+     <y>560</y>
+     <width>231</width>
      <height>41</height>
     </rect>
    </property>
@@ -224,33 +218,11 @@ background-color: rgb(180, 235, 255)</string>
     <string>Register</string>
    </property>
   </widget>
-  <widget class="QLabel" name="gmail_5">
-   <property name="geometry">
-    <rect>
-     <x>380</x>
-     <y>500</y>
-     <width>251</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Montserrat</family>
-     <pointsize>11</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: None</string>
-   </property>
-   <property name="text">
-    <string>password</string>
-   </property>
-  </widget>
   <widget class="QLineEdit" name="username_input">
    <property name="geometry">
     <rect>
-     <x>500</x>
-     <y>320</y>
+     <x>440</x>
+     <y>290</y>
      <width>261</width>
      <height>41</height>
     </rect>
@@ -259,19 +231,88 @@ background-color: rgb(180, 235, 255)</string>
     <string notr="true">background-color: rgb(234, 234, 234)</string>
    </property>
   </widget>
+  <widget class="QRadioButton" name="buyer_button">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>520</y>
+     <width>141</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Manrope</family>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: None;</string>
+   </property>
+   <property name="text">
+    <string>Registere as buyer</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="seller_button">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>520</y>
+     <width>151</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Manrope</family>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: None;</string>
+   </property>
+   <property name="text">
+    <string>Registere as seller</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="noti_label">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>490</y>
+     <width>331</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Manrope</family>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: None</string>
+   </property>
+   <property name="text">
+    <string>Password</string>
+   </property>
+  </widget>
   <zorder>graphicsView</zorder>
-  <zorder>gmail</zorder>
+  <zorder>gmail_lable</zorder>
   <zorder>password_input</zorder>
-  <zorder>gmail_3</zorder>
+  <zorder>password_label</zorder>
   <zorder>label</zorder>
-  <zorder>new_gmail_input</zorder>
-  <zorder>consent_cb</zorder>
-  <zorder>gmail_2</zorder>
-  <zorder>gmail_4</zorder>
+  <zorder>gmail_input</zorder>
+  <zorder>username_label</zorder>
+  <zorder>reconfirm_label</zorder>
   <zorder>reconfirm_input</zorder>
-  <zorder>register_btn</zorder>
-  <zorder>gmail_5</zorder>
+  <zorder>register_button</zorder>
   <zorder>username_input</zorder>
+  <zorder>buyer_button</zorder>
+  <zorder>seller_button</zorder>
+  <zorder>noti_label</zorder>
  </widget>
  <resources/>
  <connections/>

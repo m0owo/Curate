@@ -11,10 +11,13 @@ from pages.ui.profile.profile import ProfileUI, ProfileAddressUI
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     widget = QStackedWidget()
+    
+    server_host = 'localhost'
+    server_port = 8888
 
-    login_ui = LoginUI(widget)
+    login_ui = LoginUI(widget,server_host, server_port)
     home_ui = HomeUI(widget)
-    register_ui = RegisterUI()
+    register_ui = RegisterUI(server_host, server_port)
     profile_ui = ProfileUI(widget)
     profileaddress_ui = ProfileAddressUI(widget)
 

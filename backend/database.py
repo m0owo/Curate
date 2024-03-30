@@ -110,6 +110,7 @@ class Account(persistent.Persistent):
         self.gmail = gmail
         self.password = password
         self.username = ""
+        self.address = None
 
     def get_email(self):
         return self.gmail
@@ -120,21 +121,31 @@ class Account(persistent.Persistent):
 class Admin(Account):
     def __init__(self, gmail, password):
         super().__init__(gmail, password)
-
+        
+class Customer(Account):
+    def __init__(self, gmail, password):
+        super().__init__(gmail, password)
+        self.sex = None
+        
+class Seller(Account):
+    def __init__(self, gmail, password):
+        super().__init__(gmail, password)
+        
 storage = ZODB.FileStorage.FileStorage('mydata.fs')
 db = ZODB.DB(storage)
 connection = db.open()
 root = connection.root
-root.admins = BTrees.OOBTree.BTree()
-root.admins[1000] = Admin("admin1@gmail.com", "1234")
+root.accounts = BTrees.OOBTree.BTree()
+root.accounts[10000] = Admin("admin1@gmail.com", "1234")
+
 
 transaction.commit()
 
 if  __name__ == "__main__":
-    admins = root.admins
-    for a in admins:
-        admin = admins[a]
-        print(admin.get_email())
+    accounts = root.accounts
+    for a in accounts:
+        account = accounts[a]
+        print(account.get_email())
 
         
     import sys

@@ -6,11 +6,9 @@ from ..home.home import HomeUI
 import socket
 import pickle
 
-sys.path.append(r'C:\Users\Miki Ajiki\Desktop\Curate')
-
 from backend import *
 class LoginUI(QDialog):
-    def __init__(self, stacked_widget):
+    def __init__(self, stacked_widget, server_host, server_port):
         super(LoginUI, self).__init__()
         self.stacked_widget = stacked_widget
         self.ui = Ui_Dialog()
@@ -22,8 +20,8 @@ class LoginUI(QDialog):
         self.ui.login_btn.clicked.connect(self.login)
         self.ui.register_btn.clicked.connect(self.to_registerpage)
         
-        self.server_host = 'localhost'
-        self.server_port = 9999
+        self.server_host = server_host
+        self.server_port = server_port
     
     def to_homepage(self):
         self.stacked_widget.setCurrentIndex(1)
@@ -56,6 +54,7 @@ class LoginUI(QDialog):
                     self.ui.error_txt.setText('Invalid Gmail or Password')
             except Exception as e:
                 self.ui.error_txt.setText(str(e))
+                print(e)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
