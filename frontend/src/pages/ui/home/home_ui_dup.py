@@ -117,13 +117,6 @@ class Ui_MainWindow(object):
         font2.setFamilies([u"Manrope"])
         font2.setBold(True)
         self.home_button.setFont(font2)
-        self.home_button.setStyleSheet(u"QPushButton:hover {\n"
-"box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);\n"
-"}")
         icon1 = QIcon()
         icon1.addFile(u":/icon_images/home_icon.png", QSize(), QIcon.Normal, QIcon.Off)
         self.home_button.setIcon(icon1)
