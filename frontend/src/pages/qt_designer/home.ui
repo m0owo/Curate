@@ -418,6 +418,9 @@ box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);
         <height>41</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
       <property name="text">
        <string>Coquette Fashion</string>
       </property>
