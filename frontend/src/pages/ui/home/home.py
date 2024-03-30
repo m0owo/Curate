@@ -45,7 +45,18 @@ class PostTagButton(TagButton):
         self.tag_button.setStyleSheet("QPushButton {font:600 11pt Manrope;color:rgb(137, 153, 211);"
                                       "text-align: center; background-color: #E8F3F2;"
                                       "border-radius: 5px;}QPushButton:hover{background-color:rgb(201, 212, 249); color:rgb(238, 248, 255);}")
-
+class SaleTypeTagButton(PostTagButton):
+    def __init__(self, text, container, tag = None):
+        super().__init__(text, container, tag)
+        self.tag_button.setStyleSheet("QPushButton {font:600 11pt Manrope;text-align:center;"
+                                      "background-color: rgb(250, 234, 225);color:rgb(176, 98, 106);"
+                                      "border-radius: 5px;}QPushButton:hover{background-color:rgb(201, 212, 249); color:rgb(238, 248, 255);}")
+class ProductTypeTagButton(PostTagButton):
+    def __init__(self, text, container, tag = None):
+        super().__init__(text, container, tag)
+        self.tag_button.setStyleSheet("QPushButton {font:600 11pt Manrope;text-align:center;"
+                                      "background-color: rgb(255, 245, 225);color:rgb(206, 141, 80);"
+                                      "border-radius: 5px;}QPushButton:hover{background-color:rgb(201, 212, 249); color:rgb(238, 248, 255);}")
 def clear_frame(frame):
         for widget in frame.findChildren(QPushButton):
             widget.deleteLater()
@@ -82,7 +93,7 @@ class Post():
             self.post = QFrame(self.container)
             self.post.setLayout(post_layout)
             self.post.setFixedSize(QSize(230, 300))
-            self.post.setStyleSheet("border: 1px solid black;") #for showing the boxes
+            # self.post.setStyleSheet("border: 1px solid black;") #for showing the boxes
             self.post.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
             #post image - figure out to keep many images, how to call images from qrc -> py
@@ -96,8 +107,14 @@ class Post():
             self.post_info = QWidget(self.post)
             post_layout.addWidget(self.post_info)
             post_info_layout = QVBoxLayout()
+            # card_shadow = QGraphicsDropShadowEffect(self.post_info)
+            # card_shadow.setBlurRadius(10)
+            # card_shadow.setXOffset(1)
+            # card_shadow.setYOffset(1)
+            # self.post_info.setGraphicsEffect(card_shadow)
             self.post_info.setLayout(post_info_layout)
             self.post_info.setMinimumSize(QSize(200, 100))
+            self.post_info.setStyleSheet("border-radius: 20px;")
 
             # post title
             self.post_title = QLabel(self.post_info)
@@ -110,40 +127,29 @@ class Post():
 
             # post details: product type, sales type, create date, start live date
             self.post_details_frame = QScrollArea(self.post_info)
-            self.post_details_frame.setMinimumSize(QSize(200, 30))
+            self.post_details_frame.setMinimumSize(QSize(200, 40))
             self.post_details_frame.setStyleSheet(u"QLabel {font: 400 12pt \"Manrope\";}")
             self.post_details_frame.setWidgetResizable(True)
             post_info_layout.addWidget(self.post_details_frame)
             self.post_details_widget = QWidget()
             self.post_details_frame.setWidget(self.post_details_widget)
-            self.post_details_frame.setMaximumSize(QSize(200, 30))
+            self.post_details_frame.setMaximumSize(QSize(200, 40))
             self.post_details_frame.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
             self.post_details_frame.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
             post_details_layout = QHBoxLayout(self.post_details_widget)
             post_details_layout.setContentsMargins(0, 0, 0, 0)
-            self.product_type = QLabel()
-            self.product_type.setText(self.p_type)
-            self.product_type.setAlignment(Qt.AlignCenter)
-            set_preferred_size(self.product_type)
+            post_details_layout.setSpacing(10)
             font = QFont()
             font.setFamilies([u"Manrope"])
             font.setPointSize(11)
             font.setBold(True)
+            self.product_type = ProductTypeTagButton(self.p_type, self.post_details_widget).get_drawing()
             self.product_type.setFont(font)
-            self.product_type.setStyleSheet(u"border-radius: 5px; padding:3px;"
-                                            "background-color: rgb(255, 245, 225);"
-                                            "color:rgb(206, 141, 80);")
             post_details_layout.addWidget(self.product_type)
 
-            self.sales_type = QLabel()
-            self.sales_type.setText(self.s_type)
-            self.sales_type.setAlignment(Qt.AlignCenter)
-            set_preferred_size(self.sales_type)
+            self.sales_type = SaleTypeTagButton(self.s_type, self.post_details_widget).get_drawing()
             self.sales_type.setFont(font)
-            self.sales_type.setStyleSheet(u"border-radius: 5px; padding:3px;"
-                                        "background-color: rgb(250, 234, 225);"
-                                        "color:rgb(176, 98, 106);")
             post_details_layout.addWidget(self.sales_type)
 
             self.created_date = QLabel()
@@ -156,20 +162,24 @@ class Post():
             self.live_date.setAlignment(Qt.AlignCenter)
             post_details_layout.addWidget(self.live_date)
 
-            # post tags includes all the tags in the post
-            post_tags_layout = QHBoxLayout()
-            self.post_tags = QWidget(self.post_info)
-            self.post_tags.setLayout(post_tags_layout)
-            post_info_layout.addWidget(self.post_tags)
-            self.post_tags.setStyleSheet(u"QLabel {\n"
-                                    "    font: 600 11pt \"Manrope\";\n"
-                                    "    color: rgb(137, 153, 211);\n"
-                                    "    text-align: center;\n"
-                                    "    background-color: #E8F3F2;\n"
-                                    "    border-radius: 5px;\n"
-                                    "}")
+            # post tags
+            self.post_tags_frame = QScrollArea(self.post_info)
+            self.post_tags_frame.setWidgetResizable(True)
+            post_info_layout.addWidget(self.post_tags_frame)
+            
+            self.post_tags_widget = QWidget()
+            self.post_tags_widget = QWidget()
+            self.post_tags_frame.setWidget(self.post_tags_widget)
+            self.post_tags_frame.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            self.post_tags_frame.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            self.post_tags_frame.setContentsMargins(0, 0, 0, 0)
+            self.post_tags_frame.setFixedSize(QSize(200, 40))
+
+            post_tags_layout = QHBoxLayout(self.post_tags_widget)
+            post_tags_layout.setContentsMargins(0, 0, 0, 0)
+            post_tags_layout.setSpacing(10)
             for tag in self.tags:
-                post_tag = PostTagButton(tag, self.post_tags, None)
+                post_tag = PostTagButton(tag, self.post_tags_widget, None)
                 post_tags_layout.addWidget(post_tag.get_drawing())
     def get_post(self):
         return self.post
@@ -229,7 +239,7 @@ class HomeUI(QMainWindow):
         clear_widget(self.ui.scrollAreaWidgetContents)
 
         # Post Details
-        test_post = PostDetails("1", "Music", "This is very important", "bananas?", ["Acubi", "Cottagecore"])
+        test_post = PostDetails("1", "Music", "This is very important", "bananas?", ["Acubi", "Cottagecore", "Acubi", "Cottagecore", "Acubi", "Cottagecore", "Acubi", "Cottagecore"])
         post_details = [test_post] * 14
         post_widgets = []
         i = 0
@@ -247,7 +257,6 @@ class HomeUI(QMainWindow):
         self.ui.profile_button.clicked.connect(self.to_profile)
     def to_profile(self):
         self.stacked_widget.setCurrentIndex(3)
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     home_ui = HomeUI()
