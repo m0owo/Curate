@@ -21,14 +21,14 @@ class Tag(persistent.Persistent):
 
 #product in the post
 class Product(persistent.Persistent):
-    def __init__(self, pr_name, pr_id, seller, status, start, end, tags):
+    def __init__(self, pr_name, pr_id, seller, status, start, tags, end = None):
         self.pr_name = pr_name
         self.pr_id = pr_id
         self.seller = seller
-        self.status = status
-        self.start = start
-        self.end = end
-        self.tags = tags
+        self.status = status #upcoming, live, sold
+        self.start_date = start #time to go live
+        self.end_date = end #Date object for time sold
+        self.tags = tags #list of Tag objects
     def get_name(self):
         return self.pr_name
     def get_title(self):
@@ -39,6 +39,13 @@ class Product(persistent.Persistent):
         return self.status
     def get_tags(self):
         return self.tags
+    def get_start_date(self):
+        return self.start_date
+    def get_end_date(self):
+        if self.end_date:
+            return self.end_date
+        else:
+            raise ValueError("Product hasn't ended")
     
 #collection of items in a post, items would be persistent list in real??
 class Collection(Product):
@@ -73,10 +80,10 @@ class PostDetails(persistent.Persistent):
         self.created = datetime.now()
         self.modified = self.created
         if len(product) > 1:
-            self.p_type = "collection"
+            self.pr_type = "collection"
         else:
-            self.p_type = "item"
-        self.type = type
+            self.pr_type = "item"
+        self.sales_type = type
     def get_author(self):
         return self.author
     def get_product(self):
@@ -89,12 +96,14 @@ class PostDetails(persistent.Persistent):
         return self.created
     def get_modified(self):
         return self.modified
-    def get_type(self):
-        return self.p_type
+    def get_product_type(self):
+        return self.pr_type
     def get_tags(self):
         # for p in product:
         #     self.tags.append(p.get_tags())
         return self.tags
+    def get_sales_type(self):
+        return self.sales_type
         
 class Account(persistent.Persistent):
     def __init__(self, gmail, password):
