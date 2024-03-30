@@ -194,10 +194,7 @@ class Ui_MainWindow(object):
         self.posts_frame = QScrollArea(self.body)
         self.posts_frame.setObjectName(u"posts_frame")
         self.posts_frame.setGeometry(QRect(0, 99, 1181, 571))
-        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.posts_frame.sizePolicy().hasHeightForWidth())
+        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
         self.posts_frame.setSizePolicy(sizePolicy)
         self.posts_frame.setStyleSheet(u"QFrame {\n"
 "    background-color: rgb(255, 255, 255)\n"
@@ -209,17 +206,19 @@ class Ui_MainWindow(object):
 "")
         self.posts_frame.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.posts_frame.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.posts_frame.setSizeAdjustPolicy(QAbstractScrollArea.AdjustIgnored)
+        self.posts_frame.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
         self.posts_frame.setWidgetResizable(False)
         self.posts_frame.setAlignment(Qt.AlignCenter)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
         self.scrollAreaWidgetContents.setGeometry(QRect(95, 0, 991, 636))
-        self.scrollAreaWidgetContents.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
+        self.scrollAreaWidgetContents.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"                                           
 "")
+        self.scrollAreaWidgetContents.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.gridLayout = QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setContentsMargins(10, 10, 10, 10)
+        self.gridLayout.setSpacing(20)
         self.post_sample_10 = QFrame(self.scrollAreaWidgetContents)
         self.post_sample_10.setObjectName(u"post_sample_10")
         self.post_sample_10.setMinimumSize(QSize(230, 300))
