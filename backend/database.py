@@ -3,11 +3,11 @@ import BTrees._OOBTree
 import persistent
 import transaction
 from datetime import datetime
-from PySide6.QtWidgets import (
-    QAbstractScrollArea, QApplication, QFrame, QGridLayout,
-    QLabel, QLineEdit, QMainWindow, QPushButton,
-    QScrollArea, QSizePolicy, QWidget
-)
+# from PySide6.QtWidgets import (
+#     QAbstractScrollArea, QApplication, QFrame, QGridLayout,
+#     QLabel, QLineEdit, QMainWindow, QPushButton,
+#     QScrollArea, QSizePolicy, QWidget
+# )
 
 #topic tags, link is the placeholder for what the button would do
 class Tag(persistent.Persistent):
@@ -106,37 +106,50 @@ class PostDetails(persistent.Persistent):
         return self.sales_type
         
 class Account(persistent.Persistent):
-    def __init__(self, gmail, password):
+    def __init__(self,id, gmail, username, password):
+        self.id = id
         self.gmail = gmail
         self.password = password
-        self.username = ""
-        self.address = None
+        self.username = username
+        self.address = "Samutprakan ja"
+        self.follower = 0
+        self.following = 0
 
     def get_email(self):
         return self.gmail
     
     def get_password(self):
         return self.password
+    
+    def serialize(self):
+        return {
+            'gmail': self.gmail,
+            'username': self.username,
+            'address': self.address,
+            'follower': self.follower,
+            'following': self.following
+        }
+
 
 class Admin(Account):
-    def __init__(self, gmail, password):
-        super().__init__(gmail, password)
+    def __init__(self, id, gmail, username, password):
+        super().__init__(id, gmail, username, password)
         
 class Customer(Account):
-    def __init__(self, gmail, password):
-        super().__init__(gmail, password)
+    def __init__(self, id, gmail, username, password):
+        super().__init__(id, gmail, username, password)
         self.sex = None
         
 class Seller(Account):
-    def __init__(self, gmail, password):
-        super().__init__(gmail, password)
+    def __init__(id, gmail, username, password):
+        super().__init__(id, gmail, username, password)
         
 storage = ZODB.FileStorage.FileStorage('mydata.fs')
 db = ZODB.DB(storage)
 connection = db.open()
 root = connection.root
 root.accounts = BTrees.OOBTree.BTree()
-root.accounts[10000] = Admin("admin1@gmail.com", "1234")
+root.accounts[10000] = Admin(10000, "admin1@gmail.com", "admin1", "1234")
 
 
 transaction.commit()

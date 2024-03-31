@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: white;  border: None;</string>
+  </property>
   <widget class="QWidget" name="header" native="true">
    <property name="geometry">
     <rect>
@@ -34,7 +37,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">background-color: white;</string>
    </property>
    <widget class="QFrame" name="frame">
     <property name="geometry">
@@ -290,17 +293,17 @@ QLabel#page_label{
      </property>
     </widget>
    </widget>
-   <widget class="QFrame" name="profile_frame">
+   <widget class="QFrame" name="frame_4">
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>100</y>
-      <width>271</width>
-      <height>601</height>
+      <y>90</y>
+      <width>1011</width>
+      <height>631</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-radius: 20px;</string>
+     <string notr="true">background-color: rgb(246, 254, 255);</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -308,181 +311,25 @@ QLabel#page_label{
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="page_label_4">
+    <widget class="QFrame" name="profile_frame">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>20</y>
-       <width>141</width>
-       <height>41</height>
+       <x>10</x>
+       <y>10</y>
+       <width>271</width>
+       <height>601</height>
       </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Manrope</family>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;My Account&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="info_button">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>70</y>
-       <width>171</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Manrope</family>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>My infomation</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="address_button">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>130</y>
-       <width>171</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Manrope</family>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"> background-color: rgb(88,130,126)</string>
-     </property>
-     <property name="text">
-      <string>Address</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QFrame" name="editinfo_frame">
-    <property name="geometry">
-     <rect>
-      <x>330</x>
-      <y>100</y>
-      <width>701</width>
-      <height>601</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(232,243,242); border-radius: 20px;</string>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <widget class="QLabel" name="page_label_5">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>20</y>
-       <width>141</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Manrope</family>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Address&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="page_label_6">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>90</y>
-       <width>101</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Manrope</family>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;My address&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="add_address_button">
-     <property name="geometry">
-      <rect>
-       <x>450</x>
-       <y>90</y>
-       <width>171</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Manrope</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"> background-color: rgb(88,130,126); color:white;</string>
-     </property>
-     <property name="text">
-      <string>+Add address</string>
-     </property>
-    </widget>
-    <widget class="QFrame" name="frame_3">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>170</y>
-       <width>591</width>
-       <height>421</height>
-      </rect>
+      <string notr="true">QPushButton{
+	border: None;
+}
+QPushButton:hover {
+    background-color: rgb(88,130,126);
+	border-radius: 20px;
+
+}
+</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -490,70 +337,464 @@ QLabel#page_label{
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <widget class="QWidget" name="widget" native="true">
+     <widget class="QLabel" name="page_label_4">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>20</x>
         <y>20</y>
-        <width>531</width>
-        <height>80</height>
+        <width>141</width>
+        <height>41</height>
        </rect>
       </property>
-      <widget class="QLabel" name="page_label_7">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>10</y>
-         <width>211</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Manrope</family>
-         <pointsize>8</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moomoo Iceland +66  123456789&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="page_label_8">
+      <property name="font">
+       <font>
+        <family>Manrope</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: black;</string>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;My Account&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="info_button">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>70</y>
+        <width>171</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Manrope</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: black;</string>
+      </property>
+      <property name="text">
+       <string>My infomation</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="address_button">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>130</y>
+        <width>171</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Manrope</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: black;</string>
+      </property>
+      <property name="text">
+       <string>Address</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QFrame" name="editinfo_frame">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>10</y>
+       <width>701</width>
+       <height>601</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(232,243,242); border-radius: 20px;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QLabel" name="page_label_5">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>20</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Manrope</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Address&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="page_label_6">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>90</y>
+        <width>101</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Manrope</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;My address&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="add_address_button">
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>90</y>
+        <width>171</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Manrope</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"> background-color: rgb(88,130,126); color:white;</string>
+      </property>
+      <property name="text">
+       <string>+Add address</string>
+      </property>
+     </widget>
+     <widget class="QFrame" name="frame_3">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>160</y>
+        <width>591</width>
+        <height>421</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: white;
+QScrollArea {
+                border: 1px solid gray;
+                border-radius: 4px;
+            }
+            QScrollBar:vertical {
+                background: lightgray;
+                width: 10px;
+            }
+            QScrollBar::handle:vertical {
+                background: darkgray;
+                border-radius: 5px;
+            }</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QScrollArea" name="scrollArea">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>40</y>
-         <width>371</width>
-         <height>41</height>
+         <y>10</y>
+         <width>571</width>
+         <height>401</height>
         </rect>
        </property>
-       <property name="font">
-        <font>
-         <family>Manrope</family>
-         <pointsize>8</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
+       <property name="widgetResizable">
+        <bool>true</bool>
        </property>
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;123 Skycastle Soi Disney Road Disney , Disneyland, 12345&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>571</width>
+          <height>401</height>
+         </rect>
+        </property>
+        <widget class="QWidget" name="widget" native="true">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>531</width>
+           <height>80</height>
+          </rect>
+         </property>
+         <widget class="QLabel" name="page_label_7">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>10</y>
+            <width>211</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Manrope</family>
+            <pointsize>8</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moomoo Iceland +66  123456789&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+         <widget class="QLabel" name="page_label_8">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>40</y>
+            <width>371</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Manrope</family>
+            <pointsize>8</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;123 Skycastle Soi Disney Road Disney , Disneyland, 12345&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="widget_2" native="true">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>100</y>
+           <width>531</width>
+           <height>80</height>
+          </rect>
+         </property>
+         <widget class="QLabel" name="page_label_14">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>10</y>
+            <width>211</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Manrope</family>
+            <pointsize>8</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moomoo Iceland +66  123456789&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+         <widget class="QLabel" name="page_label_15">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>40</y>
+            <width>371</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Manrope</family>
+            <pointsize>8</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;123 Skycastle Soi Disney Road Disney , Disneyland, 12345&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="widget_3" native="true">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>190</y>
+           <width>531</width>
+           <height>80</height>
+          </rect>
+         </property>
+         <widget class="QLabel" name="page_label_16">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>10</y>
+            <width>211</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Manrope</family>
+            <pointsize>8</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moomoo Iceland +66  123456789&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+         <widget class="QLabel" name="page_label_17">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>40</y>
+            <width>371</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Manrope</family>
+            <pointsize>8</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;123 Skycastle Soi Disney Road Disney , Disneyland, 12345&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="widget_4" native="true">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>280</y>
+           <width>531</width>
+           <height>80</height>
+          </rect>
+         </property>
+         <widget class="QLabel" name="page_label_18">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>10</y>
+            <width>211</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Manrope</family>
+            <pointsize>8</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moomoo Iceland +66  123456789&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+         <widget class="QLabel" name="page_label_19">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>40</y>
+            <width>371</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Manrope</family>
+            <pointsize>8</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;123 Skycastle Soi Disney Road Disney , Disneyland, 12345&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </widget>
+       </widget>
       </widget>
      </widget>
     </widget>
    </widget>
-   <zorder>editinfo_frame</zorder>
-   <zorder>frame</zorder>
-   <zorder>frame_2</zorder>
-   <zorder>profile_frame</zorder>
   </widget>
  </widget>
  <resources>

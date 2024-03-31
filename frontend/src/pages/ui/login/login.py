@@ -7,7 +7,8 @@ import socket
 import pickle
 
 from backend import *
-class LoginUI(QDialog):
+class LoginUI(QDialog, QObject):
+    login_successful = Signal(int, dict)
     def __init__(self, stacked_widget, server_host, server_port):
         super(LoginUI, self).__init__()
         self.stacked_widget = stacked_widget
@@ -47,6 +48,9 @@ class LoginUI(QDialog):
                 response_data = pickle.loads(response)
                 if response_data.get('success'):
                     # Login successful, proceed to homepage
+                    user_id = response_data.get('user_id')
+                    user_data = response_data.get('user_data')  # Extract user data
+                    self.login_successful.emit(user_id, user_data)  # Pass user data to signal
                     self.stacked_widget.setCurrentIndex(1)
                     print("Login Successful")
                 else:

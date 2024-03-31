@@ -16,7 +16,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QLabel,
-    QPushButton, QSizePolicy, QWidget)
+    QPushButton, QScrollArea, QSizePolicy, QWidget)
 from .icons_rc import *
 from .logo_rc import *
 
@@ -25,6 +25,7 @@ class Ui_Dialog(object):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
         Dialog.resize(1200, 800)
+        Dialog.setStyleSheet(u"background-color: white;  border: None;")
         self.header = QWidget(Dialog)
         self.header.setObjectName(u"header")
         self.header.setGeometry(QRect(70, 20, 1080, 720))
@@ -32,7 +33,7 @@ class Ui_Dialog(object):
         font = QFont()
         font.setFamilies([u".AppleSystemUIFont"])
         self.header.setFont(font)
-        self.header.setStyleSheet(u"")
+        self.header.setStyleSheet(u"background-color: white;")
         self.frame = QFrame(self.header)
         self.frame.setObjectName(u"frame")
         self.frame.setGeometry(QRect(120, 10, 921, 71))
@@ -124,32 +125,47 @@ class Ui_Dialog(object):
         self.curate_label.setPixmap(QPixmap(u":/logos/curatelogo.png"))
         self.curate_label.setScaledContents(True)
         self.curate_label.setAlignment(Qt.AlignCenter)
-        self.profile_frame = QFrame(self.header)
+        self.frame_4 = QFrame(self.header)
+        self.frame_4.setObjectName(u"frame_4")
+        self.frame_4.setGeometry(QRect(50, 90, 1011, 631))
+        self.frame_4.setStyleSheet(u"background-color: rgb(246, 254, 255);")
+        self.frame_4.setFrameShape(QFrame.StyledPanel)
+        self.frame_4.setFrameShadow(QFrame.Raised)
+        self.profile_frame = QFrame(self.frame_4)
         self.profile_frame.setObjectName(u"profile_frame")
-        self.profile_frame.setGeometry(QRect(50, 100, 271, 601))
-        self.profile_frame.setStyleSheet(u"border-radius: 20px;")
+        self.profile_frame.setGeometry(QRect(10, 10, 271, 601))
+        self.profile_frame.setStyleSheet(u"QPushButton{\n"
+"	border: None;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(88,130,126);\n"
+"	border-radius: 20px;\n"
+"\n"
+"}\n"
+"")
         self.profile_frame.setFrameShape(QFrame.StyledPanel)
         self.profile_frame.setFrameShadow(QFrame.Raised)
         self.page_label_4 = QLabel(self.profile_frame)
         self.page_label_4.setObjectName(u"page_label_4")
         self.page_label_4.setGeometry(QRect(20, 20, 141, 41))
         self.page_label_4.setFont(font1)
+        self.page_label_4.setStyleSheet(u"color: black;")
         self.page_label_4.setAlignment(Qt.AlignCenter)
         self.info_button = QPushButton(self.profile_frame)
         self.info_button.setObjectName(u"info_button")
         self.info_button.setGeometry(QRect(50, 70, 171, 51))
         self.info_button.setFont(font1)
         self.info_button.setLayoutDirection(Qt.RightToLeft)
-        self.info_button.setStyleSheet(u"")
+        self.info_button.setStyleSheet(u"color: black;")
         self.address_button = QPushButton(self.profile_frame)
         self.address_button.setObjectName(u"address_button")
         self.address_button.setGeometry(QRect(50, 130, 171, 51))
         self.address_button.setFont(font1)
         self.address_button.setLayoutDirection(Qt.LeftToRight)
-        self.address_button.setStyleSheet(u" background-color: rgb(88,130,126)")
-        self.editinfo_frame = QFrame(self.header)
+        self.address_button.setStyleSheet(u"color: black;")
+        self.editinfo_frame = QFrame(self.frame_4)
         self.editinfo_frame.setObjectName(u"editinfo_frame")
-        self.editinfo_frame.setGeometry(QRect(330, 100, 701, 601))
+        self.editinfo_frame.setGeometry(QRect(290, 10, 701, 601))
         self.editinfo_frame.setStyleSheet(u"background-color: rgb(232,243,242); border-radius: 20px;")
         self.editinfo_frame.setFrameShape(QFrame.StyledPanel)
         self.editinfo_frame.setFrameShadow(QFrame.Raised)
@@ -175,12 +191,32 @@ class Ui_Dialog(object):
         self.add_address_button.setStyleSheet(u" background-color: rgb(88,130,126); color:white;")
         self.frame_3 = QFrame(self.editinfo_frame)
         self.frame_3.setObjectName(u"frame_3")
-        self.frame_3.setGeometry(QRect(50, 170, 591, 421))
+        self.frame_3.setGeometry(QRect(50, 160, 591, 421))
+        self.frame_3.setStyleSheet(u"background-color: white;\n"
+"QScrollArea {\n"
+"                border: 1px solid gray;\n"
+"                border-radius: 4px;\n"
+"            }\n"
+"            QScrollBar:vertical {\n"
+"                background: lightgray;\n"
+"                width: 10px;\n"
+"            }\n"
+"            QScrollBar::handle:vertical {\n"
+"                background: darkgray;\n"
+"                border-radius: 5px;\n"
+"            }")
         self.frame_3.setFrameShape(QFrame.StyledPanel)
         self.frame_3.setFrameShadow(QFrame.Raised)
-        self.widget = QWidget(self.frame_3)
+        self.scrollArea = QScrollArea(self.frame_3)
+        self.scrollArea.setObjectName(u"scrollArea")
+        self.scrollArea.setGeometry(QRect(10, 10, 571, 401))
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 571, 401))
+        self.widget = QWidget(self.scrollAreaWidgetContents)
         self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(30, 20, 531, 80))
+        self.widget.setGeometry(QRect(10, 10, 531, 80))
         self.page_label_7 = QLabel(self.widget)
         self.page_label_7.setObjectName(u"page_label_7")
         self.page_label_7.setGeometry(QRect(20, 10, 211, 41))
@@ -195,10 +231,46 @@ class Ui_Dialog(object):
         self.page_label_8.setGeometry(QRect(10, 40, 371, 41))
         self.page_label_8.setFont(font4)
         self.page_label_8.setAlignment(Qt.AlignCenter)
-        self.editinfo_frame.raise_()
-        self.frame.raise_()
-        self.frame_2.raise_()
-        self.profile_frame.raise_()
+        self.widget_2 = QWidget(self.scrollAreaWidgetContents)
+        self.widget_2.setObjectName(u"widget_2")
+        self.widget_2.setGeometry(QRect(10, 100, 531, 80))
+        self.page_label_14 = QLabel(self.widget_2)
+        self.page_label_14.setObjectName(u"page_label_14")
+        self.page_label_14.setGeometry(QRect(20, 10, 211, 41))
+        self.page_label_14.setFont(font4)
+        self.page_label_14.setAlignment(Qt.AlignCenter)
+        self.page_label_15 = QLabel(self.widget_2)
+        self.page_label_15.setObjectName(u"page_label_15")
+        self.page_label_15.setGeometry(QRect(10, 40, 371, 41))
+        self.page_label_15.setFont(font4)
+        self.page_label_15.setAlignment(Qt.AlignCenter)
+        self.widget_3 = QWidget(self.scrollAreaWidgetContents)
+        self.widget_3.setObjectName(u"widget_3")
+        self.widget_3.setGeometry(QRect(10, 190, 531, 80))
+        self.page_label_16 = QLabel(self.widget_3)
+        self.page_label_16.setObjectName(u"page_label_16")
+        self.page_label_16.setGeometry(QRect(20, 10, 211, 41))
+        self.page_label_16.setFont(font4)
+        self.page_label_16.setAlignment(Qt.AlignCenter)
+        self.page_label_17 = QLabel(self.widget_3)
+        self.page_label_17.setObjectName(u"page_label_17")
+        self.page_label_17.setGeometry(QRect(10, 40, 371, 41))
+        self.page_label_17.setFont(font4)
+        self.page_label_17.setAlignment(Qt.AlignCenter)
+        self.widget_4 = QWidget(self.scrollAreaWidgetContents)
+        self.widget_4.setObjectName(u"widget_4")
+        self.widget_4.setGeometry(QRect(10, 280, 531, 80))
+        self.page_label_18 = QLabel(self.widget_4)
+        self.page_label_18.setObjectName(u"page_label_18")
+        self.page_label_18.setGeometry(QRect(20, 10, 211, 41))
+        self.page_label_18.setFont(font4)
+        self.page_label_18.setAlignment(Qt.AlignCenter)
+        self.page_label_19 = QLabel(self.widget_4)
+        self.page_label_19.setObjectName(u"page_label_19")
+        self.page_label_19.setGeometry(QRect(10, 40, 371, 41))
+        self.page_label_19.setFont(font4)
+        self.page_label_19.setAlignment(Qt.AlignCenter)
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
         self.retranslateUi(Dialog)
 
@@ -223,5 +295,11 @@ class Ui_Dialog(object):
         self.add_address_button.setText(QCoreApplication.translate("Dialog", u"+Add address", None))
         self.page_label_7.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p>Moomoo Iceland +66  123456789</p></body></html>", None))
         self.page_label_8.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p><span style=\" font-weight:400;\">123 Skycastle Soi Disney Road Disney , Disneyland, 12345</span></p></body></html>", None))
+        self.page_label_14.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p>Moomoo Iceland +66  123456789</p></body></html>", None))
+        self.page_label_15.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p><span style=\" font-weight:400;\">123 Skycastle Soi Disney Road Disney , Disneyland, 12345</span></p></body></html>", None))
+        self.page_label_16.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p>Moomoo Iceland +66  123456789</p></body></html>", None))
+        self.page_label_17.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p><span style=\" font-weight:400;\">123 Skycastle Soi Disney Road Disney , Disneyland, 12345</span></p></body></html>", None))
+        self.page_label_18.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p>Moomoo Iceland +66  123456789</p></body></html>", None))
+        self.page_label_19.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p><span style=\" font-weight:400;\">123 Skycastle Soi Disney Road Disney , Disneyland, 12345</span></p></body></html>", None))
     # retranslateUi
 

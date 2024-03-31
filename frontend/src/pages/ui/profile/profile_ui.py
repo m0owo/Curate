@@ -26,6 +26,7 @@ class Ui_Dialog(object):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
         Dialog.resize(1200, 800)
+        Dialog.setStyleSheet(u"background-color: white; border: None;")
         self.header = QWidget(Dialog)
         self.header.setObjectName(u"header")
         self.header.setGeometry(QRect(70, 20, 1080, 720))
@@ -33,7 +34,7 @@ class Ui_Dialog(object):
         font = QFont()
         font.setFamilies([u".AppleSystemUIFont"])
         self.header.setFont(font)
-        self.header.setStyleSheet(u"")
+        self.header.setStyleSheet(u"background-color: white;")
         self.frame = QFrame(self.header)
         self.frame.setObjectName(u"frame")
         self.frame.setGeometry(QRect(120, 10, 921, 71))
@@ -104,11 +105,13 @@ class Ui_Dialog(object):
         self.page_label_2.setObjectName(u"page_label_2")
         self.page_label_2.setGeometry(QRect(580, 20, 71, 30))
         self.page_label_2.setFont(font1)
+        self.page_label_2.setStyleSheet(u"color: black;")
         self.page_label_2.setAlignment(Qt.AlignCenter)
         self.page_label_3 = QLabel(self.frame)
         self.page_label_3.setObjectName(u"page_label_3")
         self.page_label_3.setGeometry(QRect(650, 20, 71, 30))
         self.page_label_3.setFont(font1)
+        self.page_label_3.setStyleSheet(u"color: black;")
         self.page_label_3.setAlignment(Qt.AlignCenter)
         self.frame_2 = QFrame(self.header)
         self.frame_2.setObjectName(u"frame_2")
@@ -125,39 +128,44 @@ class Ui_Dialog(object):
         self.curate_label.setPixmap(QPixmap(u":/logos/curatelogo.png"))
         self.curate_label.setScaledContents(True)
         self.curate_label.setAlignment(Qt.AlignCenter)
-        self.profile_frame = QFrame(self.header)
-        self.profile_frame.setObjectName(u"profile_frame")
-        self.profile_frame.setGeometry(QRect(50, 100, 271, 601))
-        self.profile_frame.setStyleSheet(u"border-radius: 20px;")
-        self.profile_frame.setFrameShape(QFrame.StyledPanel)
-        self.profile_frame.setFrameShadow(QFrame.Raised)
-        self.page_label_4 = QLabel(self.profile_frame)
-        self.page_label_4.setObjectName(u"page_label_4")
-        self.page_label_4.setGeometry(QRect(20, 20, 141, 41))
-        self.page_label_4.setFont(font1)
-        self.page_label_4.setAlignment(Qt.AlignCenter)
-        self.info_button = QPushButton(self.profile_frame)
-        self.info_button.setObjectName(u"info_button")
-        self.info_button.setGeometry(QRect(50, 70, 171, 51))
-        self.info_button.setFont(font1)
-        self.info_button.setLayoutDirection(Qt.RightToLeft)
-        self.info_button.setStyleSheet(u" background-color: rgb(88,130,126)")
-        self.address_button = QPushButton(self.profile_frame)
-        self.address_button.setObjectName(u"address_button")
-        self.address_button.setGeometry(QRect(50, 130, 171, 51))
-        self.address_button.setFont(font1)
-        self.address_button.setLayoutDirection(Qt.LeftToRight)
-        self.address_button.setStyleSheet(u"border-color: black")
-        self.editinfo_frame = QFrame(self.header)
+        self.profile_frame_2 = QFrame(self.header)
+        self.profile_frame_2.setObjectName(u"profile_frame_2")
+        self.profile_frame_2.setGeometry(QRect(50, 80, 1011, 631))
+        self.profile_frame_2.setStyleSheet(u"background-color: rgb(246, 254, 255);")
+        self.profile_frame_2.setFrameShape(QFrame.StyledPanel)
+        self.profile_frame_2.setFrameShadow(QFrame.Raised)
+        self.editinfo_frame = QFrame(self.profile_frame_2)
         self.editinfo_frame.setObjectName(u"editinfo_frame")
-        self.editinfo_frame.setGeometry(QRect(330, 100, 701, 601))
-        self.editinfo_frame.setStyleSheet(u"background-color: rgb(232,243,242); border-radius: 20px;")
+        self.editinfo_frame.setGeometry(QRect(290, 10, 701, 601))
+        self.editinfo_frame.setStyleSheet(u"background-color: rgb(232,243,242);\n"
+"border-radius: 20px;\n"
+"\n"
+"QDateEdit {\n"
+"    border: 1px solid #ccc;\n"
+"    border-radius: 4px;\n"
+"    padding: 2px;\n"
+"}\n"
+"\n"
+"QDateEdit::drop-down {\n"
+"    subcontrol-origin: padding;\n"
+"    subcontrol-position: top right;\n"
+"    width: 20px;\n"
+"    background-color: #f0f0f0;\n"
+"    border-left: 1px solid #ccc;\n"
+"}\n"
+"\n"
+"QDateEdit::down-arrow, QDateEdit::up-arrow {\n"
+"    width: 20px;\n"
+"    height: 20px; \n"
+"    padding: 0px; \n"
+"}")
         self.editinfo_frame.setFrameShape(QFrame.StyledPanel)
         self.editinfo_frame.setFrameShadow(QFrame.Raised)
         self.page_label_5 = QLabel(self.editinfo_frame)
         self.page_label_5.setObjectName(u"page_label_5")
-        self.page_label_5.setGeometry(QRect(30, 20, 231, 41))
+        self.page_label_5.setGeometry(QRect(20, 20, 211, 41))
         self.page_label_5.setFont(font1)
+        self.page_label_5.setStyleSheet(u"color: black;")
         self.page_label_5.setAlignment(Qt.AlignCenter)
         self.verticalLayoutWidget = QWidget(self.editinfo_frame)
         self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
@@ -168,6 +176,7 @@ class Ui_Dialog(object):
         self.name_label = QLabel(self.verticalLayoutWidget)
         self.name_label.setObjectName(u"name_label")
         self.name_label.setFont(font1)
+        self.name_label.setStyleSheet(u"color: black;")
         self.name_label.setAlignment(Qt.AlignCenter)
 
         self.vertical.addWidget(self.name_label, 0, Qt.AlignLeft)
@@ -175,6 +184,7 @@ class Ui_Dialog(object):
         self.gmail_label = QLabel(self.verticalLayoutWidget)
         self.gmail_label.setObjectName(u"gmail_label")
         self.gmail_label.setFont(font1)
+        self.gmail_label.setStyleSheet(u"color: black;")
         self.gmail_label.setAlignment(Qt.AlignCenter)
 
         self.vertical.addWidget(self.gmail_label, 0, Qt.AlignLeft)
@@ -182,6 +192,7 @@ class Ui_Dialog(object):
         self.phone_label = QLabel(self.verticalLayoutWidget)
         self.phone_label.setObjectName(u"phone_label")
         self.phone_label.setFont(font1)
+        self.phone_label.setStyleSheet(u"color: black;")
         self.phone_label.setAlignment(Qt.AlignCenter)
 
         self.vertical.addWidget(self.phone_label, 0, Qt.AlignLeft)
@@ -189,6 +200,7 @@ class Ui_Dialog(object):
         self.gender_label = QLabel(self.verticalLayoutWidget)
         self.gender_label.setObjectName(u"gender_label")
         self.gender_label.setFont(font1)
+        self.gender_label.setStyleSheet(u"color: black;")
         self.gender_label.setAlignment(Qt.AlignCenter)
 
         self.vertical.addWidget(self.gender_label, 0, Qt.AlignLeft)
@@ -196,6 +208,7 @@ class Ui_Dialog(object):
         self.birth_label = QLabel(self.verticalLayoutWidget)
         self.birth_label.setObjectName(u"birth_label")
         self.birth_label.setFont(font1)
+        self.birth_label.setStyleSheet(u"color: black;")
         self.birth_label.setAlignment(Qt.AlignCenter)
 
         self.vertical.addWidget(self.birth_label, 0, Qt.AlignLeft)
@@ -203,42 +216,86 @@ class Ui_Dialog(object):
         self.name_edit = QTextEdit(self.editinfo_frame)
         self.name_edit.setObjectName(u"name_edit")
         self.name_edit.setGeometry(QRect(240, 120, 340, 30))
+        font3 = QFont()
+        font3.setFamilies([u"Manrope"])
+        font3.setBold(False)
+        self.name_edit.setFont(font3)
         self.name_edit.setStyleSheet(u"background-color: white; border-radius: 40px;")
         self.mail_edit = QTextEdit(self.editinfo_frame)
         self.mail_edit.setObjectName(u"mail_edit")
         self.mail_edit.setGeometry(QRect(240, 200, 340, 30))
+        font4 = QFont()
+        font4.setFamilies([u"Manrope"])
+        self.mail_edit.setFont(font4)
         self.mail_edit.setStyleSheet(u"background-color: white")
         self.phonenum_edit = QTextEdit(self.editinfo_frame)
         self.phonenum_edit.setObjectName(u"phonenum_edit")
         self.phonenum_edit.setGeometry(QRect(240, 280, 340, 30))
+        self.phonenum_edit.setFont(font3)
         self.phonenum_edit.setStyleSheet(u"background-color: white")
         self.male_botton = QRadioButton(self.editinfo_frame)
         self.male_botton.setObjectName(u"male_botton")
         self.male_botton.setGeometry(QRect(250, 360, 121, 22))
-        font3 = QFont()
-        font3.setFamilies([u"Manrope"])
-        self.male_botton.setFont(font3)
-        self.male_botton_2 = QRadioButton(self.editinfo_frame)
-        self.male_botton_2.setObjectName(u"male_botton_2")
-        self.male_botton_2.setGeometry(QRect(330, 360, 185, 22))
-        self.male_botton_2.setFont(font3)
-        self.male_botton_3 = QRadioButton(self.editinfo_frame)
-        self.male_botton_3.setObjectName(u"male_botton_3")
-        self.male_botton_3.setGeometry(QRect(420, 360, 377, 22))
-        self.male_botton_3.setFont(font3)
+        self.male_botton.setFont(font4)
+        self.male_botton.setStyleSheet(u"color: black;")
+        self.female_botton = QRadioButton(self.editinfo_frame)
+        self.female_botton.setObjectName(u"female_botton")
+        self.female_botton.setGeometry(QRect(330, 360, 185, 22))
+        self.female_botton.setFont(font4)
+        self.female_botton.setStyleSheet(u"color: black;")
+        self.others_botton = QRadioButton(self.editinfo_frame)
+        self.others_botton.setObjectName(u"others_botton")
+        self.others_botton.setGeometry(QRect(420, 360, 91, 22))
+        self.others_botton.setFont(font4)
         self.dateEdit = QDateEdit(self.editinfo_frame)
         self.dateEdit.setObjectName(u"dateEdit")
-        self.dateEdit.setGeometry(QRect(250, 440, 101, 21))
+        self.dateEdit.setGeometry(QRect(250, 440, 241, 21))
+        font5 = QFont()
+        font5.setFamilies([u"Manrope"])
+        font5.setPointSize(8)
+        self.dateEdit.setFont(font5)
         self.save_button = QPushButton(self.editinfo_frame)
         self.save_button.setObjectName(u"save_button")
         self.save_button.setGeometry(QRect(280, 510, 171, 51))
-        self.save_button.setFont(font1)
+        font6 = QFont()
+        font6.setFamilies([u"Manrope"])
+        font6.setPointSize(10)
+        font6.setBold(True)
+        self.save_button.setFont(font6)
         self.save_button.setLayoutDirection(Qt.RightToLeft)
-        self.save_button.setStyleSheet(u"background-color: rgb(88,130,126)")
-        self.editinfo_frame.raise_()
-        self.frame.raise_()
-        self.frame_2.raise_()
-        self.profile_frame.raise_()
+        self.save_button.setStyleSheet(u"color: white; background-color: rgb(88,130,126)")
+        self.profile_frame = QFrame(self.profile_frame_2)
+        self.profile_frame.setObjectName(u"profile_frame")
+        self.profile_frame.setGeometry(QRect(10, 10, 271, 601))
+        self.profile_frame.setStyleSheet(u"QPushButton{\n"
+"	border: None;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(88,130,126);\n"
+"	border-radius: 20px;\n"
+"\n"
+"}\n"
+"")
+        self.profile_frame.setFrameShape(QFrame.StyledPanel)
+        self.profile_frame.setFrameShadow(QFrame.Raised)
+        self.page_label_4 = QLabel(self.profile_frame)
+        self.page_label_4.setObjectName(u"page_label_4")
+        self.page_label_4.setGeometry(QRect(20, 20, 141, 41))
+        self.page_label_4.setFont(font1)
+        self.page_label_4.setStyleSheet(u"color: black;")
+        self.page_label_4.setAlignment(Qt.AlignCenter)
+        self.info_button = QPushButton(self.profile_frame)
+        self.info_button.setObjectName(u"info_button")
+        self.info_button.setGeometry(QRect(50, 70, 171, 51))
+        self.info_button.setFont(font1)
+        self.info_button.setLayoutDirection(Qt.RightToLeft)
+        self.info_button.setStyleSheet(u"color: black;")
+        self.address_button = QPushButton(self.profile_frame)
+        self.address_button.setObjectName(u"address_button")
+        self.address_button.setGeometry(QRect(50, 130, 171, 51))
+        self.address_button.setFont(font1)
+        self.address_button.setLayoutDirection(Qt.LeftToRight)
+        self.address_button.setStyleSheet(u"color: black;")
 
         self.retranslateUi(Dialog)
 
@@ -255,18 +312,33 @@ class Ui_Dialog(object):
         self.page_label_2.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p><span style=\" text-decoration: underline;\">Follower</span></p></body></html>", None))
         self.page_label_3.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p><span style=\" text-decoration: underline;\">Following</span></p></body></html>", None))
         self.curate_label.setText("")
-        self.page_label_4.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p><span style=\" font-size:14pt;\">My Account</span></p></body></html>", None))
-        self.info_button.setText(QCoreApplication.translate("Dialog", u"My infomation", None))
-        self.address_button.setText(QCoreApplication.translate("Dialog", u"Address", None))
         self.page_label_5.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p><span style=\" font-size:18pt;\">My infomation</span></p></body></html>", None))
         self.name_label.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p><span style=\" font-size:10pt; font-weight:400;\">Name</span></p></body></html>", None))
         self.gmail_label.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p><span style=\" font-size:10pt; font-weight:400;\">Gmail</span></p></body></html>", None))
         self.phone_label.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p><span style=\" font-size:10pt; font-weight:400;\">Phone number</span></p></body></html>", None))
         self.gender_label.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p><span style=\" font-size:10pt; font-weight:400;\">Gender</span></p></body></html>", None))
         self.birth_label.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p><span style=\" font-size:10pt; font-weight:400;\">Birth</span></p></body></html>", None))
+        self.name_edit.setHtml(QCoreApplication.translate("Dialog", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">sample_name</p></body></html>", None))
+        self.mail_edit.setHtml(QCoreApplication.translate("Dialog", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">sample_gmail</p></body></html>", None))
+        self.phonenum_edit.setHtml(QCoreApplication.translate("Dialog", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">sameple_phonenumber</p></body></html>", None))
         self.male_botton.setText(QCoreApplication.translate("Dialog", u"Male", None))
-        self.male_botton_2.setText(QCoreApplication.translate("Dialog", u"Female", None))
-        self.male_botton_3.setText(QCoreApplication.translate("Dialog", u"Others", None))
+        self.female_botton.setText(QCoreApplication.translate("Dialog", u"Female", None))
+        self.others_botton.setText(QCoreApplication.translate("Dialog", u"Others", None))
         self.save_button.setText(QCoreApplication.translate("Dialog", u"Save", None))
+        self.page_label_4.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p><span style=\" font-size:14pt;\">My Account</span></p></body></html>", None))
+        self.info_button.setText(QCoreApplication.translate("Dialog", u"My infomation", None))
+        self.address_button.setText(QCoreApplication.translate("Dialog", u"Address", None))
     # retranslateUi
 

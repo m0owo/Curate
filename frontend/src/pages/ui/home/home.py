@@ -267,6 +267,12 @@ class HomeUI(QMainWindow):
             i += 1
             self.ui.scrollAreaWidgetContents.adjustSize()
         self.ui.profile_button.clicked.connect(self.to_profile)
+        
+    def load_user_data(self, user_id, user_data):
+        self.user_id = user_id
+        self.user_data = user_data
+        self.ui.name_label.setText(f"Welcome, {self.user_data['username']}")
+        
     def to_profile(self):
         self.stacked_widget.setCurrentIndex(3)
 if __name__ == "__main__":

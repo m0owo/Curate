@@ -117,7 +117,13 @@ class Ui_MainWindow(object):
         font2.setFamilies([u"Manrope"])
         font2.setBold(True)
         self.home_button.setFont(font2)
-        
+        self.home_button.setStyleSheet(u"QPushButton:hover {\n"
+"box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);\n"
+"}")
         icon1 = QIcon()
         icon1.addFile(u":/icon_images/home_icon.png", QSize(), QIcon.Normal, QIcon.Off)
         self.home_button.setIcon(icon1)
@@ -185,10 +191,14 @@ class Ui_MainWindow(object):
         self.tagbutton = QPushButton(self.tags_frame)
         self.tagbutton.setObjectName(u"tagbutton")
         self.tagbutton.setGeometry(QRect(30, 20, 121, 41))
+        self.tagbutton.setStyleSheet(u"")
         self.posts_frame = QScrollArea(self.body)
         self.posts_frame.setObjectName(u"posts_frame")
         self.posts_frame.setGeometry(QRect(0, 99, 1181, 571))
-        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.posts_frame.sizePolicy().hasHeightForWidth())
         self.posts_frame.setSizePolicy(sizePolicy)
         self.posts_frame.setStyleSheet(u"QFrame {\n"
 "    background-color: rgb(255, 255, 255)\n"
@@ -200,21 +210,17 @@ class Ui_MainWindow(object):
 "")
         self.posts_frame.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.posts_frame.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.posts_frame.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        self.posts_frame.setSizeAdjustPolicy(QAbstractScrollArea.AdjustIgnored)
         self.posts_frame.setWidgetResizable(False)
         self.posts_frame.setAlignment(Qt.AlignCenter)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(95, 0, 991, 636))
-        self.scrollAreaWidgetContents.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"                                           
+        self.scrollAreaWidgetContents.setGeometry(QRect(85, -65, 991, 636))
+        self.scrollAreaWidgetContents.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
 "")
-        self.scrollAreaWidgetContents.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.gridLayout = QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setContentsMargins(20, 20, 20, 20)
-        self.gridLayout.setSpacing(20)
-        self.gridLayout.setAlignment(Qt.AlignTop)
-        self.scrollAreaWidgetContents.setLayout(self.gridLayout)
+        self.gridLayout.setContentsMargins(10, 10, 10, 10)
         self.post_sample_10 = QFrame(self.scrollAreaWidgetContents)
         self.post_sample_10.setObjectName(u"post_sample_10")
         self.post_sample_10.setMinimumSize(QSize(230, 300))
@@ -725,6 +731,12 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.post_sample_6, 1, 1, 1, 1)
 
         self.posts_frame.setWidget(self.scrollAreaWidgetContents)
+        self.name_label = QLabel(self.centralwidget)
+        self.name_label.setObjectName(u"name_label")
+        self.name_label.setGeometry(QRect(40, 10, 381, 16))
+        font5 = QFont()
+        font5.setPointSize(8)
+        self.name_label.setFont(font5)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -792,5 +804,6 @@ class Ui_MainWindow(object):
         self.tag_56.setText(QCoreApplication.translate("MainWindow", u"preorder", None))
         self.tag_57.setText(QCoreApplication.translate("MainWindow", u"custom", None))
         self.post_type_14.setText(QCoreApplication.translate("MainWindow", u"collection", None))
+        self.name_label.setText(QCoreApplication.translate("MainWindow", u"fmkeomvfkormwgikprm", None))
     # retranslateUi
 

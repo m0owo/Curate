@@ -207,6 +207,7 @@ QLabel#page_label{
       <property name="font">
        <font>
         <family>Manrope</family>
+        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -314,6 +315,7 @@ box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);
       <property name="font">
        <font>
         <family>Manrope</family>
+        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -469,8 +471,8 @@ QLabel {
      <widget class="QWidget" name="scrollAreaWidgetContents">
       <property name="geometry">
        <rect>
-        <x>95</x>
-        <y>0</y>
+        <x>85</x>
+        <y>-65</y>
         <width>991</width>
         <height>636</height>
        </rect>
@@ -727,6 +729,7 @@ QLabel {
            <font>
             <family>Manrope</family>
             <pointsize>11</pointsize>
+            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -976,6 +979,7 @@ color:rgb(206, 141, 80);</string>
            <font>
             <family>Manrope</family>
             <pointsize>11</pointsize>
+            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -1228,6 +1232,7 @@ color:rgb(206, 141, 80);</string>
            <font>
             <family>Manrope</family>
             <pointsize>11</pointsize>
+            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -1480,6 +1485,7 @@ color:rgb(206, 141, 80);</string>
            <font>
             <family>Manrope</family>
             <pointsize>11</pointsize>
+            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -1732,6 +1738,7 @@ color:rgb(206, 141, 80);</string>
            <font>
             <family>Manrope</family>
             <pointsize>11</pointsize>
+            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -1984,6 +1991,7 @@ color:rgb(206, 141, 80);</string>
            <font>
             <family>Manrope</family>
             <pointsize>11</pointsize>
+            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -2004,6 +2012,24 @@ color:rgb(206, 141, 80);</string>
       </layout>
      </widget>
     </widget>
+   </widget>
+   <widget class="QLabel" name="name_label">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>10</y>
+      <width>381</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>fmkeomvfkormwgikprm</string>
+    </property>
    </widget>
   </widget>
  </widget>

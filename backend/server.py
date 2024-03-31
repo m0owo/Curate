@@ -12,7 +12,8 @@ def handle_login(data):
     for account_id, account in accounts.items():
         if isinstance(account, Admin) or isinstance(account, Customer) or isinstance(account, Seller):
             if account.get_email() == email and account.get_password() == password:
-                return {'success': True, 'message': 'Login successful'}
+                print(f"ID: {account_id} or {account.get_email()} Account_name {account.username}")
+                return {'success': True, 'message': 'Login successful', 'user_id': account.id, 'user_data': account.serialize()}
     
     return {'success': False, 'message': 'Invalid credentials'}
 
@@ -52,6 +53,24 @@ def handle_registration(data):
     except Exception as e:
         return {'success': False, 'message': str(e)}
 
+def get_user_data(data):
+    user_id = data.get('user_id')
+    accounts = root.accounts
+    if user_id in accounts:
+        user = accounts[user_id]
+        #Add attributes as needed
+        user_data = {
+            'name': user.username,  
+            'mail': user.mail,
+            'phone': user.phone,
+            'address' : user.address,
+            'follower' : user.follower,
+            'following' : user.following,
+            'sex' : user.sex
+        }
+        return {'success': True, 'user_data': user_data}
+    else:
+        return {'success': False, 'message': 'User not found'}
 
 def handle_request(conn):
     try:
@@ -63,16 +82,16 @@ def handle_request(conn):
             action = data_dict.get('action')
             if action == 'login':
                 response = handle_login(data_dict)
-                conn.sendall(pickle.dumps(response))
             elif action == 'register':
                 response = handle_registration(data_dict)
-                conn.sendall(pickle.dumps(response))
             else:
-                conn.sendall(pickle.dumps({'success': False, 'message': 'Invalid action'}))
+                response = {'success': False, 'message': 'Invalid action'}
+            conn.sendall(pickle.dumps(response))
     except Exception as e:
         print("Error handling request:", e)
     finally:
         conn.close()
+
 
 def start_server(host, port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
