@@ -7,7 +7,6 @@ from pages.ui.login.login import LoginUI
 from pages.ui.register.register import RegisterUI
 from pages.ui.profile.profile import ProfileUI, ProfileAddressUI
 
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     widget = QStackedWidget()
@@ -24,7 +23,7 @@ if __name__ == "__main__":
     login_ui.login_successful.connect(home_ui.load_user_data)
     # login_ui.login_successful.connect(profile_ui.load_user_data)
 
-    widget.addWidget(login_ui)
+    # widget.addWidget(login_ui)
     widget.addWidget(home_ui)
     widget.addWidget(register_ui)
     widget.addWidget(profile_ui)
