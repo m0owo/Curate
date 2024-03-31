@@ -174,7 +174,7 @@ class PostDetails(persistent.Persistent):
         return self.sales_type
         
 class Account(persistent.Persistent):
-    def __init__(self,id, email, username, password, username = ""):
+    def __init__(self, id, email, password, username = ""):
         self.id = id
         self.email = email
         self.password = password
@@ -187,7 +187,7 @@ class Account(persistent.Persistent):
         self.products = persistent.list.PersistentList()
         # self.user_id = generate_user_id()
     def get_email(self):
-        return self.gmail
+        return self.email
     def get_password(self):
         return self.password
     def get_username(self):
@@ -203,12 +203,9 @@ class Account(persistent.Persistent):
         print(f'----User Info---\nEmail: {self.email}\n'
               f'Password: {self.password}\n'
               f'Username: {self.username}\n')
-    # def get_user_id(self):
-    #     return self.user_id
-    
     def serialize(self):
         return {
-            'gmail': self.gmail,
+            'email': self.email,
             'username': self.username,
             'address': self.address,
             'follower': self.follower,
@@ -217,39 +214,33 @@ class Account(persistent.Persistent):
 
 
 class Admin(Account):
-    def __init__(self, id, gmail, username, password):
-        super().__init__(id, gmail, username, password)
-    def print_info(self):
-        print(f'----Admin Info---\nEmail: {self.email}\n'
-              f'Password: {self.password}\n'
-              f'Username: {self.username}\n')
+    def __init__(self, id, email, password, username = ""):
+        super().__init__(id, email, password, username)
         
 class Customer(Account):
-    def __init__(self, id, gmail, username, password):
-        super().__init__(id, gmail, username, password)
+    def __init__(self, id, email, password, username = ""):
+        super().__init__(id, email, password, username)
         self.sex = None
         
 class Seller(Account):
-    def __init__(id, gmail, username, password):
-        super().__init__(id, gmail, username, password)
+    def __init__(self, id, email, password, username = ""):
+        super().__init__(id, email, password, username)
         
-
-    def __init__(self, gmail, password):
-        super().__init__(gmail, password)
-
-
+    def __init__(self, email, password):
+        super().__init__(email, password)
+        
 # admins
 # key value = username
-admin_1 = Admin("admin1@gmail.com", "1234")
+admin_1 = Admin(generate_id('admins'), "admin1@gmail.com", "1234")
 admin_1.set_username("adminnajaa~~")
 root.admins[admin_1.get_username()] = admin_1
 
 # users
-user_1 = Account("user1@gmail.com", "1234")
+user_1 = Account(generate_id('users'), "user1@gmail.com", "1234")
 user_1.set_username("iammuser1")
 root.users[user_1.get_username()] = user_1
 
-user_2 = Account("user2@gmail.com", "1234")
+user_2 = Account(generate_id('users'), "user2@gmail.com", "1234")
 root.users[user_2.get_username()] = user_2
 user_2.set_username("iammuser2")
 
