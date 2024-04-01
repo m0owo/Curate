@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="delivery_icons">
+    <file>arrived.png</file>
+    <file>cancelled.png</file>
+    <file>delivery.png</file>
+    <file>pay.png</file>
+  </qresource>
+</RCC>
