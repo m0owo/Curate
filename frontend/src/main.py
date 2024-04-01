@@ -15,15 +15,17 @@ if __name__ == "__main__":
     server_port = 8888
 
     login_ui = LoginUI(widget,server_host, server_port)
-    home_ui = HomeUI(widget)
+    home_ui = HomeUI(widget, server_host, server_port)
     register_ui = RegisterUI(server_host, server_port)
     profile_ui = ProfileUI(widget,server_host, server_port, user_id = None)
     profileaddress_ui = ProfileAddressUI(widget)
     
+    # Connect the signal to the slot function   
     login_ui.login_successful.connect(home_ui.load_user_data)
+    
     # login_ui.login_successful.connect(profile_ui.load_user_data)
 
-    # widget.addWidget(login_ui)
+    widget.addWidget(login_ui)
     widget.addWidget(home_ui)
     widget.addWidget(register_ui)
     widget.addWidget(profile_ui)
