@@ -26,7 +26,16 @@ class Ui_Dialog(object):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
         Dialog.resize(1200, 800)
-        Dialog.setStyleSheet(u"background-color: white; border: None;")
+        Dialog.setStyleSheet(u"QDialog{\n"
+"	background-color: white; \n"
+"	border: None;\n"
+"}\n"
+"QLabel{\n"
+"	color: black;\n"
+"}\n"
+"QPushButton{\n"
+"	border: None\n"
+"}")
         self.header = QWidget(Dialog)
         self.header.setObjectName(u"header")
         self.header.setGeometry(QRect(70, 20, 1080, 720))
@@ -254,6 +263,7 @@ class Ui_Dialog(object):
         font5.setFamilies([u"Manrope"])
         font5.setPointSize(8)
         self.dateEdit.setFont(font5)
+        self.dateEdit.setStyleSheet(u"color: black;")
         self.save_button = QPushButton(self.editinfo_frame)
         self.save_button.setObjectName(u"save_button")
         self.save_button.setGeometry(QRect(280, 510, 171, 51))

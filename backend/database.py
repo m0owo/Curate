@@ -1,9 +1,9 @@
 import ZODB, ZODB.FileStorage
 import sys
 import os
-sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
-cwd = os.getcwd()
-sys.path.append(cwd)
+from pathlib import Path
+root_dir = Path('/Users/Miki Ajiki/desktop/Curate')
+sys.path.append(str(root_dir))
 import BTrees._OOBTree
 import persistent
 import transaction
@@ -12,7 +12,7 @@ from datetime import datetime, date
 from frontend.public.images.post_images.db_test_pics import *
 
 #for getting image data
-images_path = "frontend/public/images/post_images/db_test_pics/"
+images_path = str(root_dir / 'frontend' / 'public' / 'images' / 'post_images' / 'db_test_pics') + '/'
 def get_image_data(image_name):
     with open(images_path+image_name, 'rb') as f:
         return f.read()
@@ -31,8 +31,7 @@ connection = db.open()
 root = connection.root
 
 # creating the BTrees
-root.admins = BTrees.OOBTree.BTree()
-root.users = BTrees.OOBTree.BTree()
+root.accounts = BTrees.OOBTree.BTree()
 root.products = BTrees.OOBTree.BTree()
 root.tags = BTrees.OOBTree.BTree()
 
@@ -140,11 +139,11 @@ class PostDetails(persistent.Persistent):
         self.author = p_author
         self.product = persistent.list.PersistentList() #a single item is a collection size 1
         self.tags = persistent.list.PersistentList()
-        for i in product:
-            self.product.append(i)
-            for t in i.get_tags:
-                if t not in self.tags:
-                    self.tag.append(t)
+        # for i in product:
+        #     self.product.append(i)
+        #     for t in i.get_tags:
+        #         if t not in self.tags:
+        #             self.tag.append(t)
         self.info = p_info
         self.title = p_title
         self.created = datetime.now()
@@ -193,7 +192,7 @@ class Account(persistent.Persistent):
     def get_username(self):
         return self.username
     def set_username(self, username):
-        if username in root.users:
+        if username in root.accounts:
             raise ValueError("Bad Dog")
         else:
             self.username = username
@@ -233,15 +232,15 @@ class Seller(Account):
 # key value = username
 admin_1 = Admin(generate_id('admins'), "admin1@gmail.com", "1234")
 admin_1.set_username("adminnajaa~~")
-root.admins[admin_1.get_username()] = admin_1
+root.accounts[admin_1.get_username()] = admin_1
 
 # users
 user_1 = Account(generate_id('users'), "user1@gmail.com", "1234")
 user_1.set_username("iammuser1")
-root.users[user_1.get_username()] = user_1
+root.accounts[user_1.get_username()] = user_1
 
 user_2 = Account(generate_id('users'), "user2@gmail.com", "1234")
-root.users[user_2.get_username()] = user_2
+root.accounts[user_2.get_username()] = user_2
 user_2.set_username("iammuser2")
 
 # tags

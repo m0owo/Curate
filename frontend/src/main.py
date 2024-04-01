@@ -19,15 +19,15 @@ if __name__ == "__main__":
     login_ui = LoginUI(widget,server_host, server_port)
     home_ui = HomeUI(widget)
     register_ui = RegisterUI(server_host, server_port)
-    profile_ui = ProfileUI(widget,server_host, server_port, user_id = None)
+    profile_ui = ProfileUI(widget,server_host, server_port)
     profileaddress_ui = ProfileAddressUI(widget)
     history_ui = HistoryUI(widget)
     wishlist_ui = WishlistUI(widget)
     
     login_ui.login_successful.connect(home_ui.load_user_data)
-    # login_ui.login_successful.connect(profile_ui.load_user_data)
+    login_ui.login_successful.connect(profile_ui.load_user_data)
 
-    # widget.addWidget(login_ui)
+    widget.addWidget(login_ui)
     widget.addWidget(home_ui)
     widget.addWidget(register_ui)
     widget.addWidget(profile_ui)

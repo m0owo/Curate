@@ -251,21 +251,21 @@ class HomeUI(QMainWindow):
         clear_widget(self.ui.scrollAreaWidgetContents)
 
         # Post Details
-        test_post = PostDetails("1", "Music", "This is very important", "bananas?", ["Acubi", "Cottagecore", "Acubi", "Cottagecore", "Acubi", "Cottagecore", "Acubi", "Cottagecore"])
-        post_details = [test_post] * 14
-        post_widgets = []
-        i = 0
-        for post_data in post_details:
-            post = Post(post_data, self.ui.scrollAreaWidgetContents)
-            post_widget = post.get_post()
-            post_widgets.append(post_widget)
+        # test_post = PostDetails("1", "Music", "This is very important", "bananas?", ["Acubi", "Cottagecore", "Acubi", "Cottagecore", "Acubi", "Cottagecore", "Acubi", "Cottagecore"])
+        # post_details = [test_post] * 14
+        # post_widgets = []
+        # i = 0
+        # for post_data in post_details:
+        #     post = Post(post_data, self.ui.scrollAreaWidgetContents)
+        #     post_widget = post.get_post()
+        #     post_widgets.append(post_widget)
 
-            row = i // 4
-            column = i % 4
+        #     row = i // 4
+        #     column = i % 4
 
-            self.ui.gridLayout.addWidget(post_widget, row, column)
-            i += 1
-            self.ui.scrollAreaWidgetContents.adjustSize()
+        #     self.ui.gridLayout.addWidget(post_widget, row, column)
+        #     i += 1
+        #     self.ui.scrollAreaWidgetContents.adjustSize()
         self.ui.profile_button.clicked.connect(self.to_profile)
         
     def load_user_data(self, user_id, user_data):

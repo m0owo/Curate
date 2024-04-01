@@ -14,7 +14,16 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: white; border: None;</string>
+   <string notr="true">QDialog{
+	background-color: white; 
+	border: None;
+}
+QLabel{
+	color: black;
+}
+QPushButton{
+	border: None
+}</string>
   </property>
   <widget class="QWidget" name="header" native="true">
    <property name="geometry">
@@ -647,6 +656,9 @@ p, li { white-space: pre-wrap; }
         <family>Manrope</family>
         <pointsize>8</pointsize>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: black;</string>
       </property>
      </widget>
      <widget class="QPushButton" name="save_button">

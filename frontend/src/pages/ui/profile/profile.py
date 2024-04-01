@@ -4,12 +4,11 @@ from PySide6.QtWidgets import QDialog
 import socket, pickle
 
 class ProfileUI(QDialog):
-    def __init__(self, stacked_widget,server_host, server_port, user_id):
+    def __init__(self, stacked_widget,server_host, server_port):
         super(ProfileUI, self).__init__()
         self.stacked_widget = stacked_widget
         self.server_host = server_host
         self.server_port = server_port
-        self.user_id = user_id
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.ui.address_button.clicked.connect(self.to_addresspage)
@@ -21,7 +20,6 @@ class ProfileUI(QDialog):
         self.male = self.ui.male_botton
         self.female = self.ui.female_botton
         # self.other = self.ui.others_button
-        self.fetch_user_data()
         
     def to_addresspage(self):
         self.stacked_widget.setCurrentIndex(4)
@@ -30,28 +28,11 @@ class ProfileUI(QDialog):
     def to_infopage(self):
         print("Clicked info page from info page")
         
-    def fetch_user_data(self):
-        # Create a socket connection to the server
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
-            try:
-                client_socket.connect((self.server_host, self.server_port))
-                request_data = {'action': 'get_user_data', 'user_id': self.user_id}
-                client_socket.sendall(pickle.dumps(request_data))
-                response = client_socket.recv(4096)
-                response_data = pickle.loads(response)
-                if response_data.get('success'):
-                    # Populate UI elements with user data
-                    user_data = response_data.get('user_data')
-                    self.name.setPlainText(user_data.get('name'))
-                    self.mail.setPlainText(user_data.get('mail'))
-                    # self.phone.setText(user_data.get('phone', ''))
-                    # Populate other UI elements similarly
-                else:
-                    # Display error message
-                    print('Failed to fetch user data')
-            except Exception as e:
-                print(e)   
-                
+    def load_user_data(self, user_id, user_data):
+        self.user_id = user_id
+        self.user_data = user_data
+        self.ui.birth_label.setText(f"Welcome, {self.user_data['username']}")
+        
     def save_new_info(self):
         print(f"Name: {self.name.toPlainText()}, Mail: {self.mail.toPlainText()}, Phone: {self.phone.toPlainText()}") 
              

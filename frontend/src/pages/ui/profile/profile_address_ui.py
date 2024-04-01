@@ -19,13 +19,18 @@ from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QLabel,
     QPushButton, QScrollArea, QSizePolicy, QWidget)
 from .icons_rc import *
 from .logo_rc import *
-
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
         Dialog.resize(1200, 800)
-        Dialog.setStyleSheet(u"background-color: white;  border: None;")
+        Dialog.setStyleSheet(u"QDialog{	\n"
+"	background-color: white;  	\n"
+"	border: None;\n"
+"}\n"
+"QPushButton{\n"
+"	border: None;\n"
+"}")
         self.header = QWidget(Dialog)
         self.header.setObjectName(u"header")
         self.header.setGeometry(QRect(70, 20, 1080, 720))
@@ -166,7 +171,14 @@ class Ui_Dialog(object):
         self.editinfo_frame = QFrame(self.frame_4)
         self.editinfo_frame.setObjectName(u"editinfo_frame")
         self.editinfo_frame.setGeometry(QRect(290, 10, 701, 601))
-        self.editinfo_frame.setStyleSheet(u"background-color: rgb(232,243,242); border-radius: 20px;")
+        self.editinfo_frame.setStyleSheet(u"QLabel{\n"
+"	color: black;\n"
+"}\n"
+"QPushButton{\n"
+"	 background-color: rgb(88,130,126); \n"
+"	color:white;\n"
+"	border-radius: 20px;\n"
+"}")
         self.editinfo_frame.setFrameShape(QFrame.StyledPanel)
         self.editinfo_frame.setFrameShadow(QFrame.Raised)
         self.page_label_5 = QLabel(self.editinfo_frame)
@@ -188,7 +200,7 @@ class Ui_Dialog(object):
         font3.setBold(True)
         self.add_address_button.setFont(font3)
         self.add_address_button.setLayoutDirection(Qt.RightToLeft)
-        self.add_address_button.setStyleSheet(u" background-color: rgb(88,130,126); color:white;")
+        self.add_address_button.setStyleSheet(u"")
         self.frame_3 = QFrame(self.editinfo_frame)
         self.frame_3.setObjectName(u"frame_3")
         self.frame_3.setGeometry(QRect(50, 160, 591, 421))
@@ -213,7 +225,7 @@ class Ui_Dialog(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 571, 401))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 569, 399))
         self.widget = QWidget(self.scrollAreaWidgetContents)
         self.widget.setObjectName(u"widget")
         self.widget.setGeometry(QRect(10, 10, 531, 80))

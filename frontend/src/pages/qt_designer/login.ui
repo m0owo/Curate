@@ -19,7 +19,12 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgb(241, 208, 215);</string>
+   <string notr="true">QDialog{
+	background-color:rgb(241, 208, 215);
+}
+QLabel{
+	color: black;
+}</string>
   </property>
   <widget class="QLabel" name="gmail">
    <property name="geometry">

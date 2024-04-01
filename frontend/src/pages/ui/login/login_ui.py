@@ -27,7 +27,12 @@ class Ui_Dialog(object):
         font = QFont()
         font.setFamilies([u"Manrope"])
         Dialog.setFont(font)
-        Dialog.setStyleSheet(u"background-color:rgb(241, 208, 215);")
+        Dialog.setStyleSheet(u"QDialog{\n"
+"	background-color:rgb(241, 208, 215);\n"
+"}\n"
+"QLabel{\n"
+"	color: black;\n"
+"}")
         self.gmail = QLabel(Dialog)
         self.gmail.setObjectName(u"gmail")
         self.gmail.setGeometry(QRect(440, 250, 71, 31))
