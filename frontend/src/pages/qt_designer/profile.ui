@@ -624,7 +624,7 @@ p, li { white-space: pre-wrap; }
        <string>Female</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="others_botton">
+     <widget class="QRadioButton" name="others_button">
       <property name="geometry">
        <rect>
         <x>420</x>
@@ -642,7 +642,7 @@ p, li { white-space: pre-wrap; }
        <string>Others</string>
       </property>
      </widget>
-     <widget class="QDateEdit" name="dateEdit">
+     <widget class="QDateEdit" name="date_edit">
       <property name="geometry">
        <rect>
         <x>250</x>

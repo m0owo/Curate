@@ -177,12 +177,14 @@ class Account(persistent.Persistent):
         self.id = id
         self.email = email
         self.password = password
-       
+        self.phone_number = ""
+        self.sex = None
+        self.username = username
+        self.birthdate = None
         self.address = "Samutprakan ja"
         self.follower = 0
         self.following = 0
 
-        self.username = username
         self.products = persistent.list.PersistentList()
         # self.user_id = generate_user_id()
     def get_email(self):
@@ -207,6 +209,9 @@ class Account(persistent.Persistent):
             'email': self.email,
             'username': self.username,
             'address': self.address,
+            'sex' : self.sex,
+            'birthdate' : self.birthdate,
+            'phone_number' : self.phone_number,
             'follower': self.follower,
             'following': self.following
         }
@@ -219,7 +224,6 @@ class Admin(Account):
 class Customer(Account):
     def __init__(self, id, email, password, username = ""):
         super().__init__(id, email, password, username)
-        self.sex = None
         
 class Seller(Account):
     def __init__(self, id, email, password, username = ""):
@@ -232,6 +236,9 @@ class Seller(Account):
 # key value = username
 admin_1 = Admin(generate_id('admins'), "admin1@gmail.com", "1234")
 admin_1.set_username("adminnajaa~~")
+admin_1.phone_number = "000-000-0000"
+admin_1.sex = "Others"
+admin_1.birthdate = date(2000, 10, 30)
 root.accounts[admin_1.get_username()] = admin_1
 
 # users

@@ -71,24 +71,58 @@ def get_user_data(data):
         return {'success': True, 'user_data': user_data}
     else:
         return {'success': False, 'message': 'User not found'}
+    
+def handle_save_new_info(data_dict):
+    try:
+        new_info = data_dict.get('new_info')
+        
+        birthdate_str = new_info.get('birthdate')
+        birthdate = datetime.strptime(birthdate_str, '%Y-%m-%d').date()
+        account = root.accounts[new_info.get('username')]
+        if account:
+            # Update the account information with the new data
+            account.phone_number = new_info.get('phone_number', account.phone_number)
+            account.sex = new_info.get('sex', account.sex)
+            account.birthdate = birthdate
+            account.address = new_info.get('address', account.address)
 
+            transaction.commit()
+            
+            return {'success': True, 'message': 'New information saved successfully'}
+        else:
+            return {'success': False, 'message': 'Account not found'}
+    except Exception as e:
+        return {'success': False, 'message': str(e)}
+    
 def handle_request(conn):
     try:
         while True:
             data = conn.recv(4096)
             if not data:
+                print("No data received from client.")
                 break
+            
+            print("Received data from client:", data)
+            
             data_dict = pickle.loads(data)
             action = data_dict.get('action')
+            
+            print("Received action:", action)
+            
             if action == 'login':
                 response = handle_login(data_dict)
             elif action == 'register':
                 response = handle_registration(data_dict)
+            elif action == 'save_new_info':
+                response = handle_save_new_info(data_dict)
             else:
                 response = {'success': False, 'message': 'Invalid action'}
+            
+            print("Sending response to client:", response)
             conn.sendall(pickle.dumps(response))
     except Exception as e:
         print("Error handling request:", e)
+
     finally:
         conn.close()
 
