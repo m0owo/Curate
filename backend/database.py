@@ -31,9 +31,9 @@ connection = db.open()
 root = connection.root
 
 # creating the BTrees
-root.admins = BTrees.OOBTree.BTree()
-root.users = BTrees.OOBTree.BTree()
+root.accounts = BTrees.OOBTree.BTree()
 root.products = BTrees.OOBTree.BTree()
+root.posts = BTrees.OOBTree.BTree()
 root.tags = BTrees.OOBTree.BTree()
 
 #topic tags, prolly gonna keep information like statistics??
@@ -91,8 +91,20 @@ class Product(persistent.Persistent):
               f'Seller: {self.seller}\n'
               f'Status: {self.status}')
         print(f'Start Date: {self.start_date.strftime("%Y-%m-%d %H:%M:%S")}')
+    def serialize(self):
+        return {
+            'product_id': self.pr_id,
+            'product_name': self.pr_name,
+            'seller': self.seller,
+            'status': self.status,
+            'created': self.created.strftime("%Y-%m-%d %H:%M:%S"),
+            'modified': self.modified.strftime("%Y-%m-%d %H:%M:%S"),
+            'start': self.start.strftime("%Y-%m-%d %H:%M:%S"),
+            'end': self.end_date,
+            'images' : self.image,
+            'tags': self.tags
+        }
         
-    
 #collection of items in a post, items would be persistent list in real??
 class Collection(Product):
     def __init__(self, c_id, seller, start, items, c_name = "", images = [], tags = [], end = None):
@@ -114,6 +126,10 @@ class Collection(Product):
             print(item.get_id())
         print(f'Collection Name: {self.pr_name}')
         print()
+    def serialize(self):
+        return super().serialize().update({
+            'items': self.items()
+        })
 
 #individual items in a post
 class Item(Product):
@@ -131,29 +147,33 @@ class Item(Product):
         print("Price: " + str(self.price))
         print(f'Item Name: {self.pr_name}')
         print()
+    def serialize(self):
+        return super().serialize().update({
+            'price': self.price
+        })
 
 #info to display in post
 class PostDetails(persistent.Persistent):
-    def __init__(self, p_id, p_author, p_info, p_title,
-                 product, type = "cf no cc"): #types can be cf no cc, preorder, or bidding
+    def __init__(self, p_id, p_author, product, p_info = "", p_title = "",
+                 type = "cf no cc"): #types can be cf no cc, preorder, or bidding
         self.id = p_id
         self.author = p_author
-        self.product = persistent.list.PersistentList() #a single item is a collection size 1
+        self.product = product
         self.tags = persistent.list.PersistentList()
-        for i in product:
-            self.product.append(i)
-            for t in i.get_tags:
-                if t not in self.tags:
-                    self.tag.append(t)
+        for tag in product.get_tags(): # make sure the tags are not repeated
+            if tag not in self.tags:
+                self.tags.append(tag)
         self.info = p_info
         self.title = p_title
         self.created = datetime.now()
         self.modified = self.created
-        if len(product) > 1:
-            self.pr_type = "collection"
-        else:
-            self.pr_type = "item"
         self.sales_type = type
+        if isinstance(product, Collection):
+            self.product_type = 'Collection'
+        elif isinstance(product, Item):
+            self.product_type = 'Item'
+    def get_id(self):
+        return self.id
     def get_author(self):
         return self.author
     def get_product(self):
@@ -167,34 +187,60 @@ class PostDetails(persistent.Persistent):
     def get_modified(self):
         return self.modified
     def get_product_type(self):
-        return self.pr_type
+        return self.product_type
     def get_tags(self):
         return self.tags
     def get_sales_type(self):
         return self.sales_type
+    def print_info(self):
+        print(
+            f'----Post Info----'
+            f'post id: {self.id}\n'
+            f'post author: {self.author}\n',
+            f'product: {self.product.get_id()}\n'
+            f'tags: {[x.get_tag_text() for x in self.tags]}\n'
+            f'info: {self.info}\n'
+            f'title: {self.title}\n'
+            f'created: {self.created.strftime("%Y-%m-%d %H:%M:%S")}\n'
+            f'sales type: {self.sales_type}\n'
+        )
+    def serialize(self):
+        return {
+            'post_id': self.id, #id of the post
+            'post_author': self.author, #username of the autho
+            'product': self.product, #one product, either a collection or an item
+            'info': self.info, #post info or description
+            'title': self.title, #post title, display will be bold
+            'created': self.created, #date created
+            'modified': self.modified, #date last modified
+            'product_type': self.product_type, #tells whether the product is item/col
+            'tags': self.tags, #list of tags
+            'sales_type': self.sales_type #cf no cc, bidding
+        }
         
 class Account(persistent.Persistent):
-    def __init__(self, id, email, password, username = ""):
+    def __init__(self, id, email, password, username = "", sex = ""):
         self.id = id
         self.email = email
         self.password = password
-       
         self.address = "Samutprakan ja"
         self.follower = 0
         self.following = 0
-
         self.username = username
+        self.sex = sex
         self.products = persistent.list.PersistentList()
         # self.user_id = generate_user_id()
     def get_email(self):
         return self.email
+    def get_id(self):
+        return self.id
     def get_password(self):
         return self.password
     def get_username(self):
         return self.username
     def set_username(self, username):
-        if username in root.users:
-            raise ValueError("Bad Dog")
+        if username in root.accounts:
+            raise ValueError("Username is Already in Use")
         else:
             self.username = username
     def add_product(self, product):
@@ -205,13 +251,13 @@ class Account(persistent.Persistent):
               f'Username: {self.username}\n')
     def serialize(self):
         return {
+            'id': self.id,
             'email': self.email,
             'username': self.username,
             'address': self.address,
             'follower': self.follower,
             'following': self.following
         }
-
 
 class Admin(Account):
     def __init__(self, id, email, password, username = ""):
@@ -229,20 +275,19 @@ class Seller(Account):
     def __init__(self, email, password):
         super().__init__(email, password)
         
-# admins
+# accounts
 # key value = username
 admin_1 = Admin(generate_id('admins'), "admin1@gmail.com", "1234")
 admin_1.set_username("adminnajaa~~")
-root.admins[admin_1.get_username()] = admin_1
+root.accounts[admin_1.get_username()] = admin_1
 
 # users
-user_1 = Account(generate_id('users'), "user1@gmail.com", "1234")
-user_1.set_username("iammuser1")
-root.users[user_1.get_username()] = user_1
+user_1 = Account(generate_id('users'), "user1@gmail.com", "1234", "iammuser1")
+root.accounts[user_1.get_username()] = user_1
 
 user_2 = Account(generate_id('users'), "user2@gmail.com", "1234")
-root.users[user_2.get_username()] = user_2
 user_2.set_username("iammuser2")
+root.accounts[user_2.get_username()] = user_2
 
 # tags
 # key value = tag text
@@ -281,7 +326,7 @@ item2_pics_data = [get_image_data(x) for x in item2_pics]
 item2_tags = [root.tags['coquette'], root.tags['cute']]
 item2 = Item(generate_id("products"), user_1.get_username(), datetime(2024, 5, 20, 10, 15),
              50, "item 2 laa", item1_pics_data, item1_tags)
-root.products[item2.get_seller() + item1.get_id()] = item2
+root.products[item2.get_seller() + item2.get_id()] = item2
 
 col1_pics = ['IMG_7368.jpg']
 col1_pics_data = [get_image_data(x) for x in col1_pics]
@@ -290,18 +335,21 @@ col1 = Collection(generate_id("products"), user_1.get_username(), datetime(2024,
                   [item1, item2], "~New Drop OOEE~", col1_pics_data, col1_tags)
 root.products[col1.get_seller() + col1.get_id()] = col1
 
+post1 = PostDetails(generate_id('posts'), user_1.get_username(), col1)
+root.posts[post1.get_id()] = post1
+
 transaction.commit()
 if  __name__ == "__main__":
-    admins = root.admins
-    for key in admins:
-        admins[key].print_info()
-    
-    users = root.users
-    for key in users:
-        users[key].print_info()
+    accounts = root.accounts
+    for key in accounts:
+        accounts[key].print_info()
 
     products = root.products
     for key in products:
         products[key].print_info()
+    
+    posts = root.posts
+    for key in posts:
+        posts[key].print_info()
         
     
