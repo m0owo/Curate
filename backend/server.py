@@ -2,7 +2,6 @@ import socket
 import pickle
 from database import *
 
-
 def handle_login(data):
     email = data.get('email')
     password = data.get('password')
@@ -10,14 +9,12 @@ def handle_login(data):
     # Retrieve user from the database based on email
     accounts = root.accounts
     for account_id, account in accounts.items():
-        if isinstance(account, Admin) or isinstance(account, Customer) or isinstance(account, Seller):
+        if isinstance(account, Admin) or isinstance(account, Customer) or isinstance(account, Seller) or isinstance(account, Account):
             if account.get_email() == email and account.get_password() == password:
-                print(f"ID: {account_id} or {account.get_email()} Account_name {account.username}")
-                return {'success': True, 'message': 'Login successful', 'user_id': account.id, 'user_data': account.serialize()}
-    
+                print(f"ID: {account.get_id()} or {account.get_email()} Account_name {account.get_username()}")
+                return {'success': True, 'message': 'Login successful', 'user_id': account.get_id(), 'user_data': account.serialize()}
     return {'success': False, 'message': 'Invalid credentials'}
 
-        
 def handle_registration(data):
     account_type = data.get('account_type')
     email = data.get('email')
@@ -61,7 +58,7 @@ def get_user_data(data):
         #Add attributes as needed
         user_data = {
             'name': user.username,  
-            'mail': user.mail,
+            'email': user.email,
             'phone': user.phone,
             'address' : user.address,
             'follower' : user.follower,
@@ -72,6 +69,17 @@ def get_user_data(data):
     else:
         return {'success': False, 'message': 'User not found'}
 
+def get_all_posts():
+    print("getting all posts server oo ee")
+    try:
+        post_details = root.post_details
+        post_details_data = {}
+        for post_id, post_detail in post_details:
+            post_details_data[post_id] = post_detail.serialize()
+        return {'success': True, 'post_details': post_details_data}
+    except Exception as e:
+        return {'success': False, 'message': "Failed to return post details"}
+            
 def handle_request(conn):
     try:
         while True:
@@ -84,6 +92,9 @@ def handle_request(conn):
                 response = handle_login(data_dict)
             elif action == 'register':
                 response = handle_registration(data_dict)
+            elif action == 'get_all_posts':
+                print("action is to get all posts")
+                response = get_all_posts()
             else:
                 response = {'success': False, 'message': 'Invalid action'}
             conn.sendall(pickle.dumps(response))
@@ -91,7 +102,6 @@ def handle_request(conn):
         print("Error handling request:", e)
     finally:
         conn.close()
-
 
 def start_server(host, port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
