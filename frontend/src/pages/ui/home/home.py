@@ -1,12 +1,13 @@
 import sys
 import os
+import pickle
+import socket
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import QPixmap, QPainterPath
 from .home_ui import *
 
 current_directory = os.getcwd()
-print("Current directory:", current_directory)
 sys.path.append(current_directory)
 
 from backend.database import *
@@ -199,17 +200,21 @@ class Post():
         return self.post
         
 class HomeUI(QMainWindow):
-    def __init__(self, stacked_widget):
+    def __init__(self, stacked_widget, server_host, server_port, user_id = None):
         QMainWindow.__init__(self, None)
         self.stacked_widget = stacked_widget
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.server_host = server_host
+        self.server_port = server_port
+        self.user_id = user_id
+
         shadow = QGraphicsDropShadowEffect(self)
         shadow.setBlurRadius(10)
         shadow.setXOffset(1)
         shadow.setYOffset(2)
-
         self.ui.search_frame.setGraphicsEffect(shadow)
+
         button_stylesheet = (
             "QPushButton {"
             "   border-radius: 5px;"
@@ -250,13 +255,12 @@ class HomeUI(QMainWindow):
         # drawing posts
         clear_widget(self.ui.scrollAreaWidgetContents)
 
-        # Post Details
-        test_post = PostDetails("1", "Music", "This is very important", "bananas?", ["Acubi", "Cottagecore", "Acubi", "Cottagecore", "Acubi", "Cottagecore", "Acubi", "Cottagecore"])
-        post_details = [test_post] * 14
+        self.ui.profile_button.clicked.connect(self.to_profile)
+    def populate_posts(self, post_details):
         post_widgets = []
         i = 0
-        for post_data in post_details:
-            post = Post(post_data, self.ui.scrollAreaWidgetContents)
+        for key in post_details:
+            post = Post(post_details[key], self.ui.scrollAreaWidgetContents)
             post_widget = post.get_post()
             post_widgets.append(post_widget)
 
@@ -266,12 +270,48 @@ class HomeUI(QMainWindow):
             self.ui.gridLayout.addWidget(post_widget, row, column)
             i += 1
             self.ui.scrollAreaWidgetContents.adjustSize()
-        self.ui.profile_button.clicked.connect(self.to_profile)
-        
-    def load_user_data(self, user_id, user_data):
+    async def get_all_posts(self):
+        print('getting all posts')
+        try:
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket.connect((self.server_host, self.server_port))
+            request_data = {'action': 'get_all_posts'}
+            client_socket.sendall(pickle.dumps(request_data))
+            response = await self.async_receive_all(client_socket)
+            response_data = pickle.loads(response)
+            if response_data.get('success'):
+                post_details_dict = response_data.get('post_details')
+                for key in post_details_dict:
+                    print(post_details_dict[key])
+                return post_details_dict
+            else:
+                self.ui.error_txt.setText('Could not get all posts')
+        except Exception as e:
+            self.ui.error_txt.setText(str(e))
+            print(e)
+        finally:
+            client_socket.close()
+
+    async def async_receive_all(self, client_socket):
+        data = b''
+        while True:
+            chunk = await self.async_receive(client_socket)
+            if not chunk:
+                break
+            data += chunk
+        return data
+    
+    async def async_receive(self, client_socket):
+        return client_socket.recv(4096)
+
+    async def load_user_data(self, user_id, user_data):
         self.user_id = user_id
         self.user_data = user_data
+        print(user_id, user_data)
         self.ui.name_label.setText(f"Welcome, {self.user_data['username']}")
+        print("trying to load post_details")
+        post_details = await self.async_get_all_posts()
+        self.populate_posts(post_details)
         
     def to_profile(self):
         self.stacked_widget.setCurrentIndex(3)
