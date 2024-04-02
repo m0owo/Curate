@@ -1,18 +1,19 @@
 import ZODB, ZODB.FileStorage
 import sys
 import os
-sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
-cwd = os.getcwd()
-sys.path.append(cwd)
+from pathlib import Path
+root_dir = Path('/Users/Miki Ajiki/desktop/Curate')
+sys.path.append(str(root_dir))
 import BTrees._OOBTree
 import persistent
 import transaction
 import uuid
 from datetime import datetime, date
 from frontend.public.images.post_images.db_test_pics import *
+import pickle
 
 #for getting image data
-images_path = "frontend/public/images/post_images/db_test_pics/"
+images_path = str(root_dir / 'frontend' / 'public' / 'images' / 'post_images' / 'db_test_pics') + '/'
 def get_image_data(image_name):
     with open(images_path+image_name, 'rb') as f:
         return f.read()
@@ -48,6 +49,11 @@ class Tag(persistent.Persistent):
         return self.tag_text
     def get_link(self):
         return self.link
+    def serialize(self):
+        return {
+            'tag_text': self.tag_text,
+            'link': self.link
+        }
 
 #product in the post
 class Product(persistent.Persistent):
@@ -91,18 +97,19 @@ class Product(persistent.Persistent):
               f'Seller: {self.seller}\n'
               f'Status: {self.status}')
         print(f'Start Date: {self.start_date.strftime("%Y-%m-%d %H:%M:%S")}')
+        
     def serialize(self):
         return {
-            'product_id': self.pr_id,
-            'product_name': self.pr_name,
+            'pr_id': self.pr_id,
+            'pr_name': self.pr_name,
             'seller': self.seller,
             'status': self.status,
-            'created': self.created.strftime("%Y-%m-%d %H:%M:%S"),
-            'modified': self.modified.strftime("%Y-%m-%d %H:%M:%S"),
-            'start': self.start.strftime("%Y-%m-%d %H:%M:%S"),
-            'end': self.end_date,
-            'images' : self.image,
-            'tags': self.tags
+            'created': self.created.strftime("%Y-%m-%d %H:%M:%S") if self.created else None,
+            'modified': self.modified.strftime("%Y-%m-%d %H:%M:%S") if self.modified else None,
+            'start_date': self.start_date.strftime("%Y-%m-%d %H:%M:%S") if self.start_date else None,
+            'end_date': self.end_date.strftime("%Y-%m-%d %H:%M:%S") if self.end_date else None,
+            'image': list(self.image),
+            'tags': [tag.serialize() for tag in self.tags]
         }
         
 #collection of items in a post, items would be persistent list in real??
@@ -127,9 +134,9 @@ class Collection(Product):
         print(f'Collection Name: {self.pr_name}')
         print()
     def serialize(self):
-        return super().serialize().update({
-            'items': self.items()
-        })
+        serialized_data = super().serialize()  # Serialize common attributes from the parent class
+        serialized_data['items'] = [item.serialize() for item in self.items]
+        return serialized_data
 
 #individual items in a post
 class Item(Product):
@@ -148,9 +155,9 @@ class Item(Product):
         print(f'Item Name: {self.pr_name}')
         print()
     def serialize(self):
-        return super().serialize().update({
-            'price': self.price
-        })
+        serialized_data = super().serialize() 
+        serialized_data['price'] = self.price
+        return serialized_data
 
 #info to display in post
 class PostDetails(persistent.Persistent):
@@ -205,17 +212,17 @@ class PostDetails(persistent.Persistent):
             f'sales type: {self.sales_type}\n'
         )
     def serialize(self):
-        return {
-            'post_id': self.id, #id of the post
-            'post_author': self.author, #username of the autho
-            'product': self.product, #one product, either a collection or an item
-            'info': self.info, #post info or description
-            'title': self.title, #post title, display will be bold
-            'created': self.created, #date created
-            'modified': self.modified, #date last modified
-            'product_type': self.product_type, #tells whether the product is item/col
-            'tags': self.tags, #list of tags
-            'sales_type': self.sales_type #cf no cc, bidding
+        return  {
+            'p_id': self.id,
+            'p_author': self.author,
+            'product': self.product.serialize(),  # Delegate serialization to the product object
+            'tags': [tag.serialize() for tag in self.tags],  # Serialize tags as a regular list
+            'info': self.info,
+            'title': self.title,
+            'created': self.created.strftime("%Y-%m-%d %H:%M:%S"),  # Format datetime as string
+            'modified': self.modified.strftime("%Y-%m-%d %H:%M:%S"),  # Format datetime as string
+            'sales_type': self.sales_type,
+            'product_type': self.product_type
         }
         
 class Account(persistent.Persistent):
@@ -314,25 +321,25 @@ root.tags[tag9.get_tag_text()] = tag9
 # index = {product_id}
 # value = Collection() or Item()
 # product_id = {seller's user}{1...}
-item1_pics = ['IMG_7369.jpg']
-item1_pics_data = [get_image_data(x) for x in item1_pics]
+# item1_pics = ['IMG_7369.jpg']
+# item1_pics_data = [get_image_data(x) for x in item1_pics]
 item1_tags = [root.tags['coquette'], root.tags['cute']]
 item1 = Item(generate_id("products"), user_1.get_username(), datetime(2024, 5, 20, 10, 15),
-             50, "item 1", item1_pics_data, item1_tags)
+             50, "item 1", [], item1_tags)
 root.products[item1.get_seller() + item1.get_id()] = item1
 
-item2_pics = ['IMG_7370.jpg']
-item2_pics_data = [get_image_data(x) for x in item2_pics]
+# item2_pics = ['IMG_7370.jpg']
+# item2_pics_data = [get_image_data(x) for x in item2_pics]
 item2_tags = [root.tags['coquette'], root.tags['cute']]
 item2 = Item(generate_id("products"), user_1.get_username(), datetime(2024, 5, 20, 10, 15),
-             50, "item 2 laa", item1_pics_data, item1_tags)
+             50, "item 2 laa", [], item1_tags)
 root.products[item2.get_seller() + item2.get_id()] = item2
 
-col1_pics = ['IMG_7368.jpg']
-col1_pics_data = [get_image_data(x) for x in col1_pics]
+# col1_pics = ['IMG_7368.jpg']
+# col1_pics_data = [get_image_data(x) for x in col1_pics]
 col1_tags = [root.tags['secondhand'], root.tags['coquette'], root.tags['cute']]
 col1 = Collection(generate_id("products"), user_1.get_username(), datetime(2024, 5, 20, 10, 15),
-                  [item1, item2], "~New Drop OOEE~", col1_pics_data, col1_tags)
+                  [item1, item2], "~New Drop OOEE~", [] , col1_tags)
 root.products[col1.get_seller() + col1.get_id()] = col1
 
 post1 = PostDetails(generate_id('posts'), user_1.get_username(), col1)
@@ -351,5 +358,8 @@ if  __name__ == "__main__":
     posts = root.posts
     for key in posts:
         posts[key].print_info()
+    posts_data = [post.serialize() for post in root.posts.values()] 
+    print("Post data: ", posts_data)
+    print(len(item1_pics_data))
         
     

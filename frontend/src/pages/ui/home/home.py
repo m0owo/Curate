@@ -270,48 +270,47 @@ class HomeUI(QMainWindow):
             self.ui.gridLayout.addWidget(post_widget, row, column)
             i += 1
             self.ui.scrollAreaWidgetContents.adjustSize()
-    async def get_all_posts(self):
+    def get_all_posts(self):
         print('getting all posts')
-        try:
-            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            client_socket.connect((self.server_host, self.server_port))
-            request_data = {'action': 'get_all_posts'}
-            client_socket.sendall(pickle.dumps(request_data))
-            response = await self.async_receive_all(client_socket)
-            response_data = pickle.loads(response)
-            if response_data.get('success'):
-                post_details_dict = response_data.get('post_details')
-                for key in post_details_dict:
-                    print(post_details_dict[key])
-                return post_details_dict
-            else:
-                self.ui.error_txt.setText('Could not get all posts')
-        except Exception as e:
-            self.ui.error_txt.setText(str(e))
-            print(e)
-        finally:
-            client_socket.close()
+         # Create a socket connection to the server
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+            try:
+                client_socket.connect((self.server_host, self.server_port))
+                request_data = {'action': 'get_all_posts'}
+                client_socket.sendall(pickle.dumps(request_data))
+                response = client_socket.recv(4096)
+                response_data = pickle.loads(response)
+                if response_data.get('success'):
+                    posts = response['posts']
+                    for post in posts:
+                        print(post)  # Display the post details
+                else:
+                    print("Failed to retrieve posts:", response['message'])
+            except Exception as e:
+                # self.ui.error_txt.setText(str(e))
+                print(e)
 
-    async def async_receive_all(self, client_socket):
+
+    def async_receive_all(self, client_socket):
         data = b''
         while True:
-            chunk = await self.async_receive(client_socket)
+            chunk = self.async_receive(client_socket)
             if not chunk:
                 break
             data += chunk
         return data
     
-    async def async_receive(self, client_socket):
+    def async_receive(self, client_socket):
         return client_socket.recv(4096)
 
-    async def load_user_data(self, user_id, user_data):
+    def load_user_data(self, user_id, user_data, post_data):
         self.user_id = user_id
         self.user_data = user_data
-        print(user_id, user_data)
+        self.post_data = post_data
+        print(user_id, user_data, post_data)
         self.ui.name_label.setText(f"Welcome, {self.user_data['username']}")
         print("trying to load post_details")
-        post_details = await self.async_get_all_posts()
-        self.populate_posts(post_details)
+        self.populate_posts(post_data)
         
     def to_profile(self):
         self.stacked_widget.setCurrentIndex(3)
