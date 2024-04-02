@@ -22,7 +22,6 @@ def handle_registration(data):
     username = data.get('username')
     sex = data.get('sex')
     address = data.get('address')
-
     try:
         root = connection.root
         accounts = root.accounts
@@ -72,12 +71,15 @@ def get_user_data(data):
 def get_all_posts():
     print("getting all posts server oo ee")
     try:
-        post_details = root.post_details
-        post_details_data = {}
-        for post_id, post_detail in post_details:
-            post_details_data[post_id] = post_detail.serialize()
-        return {'success': True, 'post_details': post_details_data}
+        post_details = root.posts
+        posts_data = []
+        for key in post_details:
+            post = post_details[key]
+            post_data = post.serialize()
+            posts_data.append(post_data)
+        return {'success': True, 'post_details': posts_data}
     except Exception as e:
+        print(e)
         return {'success': False, 'message': "Failed to return post details"}
             
 def handle_request(conn):
@@ -93,11 +95,32 @@ def handle_request(conn):
             elif action == 'register':
                 response = handle_registration(data_dict)
             elif action == 'get_all_posts':
-                print("action is to get all posts")
                 response = get_all_posts()
             else:
                 response = {'success': False, 'message': 'Invalid action'}
+            # response_data = pickle.dumps(response)
+            # chunk_size = 4096
+# # Total length of the data
+# total_length = len(response_data)
+
+# # Initialize the starting index of the chunk
+# start_index = 0
+
+# # Send chunks iteratively until all data is sent
+# while start_index < total_length:
+#     # Calculate the end index of the chunk
+#     end_index = min(start_index + chunk_size, total_length)
+    
+#     # Get the chunk of data
+#     chunk = response_data[start_index:end_index]
+    
+#     # Send the chunk
+#     conn.sendall(chunk)
+    
+#     # Update the starting index for the next chunk
+#     start_index = end_index
             conn.sendall(pickle.dumps(response))
+            conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
     except Exception as e:
         print("Error handling request:", e)
     finally:

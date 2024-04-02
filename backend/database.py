@@ -8,21 +8,34 @@ import BTrees._OOBTree
 import persistent
 import transaction
 import uuid
-from datetime import datetime, date
+from PIL import Image
+from io import BytesIO
+from datetime import datetime
 from frontend.public.images.post_images.db_test_pics import *
 
 #for getting image data
 images_path = "frontend/public/images/post_images/db_test_pics/"
-def get_image_data(image_name):
-    with open(images_path+image_name, 'rb') as f:
-        return f.read()
+def create_thumbnail(image_path, thumbnail_size=(230, 230)):
+    try:
+        with Image.open(image_path) as img:
+            img.thumbnail(thumbnail_size)
+            thumbnail_data = BytesIO()
+            img.save(thumbnail_data, format='JPEG')
+            thumbnail_data.seek(0)
+            return thumbnail_data.getvalue()
+    except IOError:
+        print("Unable to create thumbnail.")
+
+def get_image_data(images_name):
+    full_image_path = images_path + images_name
+    thumbnail_data = create_thumbnail(full_image_path)
+    return thumbnail_data
 
 #generates a random unique id
 def generate_id(type):
     while str(uuid.uuid4()) in getattr(root, type, []):
         pass
     return str(uuid.uuid4())
-
 
 # creating the database
 storage = ZODB.FileStorage.FileStorage('mydata.fs')
@@ -48,6 +61,10 @@ class Tag(persistent.Persistent):
         return self.tag_text
     def get_link(self):
         return self.link
+    def serialize(self):
+        return {
+            'tag_text': self.tag_text
+        }
 
 #product in the post
 class Product(persistent.Persistent):
@@ -60,12 +77,12 @@ class Product(persistent.Persistent):
         else:
             self.status = "upcoming"
         self.created = datetime.now() #date post created
-        self.modified = self.created
+        self.modified = self.created #default modified date is date created
         self.start_date = start #time to go live
         self.end_date = end #Date object for time sold
-        self.image = persistent.list.PersistentList()
+        self.images = persistent.list.PersistentList()
         for image in images:
-            self.image.append(image)
+            self.images.append(image)
         self.tags = persistent.list.PersistentList()
         for tag in tags:
             self.tags.append(tag)
@@ -97,11 +114,11 @@ class Product(persistent.Persistent):
             'product_name': self.pr_name,
             'seller': self.seller,
             'status': self.status,
-            'created': self.created.strftime("%Y-%m-%d %H:%M:%S"),
-            'modified': self.modified.strftime("%Y-%m-%d %H:%M:%S"),
-            'start': self.start.strftime("%Y-%m-%d %H:%M:%S"),
+            'created': self.created,
+            'modified': self.modified,
+            'start': self.start_date,
             'end': self.end_date,
-            'images' : self.image,
+            'images' : self.images,
             'tags': self.tags
         }
         
@@ -124,12 +141,14 @@ class Collection(Product):
         print("Items: ")
         for item in self.items:
             print(item.get_id())
-        print(f'Collection Name: {self.pr_name}')
-        print()
+        print(f'Collection Name: {self.pr_name}\n')
     def serialize(self):
-        return super().serialize().update({
-            'items': self.items()
+        serialized_data = super().serialize()
+        serialized_data.update({
+            'items': [x.serialize() for x in self.items]
         })
+        return serialized_data
+
 
 #individual items in a post
 class Item(Product):
@@ -145,12 +164,13 @@ class Item(Product):
     def print_info(self):
         super().print_info()
         print("Price: " + str(self.price))
-        print(f'Item Name: {self.pr_name}')
-        print()
+        print(f'Item Name: {self.pr_name}\n')
     def serialize(self):
-        return super().serialize().update({
+        serialized_data = super().serialize()
+        serialized_data.update({
             'price': self.price
         })
+        return serialized_data
 
 #info to display in post
 class PostDetails(persistent.Persistent):
@@ -194,7 +214,7 @@ class PostDetails(persistent.Persistent):
         return self.sales_type
     def print_info(self):
         print(
-            f'----Post Info----'
+            f'----Post Info----\n'
             f'post id: {self.id}\n'
             f'post author: {self.author}\n',
             f'product: {self.product.get_id()}\n'
@@ -207,14 +227,14 @@ class PostDetails(persistent.Persistent):
     def serialize(self):
         return {
             'post_id': self.id, #id of the post
-            'post_author': self.author, #username of the autho
-            'product': self.product, #one product, either a collection or an item
+            'post_author': self.author, #username of the author
+            'product': self.product.serialize(), #one product, either a collection or an item
             'info': self.info, #post info or description
             'title': self.title, #post title, display will be bold
             'created': self.created, #date created
             'modified': self.modified, #date last modified
             'product_type': self.product_type, #tells whether the product is item/col
-            'tags': self.tags, #list of tags
+            'tags': [x.serialize() for x in self.tags], #list of tags
             'sales_type': self.sales_type #cf no cc, bidding
         }
         
@@ -229,7 +249,6 @@ class Account(persistent.Persistent):
         self.username = username
         self.sex = sex
         self.products = persistent.list.PersistentList()
-        # self.user_id = generate_user_id()
     def get_email(self):
         return self.email
     def get_id(self):
@@ -244,7 +263,7 @@ class Account(persistent.Persistent):
         else:
             self.username = username
     def add_product(self, product):
-        self.products.add(product.get_id())
+        self.products.add(product.get_id()) #id of the product
     def print_info(self):
         print(f'----User Info---\nEmail: {self.email}\n'
               f'Password: {self.password}\n'
@@ -335,7 +354,7 @@ col1 = Collection(generate_id("products"), user_1.get_username(), datetime(2024,
                   [item1, item2], "~New Drop OOEE~", col1_pics_data, col1_tags)
 root.products[col1.get_seller() + col1.get_id()] = col1
 
-post1 = PostDetails(generate_id('posts'), user_1.get_username(), col1)
+post1 = PostDetails(generate_id('posts'), user_1.get_username(), col1, "TEST INFO", "TEST TITLE")
 root.posts[post1.get_id()] = post1
 
 transaction.commit()
