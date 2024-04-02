@@ -3,6 +3,8 @@ import sys
 import os
 from pathlib import Path
 root_dir = Path('/Users/Miki Ajiki/desktop/Curate')
+sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
+sys.path.append(os.getcwd())
 sys.path.append(str(root_dir))
 import BTrees._OOBTree
 import persistent
