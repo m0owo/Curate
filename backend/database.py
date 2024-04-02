@@ -1,9 +1,9 @@
 import ZODB, ZODB.FileStorage
 import sys
 import os
-sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
-cwd = os.getcwd()
-sys.path.append(cwd)
+from pathlib import Path
+root_dir = Path('/Users/Miki Ajiki/desktop/Curate')
+sys.path.append(str(root_dir))
 import BTrees._OOBTree
 import persistent
 import transaction
@@ -14,7 +14,7 @@ from datetime import datetime
 from frontend.public.images.post_images.db_test_pics import *
 
 #for getting image data
-images_path = "frontend/public/images/post_images/db_test_pics/"
+images_path = str(root_dir / 'frontend' / 'public' / 'images' / 'post_images' / 'db_test_pics') + '/'
 def create_thumbnail(image_path, thumbnail_size=(230, 230)):
     try:
         with Image.open(image_path) as img:
@@ -119,7 +119,7 @@ class Product(persistent.Persistent):
             'start': self.start_date,
             'end': self.end_date,
             'images' : self.images,
-            'tags': self.tags
+            'tags': [tag.serialize() for tag in self.tags] 
         }
         
 #collection of items in a post, items would be persistent list in real??

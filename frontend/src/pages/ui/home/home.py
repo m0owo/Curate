@@ -6,10 +6,10 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import QPixmap, QPainterPath
 from .home_ui import *
-
+import zlib, base64
 current_directory = os.getcwd()
 sys.path.append(current_directory)
-sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
+# sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
 
 from backend.database import *
 
@@ -284,29 +284,44 @@ class HomeUI(QMainWindow):
             self.ui.gridLayout.addWidget(post_widget, row, column)
             i += 1
             self.ui.scrollAreaWidgetContents.adjustSize()
-    
+            
+    def receive_large_data(self, conn):
+        total_chunks = pickle.loads(conn.recv(4096))
+        received_data = b""
+        for _ in range(total_chunks):
+            chunk = conn.recv(4096)
+            received_data += chunk
+        return pickle.loads(received_data)
+            
     def get_all_posts(self):
-        print('getting all posts')
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
-            try:
-                print("Step 1")
+        print('Getting all posts from the server')
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+                print("Step 1: Establishing connection...")
                 client_socket.connect((self.server_host, self.server_port))
+                print("Step 2: Sending request...")
                 request_data = {'action': 'get_all_posts'}
                 client_socket.sendall(pickle.dumps(request_data))
-                response = b""
-                chunk = client_socket.recv(4096)
-                print(f'chunk {chunk}')
-                response += chunk
-                response_data = pickle.loads(response)
-                print(f'response data {response_data}')
-                if response_data.get('success'):
-                    print('success getting all the data')
-                    post_details = response_data.get('post_details')
-                    print(f'post details {post_details}')
+                print("Step 3: Receiving response...")
+                response = self.receive_large_data(client_socket)
+                print("Received response:", response)
+                print("Step 4: Unpacking response...")
+                if response.get('success'):
+                    print('Success getting all the data')
+                    post_details = response.get('post_details')
+                    print(post_details)
+                    # Call your method to populate posts
                     self.populate_posts(post_details)
-            except Exception as e:
-                print("EROOR HERE JAA")
-                print(e)
+                else:
+                    print("Failed to get all the data:", response.get('message'))
+        except socket.error as se:
+            print("Socket error:", se)
+        except pickle.PickleError as pe:
+            print("Error in pickle operation:", pe)
+        except Exception as e:
+            print("ERROR:", e)
+
+
             
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id

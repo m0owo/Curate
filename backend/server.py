@@ -49,82 +49,63 @@ def handle_registration(data):
     except Exception as e:
         return {'success': False, 'message': str(e)}
 
-def get_user_data(data):
-    user_id = data.get('user_id')
-    accounts = root.accounts
-    if user_id in accounts:
-        user = accounts[user_id]
-        #Add attributes as needed
-        user_data = {
-            'name': user.username,  
-            'email': user.email,
-            'phone': user.phone,
-            'address' : user.address,
-            'follower' : user.follower,
-            'following' : user.following,
-            'sex' : user.sex
-        }
-        return {'success': True, 'user_data': user_data}
-    else:
-        return {'success': False, 'message': 'User not found'}
+import socket
+import pickle
+
+def send_large_data(conn, data):
+    CHUNK_SIZE = 4096
+    serialized_data = pickle.dumps(data)
+    total_chunks = len(serialized_data) // CHUNK_SIZE + 1
+    conn.sendall(pickle.dumps(total_chunks))
+    for i in range(total_chunks):
+        start_index = i * CHUNK_SIZE
+        end_index = min((i + 1) * CHUNK_SIZE, len(serialized_data))
+        chunk = serialized_data[start_index:end_index]
+        conn.sendall(chunk)
 
 def get_all_posts():
     print("getting all posts server oo ee")
     try:
         post_details = root.posts
-        posts_data = []
-        for key in post_details:
-            post = post_details[key]
-            post_data = post.serialize()
-            posts_data.append(post_data)
+        posts_data = [post.serialize() for post in post_details.values()]
         return {'success': True, 'post_details': posts_data}
     except Exception as e:
         print(e)
         return {'success': False, 'message': "Failed to return post details"}
-            
+
 def handle_request(conn):
     try:
+        print("Handling request...")
         while True:
             data = conn.recv(4096)
             if not data:
+                print("No more data received, breaking loop.")
                 break
+            print("Received data:", data)
             data_dict = pickle.loads(data)
+            print("Received dictionary:", data_dict)
             action = data_dict.get('action')
+            print("Action:", action)
             if action == 'login':
                 response = handle_login(data_dict)
             elif action == 'register':
                 response = handle_registration(data_dict)
             elif action == 'get_all_posts':
+                print("Calling get_all_posts()")
                 response = get_all_posts()
+                send_large_data(conn, response)
             else:
+                print("Invalid action")
                 response = {'success': False, 'message': 'Invalid action'}
-            # response_data = pickle.dumps(response)
-            # chunk_size = 4096
-# # Total length of the data
-# total_length = len(response_data)
-
-# # Initialize the starting index of the chunk
-# start_index = 0
-
-# # Send chunks iteratively until all data is sent
-# while start_index < total_length:
-#     # Calculate the end index of the chunk
-#     end_index = min(start_index + chunk_size, total_length)
-    
-#     # Get the chunk of data
-#     chunk = response_data[start_index:end_index]
-    
-#     # Send the chunk
-#     conn.sendall(chunk)
-    
-#     # Update the starting index for the next chunk
-#     start_index = end_index
+            print("Sending response:", response)
             conn.sendall(pickle.dumps(response))
             conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
     except Exception as e:
         print("Error handling request:", e)
     finally:
+        print("Closing connection.")
         conn.close()
+
 
 def start_server(host, port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
