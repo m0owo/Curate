@@ -34,6 +34,7 @@ root = connection.root
 root.accounts = BTrees.OOBTree.BTree()
 root.products = BTrees.OOBTree.BTree()
 root.tags = BTrees.OOBTree.BTree()
+root.addresses = BTrees.OOBTree.BTree()
 
 #topic tags, prolly gonna keep information like statistics??
 class Tag(persistent.Persistent):
@@ -173,7 +174,7 @@ class PostDetails(persistent.Persistent):
         return self.sales_type
         
 class Account(persistent.Persistent):
-    def __init__(self, id, email, password, username = ""):
+    def __init__(self, id, email, password, username=""):
         self.id = id
         self.email = email
         self.password = password
@@ -181,42 +182,74 @@ class Account(persistent.Persistent):
         self.sex = None
         self.username = username
         self.birthdate = None
-        self.address = "Samutprakan ja"
+        self.addresses = persistent.list.PersistentList()  # Correct attribute name
         self.follower = 0
         self.following = 0
 
         self.products = persistent.list.PersistentList()
-        # self.user_id = generate_user_id()
+
     def get_email(self):
         return self.email
+
     def get_password(self):
         return self.password
+
     def get_username(self):
         return self.username
+
     def set_username(self, username):
         if username in root.accounts:
-            raise ValueError("Bad Dog")
+            raise ValueError("Username already exists")
         else:
             self.username = username
+
     def add_product(self, product):
         self.products.add(product.get_id())
+
     def print_info(self):
         print(f'----User Info---\nEmail: {self.email}\n'
               f'Password: {self.password}\n'
               f'Username: {self.username}\n')
+
     def serialize(self):
+        serialized_addresses = [address.serialize() for address in self.addresses]
         return {
             'email': self.email,
             'username': self.username,
-            'address': self.address,
-            'sex' : self.sex,
-            'birthdate' : self.birthdate,
-            'phone_number' : self.phone_number,
+            'addresses': serialized_addresses,  # Correct attribute name
+            'sex': self.sex,
+            'birthdate': self.birthdate,
+            'phone_number': self.phone_number,
             'follower': self.follower,
             'following': self.following
         }
 
 
+class Address:
+    def __init__(self, name, phone_number, province, district, sub_district, postal, details):
+        self.name = name
+        self.phone_number = phone_number
+        self.province = province
+        self.district = district
+        self.sub_district = sub_district
+        self.postal = postal
+        self.details = details
+
+    def set_details(self, new_details):
+        self.details = new_details
+
+    def serialize(self):
+        return {
+            'name': self.name,
+            'phone_number' : self.phone_number,
+            'province': self.province,
+            'district': self.district,
+            'sub_district': self.sub_district,
+            'postal' : self.postal,
+            'details': self.details
+        }
+
+    
 class Admin(Account):
     def __init__(self, id, email, password, username = ""):
         super().__init__(id, email, password, username)
