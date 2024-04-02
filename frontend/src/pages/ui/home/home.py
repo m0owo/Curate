@@ -11,7 +11,7 @@ current_directory = os.getcwd()
 sys.path.append(current_directory)
 sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
 
-from backend.database import *
+# from backend.database import *
 
 # from .icons_rc import *
 # from .logo_rc import *
