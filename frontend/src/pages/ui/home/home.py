@@ -270,20 +270,23 @@ class HomeUI(QMainWindow):
 
     def populate_posts(self, post_details):
         clear_widget(self.ui.scrollAreaWidgetContents)
+        self.ui.scrollAreaWidgetContents.setMinimumSize(QSize(1000, 550))
         post_widgets = []
         i = 0
         for post_detail in post_details:
-            print(f'WEE WOO WEE WOOO WEE WOO {post_detail}')
-            post = Post(post_detail, self.ui.scrollAreaWidgetContents)
-            post_widget = post.get_post()
-            post_widgets.append(post_widget)
+            for i in range(24):
+                print(f'WEE WOO WEE WOOO WEE WOO {post_detail}')
+                post = Post(post_detail, self.ui.scrollAreaWidgetContents)
+                post_widget = post.get_post()
+                post_widgets.append(post_widget)
 
-            row = i // 4
-            column = i % 4
+                row = i // 4
+                column = i % 4
 
-            self.ui.gridLayout.addWidget(post_widget, row, column)
-            i += 1
-            self.ui.scrollAreaWidgetContents.adjustSize()
+                self.ui.gridLayout.addWidget(post_widget, row, column)
+                self.ui.gridLayout.setAlignment(post_widget, Qt.AlignTop | Qt.AlignLeft)
+                i += 1
+        self.ui.scrollAreaWidgetContents.adjustSize()
             
     def receive_large_data(self, conn):
         total_chunks = pickle.loads(conn.recv(4096))
@@ -310,7 +313,6 @@ class HomeUI(QMainWindow):
                     print('Success getting all the data')
                     post_details = response.get('post_details')
                     print(post_details)
-                    # Call your method to populate posts
                     self.populate_posts(post_details)
                 else:
                     print("Failed to get all the data:", response.get('message'))
