@@ -11,7 +11,7 @@ sys.path.append(current_directory)
 from backend import *
 
 class LoginUI(QDialog, QObject):
-    login_successful = Signal(int, dict)
+    login_successful = Signal(str, dict)
     def __init__(self, stacked_widget, server_host, server_port):
         super(LoginUI, self).__init__()
         self.stacked_widget = stacked_widget
