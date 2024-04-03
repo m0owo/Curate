@@ -4,7 +4,7 @@ import pickle
 import socket
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
-from PySide6.QtGui import QPixmap, QPainterPath
+from PySide6.QtGui import QPixmap, QPainterPath, QImage
 from .home_ui import *
 import zlib, base64
 import time
@@ -103,8 +103,21 @@ class Post():
             self.p_type = details.get('product_type')
             self.tags = details.get('tags') #list of tags
             self.s_type = details.get("sales_type")
+            if self.p_type.lower() == 'collection':
+                price_range = self.product.get('price_range')
+                if price_range[0] != price_range[1]:
+                    self.price = f'฿{str(price_range[0])} - ฿{str(price_range[1])}'
+                else:
+                    self.price = f'฿{price_range[0]}'
+            elif self.p_type.lower() == 'item':
+                self.price = f'฿{str(self.product.get("price"))}'
             self.container = container
- 
+            self.images = []
+            print(f"self.product.get {self.product.get('images')}")
+            for image_data in self.product.get('images'):
+                image = QImage.fromData(image_data)
+                self.images.append(image)
+
             # making the post
             post_layout = QVBoxLayout()
             post_layout.setAlignment(Qt.AlignCenter)
@@ -125,8 +138,9 @@ class Post():
             self.post_image = QLabel(self.post)
             self.post_image.setFixedSize(QSize(230, 230))
             self.post_image.setStyleSheet("QLabel { background-color: transparent; }")
-            pic = QPixmap(u":/post_images/IMG_7109.jpg") #test image
-            scaled_pic = pic.scaled(QSize(230, 300), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            # pic = QPixmap(u":/post_images/IMG_7109.jpg") #test image
+            pic = QPixmap(self.images[0])
+            scaled_pic = pic.scaled(QSize(230, 230), Qt.KeepAspectRatio, Qt.SmoothTransformation)
             self.post_image.setPixmap(scaled_pic)
             post_layout.addWidget(self.post_image, alignment=Qt.AlignCenter)
 
@@ -140,9 +154,9 @@ class Post():
             # post title
             self.post_title = QLabel(self.post_info)
             self.post_title.setMinimumSize(QSize(200, 16))
-            self.post_title.setStyleSheet(u"QLabel {font: 700 12pt \"Manrope\";}")
+            self.post_title.setStyleSheet(u"QLabel {font: 700 16pt \"Manrope\";}")
             self.post_title.setWordWrap(True)
-            self.post_title.setAlignment(Qt.AlignCenter)
+            self.post_title.setAlignment(Qt.AlignLeft)
             self.post_title.setText(self.title)
             post_info_layout.addWidget(self.post_title, alignment=Qt.AlignCenter)
 
@@ -175,9 +189,9 @@ class Post():
             post_tags_layout.addWidget(self.sales_type)
             
             print(f'DRAMAMAMMAMAM {self.tags}')
-            for tag in self.tags:
-                post_tag = PostTagButton(tag.get('tag_text'), self.post_tags_widget, None)
-                post_tags_layout.addWidget(post_tag.get_drawing())
+            # for tag in self.tags:
+            #     post_tag = PostTagButton(tag.get('tag_text'), self.post_tags_widget, None)
+            #     post_tags_layout.addWidget(post_tag.get_drawing())
             
             # post details:create date, start live date
             self.post_details_frame = QScrollArea(self.post_info)
@@ -195,15 +209,21 @@ class Post():
             post_details_layout.setContentsMargins(0, 0, 0, 0)
             post_details_layout.setSpacing(10)
 
-            self.created_date = QLabel()
-            self.created_date.setText(f'date created: {self.created.strftime("%Y-%m-%d %H:%M:%S")}')
-            self.created_date.setAlignment(Qt.AlignCenter)
-            post_details_layout.addWidget(self.created_date)
+            self.price_label = QLabel()
+            self.price_label.setText(self.price)
+            self.price_label.setStyleSheet("font:500 16pt Manrope;")
+            self.price_label.setAlignment(Qt.AlignLeft)
+            post_details_layout.addWidget(self.price_label)
+            
+            # self.created_date = QLabel()
+            # self.created_date.setText(f'date created: {self.created.strftime("%Y-%m-%d %H:%M:%S")}')
+            # self.created_date.setAlignment(Qt.AlignCenter)
+            # post_details_layout.addWidget(self.created_date)
 
-            self.live_date = QLabel()
-            self.live_date.setText(f'live date: {self.product.get("start").strftime("%Y-%m-%d %H:%M:%S")}')
-            self.live_date.setAlignment(Qt.AlignCenter)
-            post_details_layout.addWidget(self.live_date)
+            # self.live_date = QLabel()
+            # self.live_date.setText(f'live date: {self.product.get("start").strftime("%Y-%m-%d %H:%M:%S")}')
+            # self.live_date.setAlignment(Qt.AlignCenter)
+            # post_details_layout.addWidget(self.live_date)
     def get_post(self):
         return self.post
         
@@ -299,7 +319,7 @@ class HomeUI(QMainWindow):
         return pickle.loads(received_data)
     def get_all_posts(self):
         print('Getting all posts from the server')
-        retries = 5
+        retries = 10
         for attempt in range(retries):
             try:
                 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
