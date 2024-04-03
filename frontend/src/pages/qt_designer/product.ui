@@ -990,7 +990,7 @@ QPushButton::hover {
             <number>0</number>
            </property>
            <item>
-            <widget class="QPushButton" name="wishlist_button_2">
+            <widget class="QPushButton" name="add_to_wishlist_bt">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -1015,7 +1015,7 @@ QPushButton::hover {
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="products_button">
+            <widget class="QPushButton" name="view_products_bt">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -1040,7 +1040,7 @@ QPushButton::hover {
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="products_button_2">
+            <widget class="QPushButton" name="enqueue_bt">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
