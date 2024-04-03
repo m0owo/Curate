@@ -6,7 +6,7 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import QPixmap, QPainterPath, QImage
 from .home_ui import *
-import zlib, base64
+from datetime import datetime, date, timedelta
 import time
 current_directory = os.getcwd()
 sys.path.append(current_directory)
@@ -21,7 +21,42 @@ sys.path.append(current_directory)
 # def get_button_content_width(button):
 #     font_metrics = button.fontMetrics()
 #     text_width = font_metrics.horizontalAdvance(button.text())
-#     return text_width
+#     return text_width    
+
+class CountdownWidget(QWidget):
+    def __init__(self, target_datetime):
+        super().__init__()
+        self.target_datetime = target_datetime
+        self.remaining_time = 0
+        
+        self.label = QLabel()
+        self.label.setAlignment(Qt.AlignCenter)
+        
+        layout = QVBoxLayout()
+        layout.addWidget(self.label)
+        layout.setAlignment(Qt.AlignLeft)
+        layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(layout)
+        
+        self.update_timer()
+        self.label.setStyleSheet("QLabel {font:600 11pt Manrope;color:rgb(137, 153, 211);"
+                                 "text-align: center; background-color: #E8F3F2;"
+                                 "border-radius: 5px; padding:5px}")
+
+    def update_timer(self):
+        current_datetime = datetime.now()
+        time_difference = self.target_datetime - current_datetime
+        self.remaining_time = max(0, time_difference.total_seconds())
+        days, remainder = divmod(self.remaining_time, 86400)
+        hours, remainder = divmod(remainder, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        if self.remaining_time == 0:
+            self.label.setText("Time's up!")
+        elif days > 1:
+            self.label.setText(self.target_datetime.strftime("%d/%m/%Y @ %H:%M"))
+        else:
+            self.label.setText("{:02d} days {:02d}:{:02d}".format(int(days), int(hours), int(minutes)))
+            QTimer.singleShot(1000, self.update_timer)
 
 class TagButton():
     def __init__(self, text, container, tag = None):
@@ -102,7 +137,9 @@ class Post():
             self.modified = details.get('modified')
             self.p_type = details.get('product_type')
             self.tags = details.get('tags') #list of tags
-            self.s_type = details.get("sales_type")
+            self.s_type = details.get('sales_type')
+            self.start = self.product.get('start')
+            self.status = details.get('status')
             if self.p_type.lower() == 'collection':
                 price_range = self.product.get('price_range')
                 if price_range[0] != price_range[1]:
@@ -125,7 +162,7 @@ class Post():
             post_layout.setSpacing(0)
             self.post = QFrame(self.container)
             self.post.setLayout(post_layout)
-            self.post.setFixedSize(QSize(230, 300))
+            self.post.setMinimumSize(QSize(230, 300))
             # self.post.setStyleSheet("border: 1px solid black;") #for showing the boxes
             self.post.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             card_shadow = QGraphicsDropShadowEffect(self.post)
@@ -140,14 +177,16 @@ class Post():
             self.post_image.setStyleSheet("QLabel { background-color: transparent; }")
             # pic = QPixmap(u":/post_images/IMG_7109.jpg") #test image
             pic = QPixmap(self.images[0])
-            scaled_pic = pic.scaled(QSize(230, 230), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            post_layout.addWidget(self.post_image, alignment=Qt.AlignTop | Qt.AlignCenter)
+            width = self.post.width()
+            scaled_pic = pic.scaled(QSize(width, width), Qt.KeepAspectRatio, Qt.SmoothTransformation)
             self.post_image.setPixmap(scaled_pic)
-            post_layout.addWidget(self.post_image, alignment=Qt.AlignCenter)
 
             # post info is a widget for all the information below the images
             self.post_info = QWidget(self.post)
             post_layout.addWidget(self.post_info)
             post_info_layout = QVBoxLayout()
+            post_info_layout.setSpacing(10)
             self.post_info.setLayout(post_info_layout)
             self.post_info.setMinimumSize(QSize(200, 100))
 
@@ -161,32 +200,67 @@ class Post():
             post_info_layout.addWidget(self.post_title, alignment=Qt.AlignCenter)
 
             # post tags
-            self.post_tags_frame = QScrollArea(self.post_info)
-            self.post_tags_frame.setWidgetResizable(True)
-            post_info_layout.addWidget(self.post_tags_frame)
+            # self.post_tags_frame = QScrollArea(self.post_info)
+            # self.post_tags_frame.setWidgetResizable(True)
+            # post_info_layout.addWidget(self.post_tags_frame)
             
             self.post_tags_widget = QWidget()
-            self.post_tags_frame.setWidget(self.post_tags_widget)
-            self.post_tags_frame.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-            self.post_tags_frame.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-            self.post_tags_frame.setContentsMargins(0, 0, 0, 0)
-            self.post_tags_frame.setFixedSize(QSize(200, 40))
+            self.post_tags_widget.setMinimumSize(QSize(200, 40))
+            post_info_layout.addWidget(self.post_tags_widget)
+            # self.post_tags_frame.setWidget(self.post_tags_widget)
+            # self.post_tags_frame.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            # self.post_tags_frame.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            # self.post_tags_frame.setContentsMargins(0, 0, 0, 0)
+            # self.post_tags_frame.setFixedSize(QSize(200, 40))
 
-            post_tags_layout = QHBoxLayout(self.post_tags_widget)
+            post_tags_layout = QVBoxLayout(self.post_tags_widget)
             post_tags_layout.setContentsMargins(0, 0, 0, 0)
-            post_tags_layout.setSpacing(10)
+            post_tags_layout.setSpacing(5)
 
-            font = QFont()
-            font.setFamilies([u"Manrope"])
-            font.setPointSize(11)
-            font.setBold(True)
+            self.product_type_widget = QWidget()
+            product_type_layout = QHBoxLayout(self.product_type_widget)
+            product_type_layout.setAlignment(Qt.AlignLeft)
+            product_type_layout.setContentsMargins(0, 0, 0, 0)
+            post_tags_layout.addWidget(self.product_type_widget)
+
+            self.sales_type_widget = QWidget()
+            sales_type_layout = QHBoxLayout(self.sales_type_widget)
+            sales_type_layout.setAlignment(Qt.AlignLeft)
+            sales_type_layout.setContentsMargins(0, 0, 0, 0)
+            post_tags_layout.addWidget(self.sales_type_widget)
+
+            info_font = QFont()
+            info_font.setFamilies([u"Manrope"])
+            info_font.setPointSize(10)
+            info_font.setBold(True)
+            label_font = QFont()
+            label_font.setFamilies([u"Manrope"])
+            label_font.setPointSize(11)
+            
+            self.status_widget = QWidget()
+            status_layout = QHBoxLayout(self.status_widget)
+            status_layout.setContentsMargins(0, 0, 0, 0)
+            status_layout.setAlignment(Qt.AlignLeft)
+            self.status_label = QLabel('Scheduled For:')
+            self.status_label.setFont(label_font)
+            self.status_countdown = CountdownWidget(self.start)
+            status_layout.addWidget(self.status_label)
+            status_layout.addWidget(self.status_countdown)
+            post_tags_layout.addWidget(self.status_widget)
+
+            self.product_type_label = QLabel('Product Type:')
+            self.product_type_label.setFont(label_font)
             self.product_type = ProductTypeTagButton(self.p_type, self.post_tags_widget).get_drawing()
-            self.product_type.setFont(font)
-            post_tags_layout.addWidget(self.product_type)
+            self.product_type.setFont(info_font)
+            product_type_layout.addWidget(self.product_type_label)
+            product_type_layout.addWidget(self.product_type)
 
+            self.sales_type_label = QLabel('Sales Type:')
+            self.sales_type_label.setFont(label_font)
             self.sales_type = SaleTypeTagButton(self.s_type, self.post_tags_widget).get_drawing()
-            self.sales_type.setFont(font)
-            post_tags_layout.addWidget(self.sales_type)
+            self.sales_type.setFont(info_font)
+            sales_type_layout.addWidget(self.sales_type_label)
+            sales_type_layout.addWidget(self.sales_type)
             
             print(f'DRAMAMAMMAMAM {self.tags}')
             # for tag in self.tags:
@@ -194,16 +268,17 @@ class Post():
             #     post_tags_layout.addWidget(post_tag.get_drawing())
             
             # post details:create date, start live date
-            self.post_details_frame = QScrollArea(self.post_info)
-            self.post_details_frame.setMinimumSize(QSize(200, 40))
-            self.post_details_frame.setStyleSheet(u"QLabel {font: 400 12pt \"Manrope\";}")
-            self.post_details_frame.setWidgetResizable(True)
-            post_info_layout.addWidget(self.post_details_frame)
+            # self.post_details_frame = QScrollArea(self.post_info)
+            # self.post_details_frame.setMinimumSize(QSize(200, 40))
+            # self.post_details_frame.setStyleSheet(u"QLabel {font: 400 12pt \"Manrope\";}")
+            # self.post_details_frame.setWidgetResizable(True)
+            # post_info_layout.addWidget(self.post_details_frame)
             self.post_details_widget = QWidget()
-            self.post_details_frame.setWidget(self.post_details_widget)
-            self.post_details_frame.setMaximumSize(QSize(200, 40))
-            self.post_details_frame.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-            self.post_details_frame.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            post_info_layout.addWidget(self.post_details_widget)
+            # self.post_details_frame.setWidget(self.post_details_widget)
+            # self.post_details_frame.setMaximumSize(QSize(200, 40))
+            # self.post_details_frame.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            # self.post_details_frame.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
             post_details_layout = QHBoxLayout(self.post_details_widget)
             post_details_layout.setContentsMargins(0, 0, 0, 0)
@@ -226,7 +301,31 @@ class Post():
             # post_details_layout.addWidget(self.live_date)
     def get_post(self):
         return self.post
-        
+    def get_status(self):
+        return self.status
+    def update_status(self):
+        cur_time = datetime.now()
+        if status != 'timeout':
+            if self.start <= cur_time:
+                status = 'live'
+            elif self.start > cur_time:
+                status = 'upcoming'
+    def countdown_status(self, target_datetime):
+        while True:
+            current_datetime = datetime.now()
+            remaining_time = max(target_datetime - current_datetime, timedelta(0))
+            print(remaining_time)
+            if remaining_time == timedelta(0):
+                self.update_status()
+                break
+
+class Spacer():
+    def __init__(self):
+        self.spacer = QWidget()
+        self.spacer.setFixedSize(QSize(230, 300))
+    def get_spacer(self):
+        return self.spacer
+    
 class HomeUI(QMainWindow):
     def __init__(self, stacked_widget, server_host, server_port, user_id = None):
         QMainWindow.__init__(self, None)
@@ -295,9 +394,10 @@ class HomeUI(QMainWindow):
 
     def populate_posts(self, post_details):
         clear_widget(self.ui.scrollAreaWidgetContents)
-        self.ui.scrollAreaWidgetContents.setMinimumSize(QSize(1000, 550))
+        self.ui.scrollAreaWidgetContents.setMinimumSize(0, 0)
         post_widgets = []
         i = 0
+        spacers_needed = 0 
         for post_detail in post_details:
             print(f'WEE WOO WEE WOOO WEE WOO {post_detail}')
             post = Post(post_detail, self.ui.scrollAreaWidgetContents)
@@ -306,11 +406,15 @@ class HomeUI(QMainWindow):
 
             row = i // 4
             column = i % 4
-
+            spacers_needed = max(spacers_needed, 4 - column)
             self.ui.gridLayout.addWidget(post_widget, row, column)
             self.ui.gridLayout.setAlignment(post_widget, Qt.AlignTop | Qt.AlignLeft)
             i += 1
+        for _ in range(spacers_needed):
+            spacer = Spacer().get_spacer()
+            self.ui.gridLayout.addWidget(spacer)
         self.ui.scrollAreaWidgetContents.adjustSize()
+
     def receive_large_data(self, conn):
         total_chunks = pickle.loads(conn.recv(4096))
         received_data = b''
@@ -321,7 +425,7 @@ class HomeUI(QMainWindow):
         return pickle.loads(received_data)
     def get_all_posts(self):
         print('Getting all posts from the server')
-        retries = 10
+        retries = 100
         for attempt in range(retries):
             try:
                 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
@@ -345,12 +449,12 @@ class HomeUI(QMainWindow):
                 print("Socket error:", se)
             except pickle.PickleError as pe:
                 print("Error in pickle operation:", pe)
+            except Exception as e:
+                print("An unexpected error occurred:", e)
                 if attempt < retries - 1: 
                     print("Retrying...")
                     time.sleep(1)
                     continue
-            except Exception as e:
-                print("ERROR:", e)
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id
         self.user_data = user_data
