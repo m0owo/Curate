@@ -8,6 +8,8 @@ from pages.ui.register.register import RegisterUI
 from pages.ui.profile.profile import ProfileUI, ProfileAddressUI
 from pages.ui.history.history import HistoryUI
 from pages.ui.wishlist.wishlist import WishlistUI
+from pages.ui.collection.collection import CollectionUI
+from pages.ui.collection.collection import CollectionUI
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
