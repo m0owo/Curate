@@ -31,15 +31,19 @@ def handle_registration(data):
         new_id = max_id + 1
 
         # Create new account based on account_type
-        if account_type == 'customer':
-            new_account = Customer(email, password)
-            new_account.sex = sex
-            new_account.address = address
-        elif account_type == 'seller':
-            new_account = Seller(email, password)
-            new_account.address = address
-        else:
-            return {'success': False, 'message': 'Invalid account type'}
+        # if account_type == 'customer':
+        #     new_account = Customer(email, password)
+        #     new_account.sex = sex
+        #     new_account.address = address
+        # elif account_type == 'seller':
+        #     new_account = Seller(email, password)
+        #     new_account.address = address
+        # else:
+        #     return {'success': False, 'message': 'Invalid account type'}
+        
+        new_account = Account(email, password)
+        new_account.sex = sex
+        new_account.address = address
 
         accounts[new_id] = new_account
         new_account.username = username
@@ -84,7 +88,7 @@ def get_all_posts():
     try:
         post_details = root.posts
         posts_data = [post.serialize() for post in post_details.values()]
-        print('posts data {posts_data}\n\n')
+        print(f'posts data {posts_data}\n\n')
         return {'success': True, 'post_details': posts_data}
     except Exception as e:
         print(e)
@@ -150,7 +154,6 @@ def handle_request(conn):
     finally:
         print("Closing connection.")
         conn.close()
-
 
 def start_server(host, port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
