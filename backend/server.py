@@ -9,7 +9,8 @@ def handle_login(data):
     # Retrieve user from the database based on email
     accounts = root.accounts
     for account_id, account in accounts.items():
-        if isinstance(account, Admin) or isinstance(account, Customer) or isinstance(account, Seller) or isinstance(account, Account):
+        # if isinstance(account, Admin) or isinstance(account, Customer) or isinstance(account, Seller) or isinstance(account, Account):
+        if isinstance(account, Account):
             if account.get_email() == email and account.get_password() == password:
                 print(f"ID: {account.get_id()} or {account.get_email()} Account_name {account.get_username()}")
                 return {'success': True, 'message': 'Login successful', 'user_id': account.get_id(), 'user_data': account.serialize()}
