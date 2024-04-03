@@ -1,6 +1,7 @@
 import ZODB, ZODB.FileStorage
 import sys
 import os
+import io
 from pathlib import Path
 root_dir = Path('/Users/Miki Ajiki/desktop/Curate')
 sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
@@ -18,20 +19,40 @@ from frontend.public.images.post_images.db_test_pics import *
 #for getting image data
 images_path = str(root_dir / 'frontend' / 'public' / 'images' / 'post_images' / 'db_test_pics') + '/'
 images_path_ms = 'frontend/public/images/post_images/db_test_pics/'
-def create_thumbnail(image_path, thumbnail_size=(230, 230)):
+
+# # creating a smaller version of the image
+# def create_thumbnail(image_path, thumbnail_size=(230, 230)):
+#     try:
+#         with Image.open(image_path) as img:
+#             img.thumbnail(thumbnail_size)
+#             thumbnail_data = BytesIO()
+#             img.save(thumbnail_data, format='JPEG')
+#             thumbnail_data.seek(0)
+#             return thumbnail_data.getvalue()
+#     except IOError:
+#         print("Unable to create thumbnail.")
+# #getting thumbnail image data
+# def get_image_data(images_name):
+#     full_image_path = images_path_ms + images_name
+#     thumbnail_data = create_thumbnail(full_image_path)
+#     return thumbnail_data
+
+# getting webP image data
+def get_webp_data(image_name):
+    full_image_path = images_path_ms + image_name
     try:
-        with Image.open(image_path) as img:
-            img.thumbnail(thumbnail_size)
-            thumbnail_data = BytesIO()
-            img.save(thumbnail_data, format='JPEG')
-            thumbnail_data.seek(0)
-            return thumbnail_data.getvalue()
+        with Image.open(full_image_path) as img:
+            webp_data = io.BytesIO()
+            img.save(webp_data, format='WEBP')
+            return webp_data.getvalue()
     except IOError:
-        print("Unable to create thumbnail.")
+        print(f'Unable to convert {full_image_path} to WebP format')
+
+# getting original image data
 def get_image_data(images_name):
     full_image_path = images_path_ms + images_name
-    thumbnail_data = create_thumbnail(full_image_path)
-    return thumbnail_data
+    original_data = open(full_image_path, 'rb').read()
+    return original_data
 
 #generates a random unique id
 def generate_id(type):
@@ -137,21 +158,28 @@ class Collection(Product):
         not_sold_out = any(item.get_status() != 'sold out' for item in self.items)
         if not not_sold_out:
             self.status = 'sold out'
+        max_price = max(item.get_price() for item in self.items)
+        min_price = min(item.get_price() for item in self.items)
+        self.price_range = (min_price, max_price)
     def get_items(self):
         return self.items
     def add_item(self, item):
         if item not in self.items:
             self.items.append(item)
+    def get_price_range(self):
+        return self.price_range
     def print_info(self):
         super().print_info()
         print("Items: ")
         for item in self.items:
             print(item.get_id())
-        print(f'Collection Name: {self.pr_name}\n')
+        print(f'Collection Name: {self.pr_name}\n'
+              f'Price Range: {self.price_range}\n')
     def serialize(self):
         serialized_data = super().serialize()
         serialized_data.update({
-            'items': [x.serialize() for x in self.items]
+            'items': [x.serialize() for x in self.items],
+            'price_range': self.price_range
         })
         return serialized_data
 
@@ -392,21 +420,50 @@ root.tags[tag9.get_tag_text()] = tag9
 # value = Collection() or Item()
 # product_id = {seller's user}{1...}
 item1_pics = ['IMG_7369.jpg']
-item1_pics_data = [get_image_data(x) for x in item1_pics]
+item1_pics_data = [get_webp_data(x) for x in item1_pics]
+# print(f'pofiasjldfjsd {len(item1_pics_data[0])}')
+# item1_pics_data2 = [get_image_data(x) for x in item1_pics]
+# print(f'pofiasjldfjsd {len(item1_pics_data2[0])}')
 item1_tags = [root.tags['coquette'], root.tags['cute']]
 item1 = Item(generate_id("products"), user_1.get_username(), datetime(2024, 5, 20, 10, 15),
              50, 5, "item 1", item1_pics_data, item1_tags)
 root.products[item1.get_seller() + item1.get_id()] = item1
 
 item2_pics = ['IMG_7370.jpg']
-item2_pics_data = [get_image_data(x) for x in item2_pics]
+item2_pics_data = [get_webp_data(x) for x in item2_pics]
 item2_tags = [root.tags['coquette'], root.tags['cute']]
 item2 = Item(generate_id("products"), user_1.get_username(), datetime(2024, 5, 20, 10, 15),
-             50, 3, "item 2 laa", item1_pics_data, item1_tags)
+             100, 3, "item 2 laa", item2_pics_data, item2_tags)
 root.products[item2.get_seller() + item2.get_id()] = item2
 
+item3_pics = ['IMG_7102.jpg']
+item3_pics_data = [get_webp_data(x) for x in item3_pics]
+item3_tags = [root.tags['secondhand'], root.tags['fashion'], root.tags['cottagecore']]
+item3 = Item(generate_id('products'), user_2.get_username(),
+             datetime(2024, 5, 21, 15, 20), 150, 10, 'Mona Top',
+             item3_pics_data, item3_tags)
+root.products[item3.get_seller() + item3.get_id()] = item3
+
+# item3 = Item(generate_id('products'), user_2.get_username(),
+#              datetime(2024, 5, 21, 15, 20), 150, 10, "Mona Top",
+#              [get_webp_data(x) for x in ['IMG_7102.jpg']],
+#              [root.tags['secondhand'], root.tags['fashion'], root.tags['cottagecore']])
+# root.products[item3.get_seller() + item3.get_id()] = item3
+
+# item4 = Item(generate_id('products'), user_2.get_username(),
+#              datetime(2024, 5, 22, 19, 30), 350, 5, "Crocheted Beanies",
+#              [get_webp_data(x) for x in ['IMG_7105.jpg']],
+#              [root.tags['custom'], root.tags['handmade'], root.tags['cottagecore']])
+# root.products[item4.get_seller() + item4.get_id()] = item4
+
+# item5 = Item(generate_id('products'), user_1.get_username(),
+#              datetime(2024, 5, 23, 19, 00), 75, 4, "Jellyfish Keychains",
+#              [get_webp_data(x) for x in ['IMG_7106.jpg']],
+#              [root.tags['keychains'], root.tags['handmade'], root.tags['jellyfish']])
+# root.products[item5.get_seller() + item5.get_id()] = item5
+
 col1_pics = ['IMG_7368.jpg']
-col1_pics_data = [get_image_data(x) for x in col1_pics]
+col1_pics_data = [get_webp_data(x) for x in col1_pics]
 col1_tags = [root.tags['secondhand'], root.tags['coquette'], root.tags['cute']]
 col1 = Collection(generate_id("products"), user_1.get_username(), datetime(2024, 5, 20, 10, 15),
                   [item1, item2], "~New Drop OOEE~", col1_pics_data, col1_tags)
@@ -414,6 +471,9 @@ root.products[col1.get_seller() + col1.get_id()] = col1
 
 post1 = PostDetails(generate_id('posts'), user_1.get_username(), col1, "TEST INFO", "TEST TITLE")
 root.posts[post1.get_id()] = post1
+
+post2 = PostDetails(generate_id('posts'), item3.get_seller(), item3, "haleisfls", "Mona Tops Post")
+root.posts[post2.get_id()] = post2
 
 transaction.commit()
 if  __name__ == "__main__":
