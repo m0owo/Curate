@@ -7,6 +7,7 @@ from PySide6.QtWidgets import *
 from PySide6.QtGui import QPixmap, QPainterPath
 from .home_ui import *
 import zlib, base64
+import time
 current_directory = os.getcwd()
 sys.path.append(current_directory)
 # sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
@@ -32,6 +33,7 @@ class TagButton():
 
         self.tag_button = QPushButton(self.container)
         self.tag_button.setText(self.temp_text)
+        self.tag_button.setStyleSheet(self.tag_button.styleSheet() + "QPushButton:hover{background-color:rgb(201, 212, 249); color:rgb(238, 248, 255);}")
 
         set_preferred_size(self.tag_button, 100)
     def get_drawing(self):
@@ -52,14 +54,14 @@ class SaleTypeTagButton(PostTagButton):
         super().__init__(text, container, tag)
         self.tag_button.setStyleSheet("QPushButton {font:600 11pt Manrope;text-align:center;"
                                       "background-color: rgb(250, 234, 225);color:rgb(176, 98, 106);"
-                                      "border-radius: 5px;}QPushButton:hover{background-color:rgb(201, 212, 249); color:rgb(238, 248, 255);}")
+                                      "border-radius: 5px;}QPushButton:hover{background-color:rgb(242, 207, 199); color:rgb(179, 85, 82);}")
 
 class ProductTypeTagButton(PostTagButton):
     def __init__(self, text, container, tag = None):
         super().__init__(text, container, tag)
         self.tag_button.setStyleSheet("QPushButton {font:600 11pt Manrope;text-align:center;"
-                                      "background-color: rgb(255, 245, 225);color:rgb(206, 141, 80);"
-                                      "border-radius: 5px;}QPushButton:hover{background-color:rgb(201, 212, 249); color:rgb(238, 248, 255);}")
+                                      "background-color:#feecc7;color:#fba224;"
+                                      "border-radius: 5px;}QPushButton:hover{background-color:#fdd78a; color:#fff5e1;}")
 def clear_frame(frame):
         for widget in frame.findChildren(QPushButton):
             widget.deleteLater()
@@ -202,7 +204,6 @@ class Post():
             self.live_date.setText(f'live date: {self.product.get("start").strftime("%Y-%m-%d %H:%M:%S")}')
             self.live_date.setAlignment(Qt.AlignCenter)
             post_details_layout.addWidget(self.live_date)
-    
     def get_post(self):
         return self.post
         
@@ -221,6 +222,11 @@ class HomeUI(QMainWindow):
         shadow.setXOffset(1)
         shadow.setYOffset(2)
         self.ui.search_frame.setGraphicsEffect(shadow)
+        shadow2 = QGraphicsDropShadowEffect(self)
+        shadow2.setBlurRadius(10)
+        shadow2.setXOffset(1)
+        shadow2.setYOffset(2)
+        self.ui.page_label.setGraphicsEffect(shadow)
 
         button_stylesheet = (
             "QPushButton {"
@@ -232,6 +238,11 @@ class HomeUI(QMainWindow):
             "   background-color: #eee;"
             "}"
         )
+        self.ui.home_button.setStyleSheet(button_stylesheet)
+        self.ui.profile_button.setStyleSheet(button_stylesheet)
+        self.ui.wishlist_button.setStyleSheet(button_stylesheet)
+        self.ui.history_button.setStyleSheet(button_stylesheet)
+
         filter_stylesheet = (
             "QPushButton {"
             "   border-radius: 20px;"
@@ -242,10 +253,6 @@ class HomeUI(QMainWindow):
             "}"
             "QPushButton::icon:hover { color: rgb(255, 231, 204); }"
         )
-        self.ui.home_button.setStyleSheet(button_stylesheet)
-        self.ui.profile_button.setStyleSheet(button_stylesheet)
-        self.ui.wishlist_button.setStyleSheet(button_stylesheet)
-        self.ui.history_button.setStyleSheet(button_stylesheet)
         self.ui.filter_button.setStyleSheet(filter_stylesheet)
 
         self.tags_layout = QHBoxLayout()
@@ -262,7 +269,7 @@ class HomeUI(QMainWindow):
         # drawing posts
         self.get_all_posts()
 
-        self.ui.profile_button.clicked.connect(self.to_profile())
+        self.ui.profile_button.clicked.connect(self.to_profile)
 
     def populate_posts(self, post_details):
         clear_widget(self.ui.scrollAreaWidgetContents)
@@ -282,7 +289,6 @@ class HomeUI(QMainWindow):
             self.ui.gridLayout.setAlignment(post_widget, Qt.AlignTop | Qt.AlignLeft)
             i += 1
         self.ui.scrollAreaWidgetContents.adjustSize()
-            
     def receive_large_data(self, conn):
         total_chunks = pickle.loads(conn.recv(4096))
         received_data = b''
@@ -291,40 +297,45 @@ class HomeUI(QMainWindow):
             received_data += chunk
             print(f'chunk {chunk}')
         return pickle.loads(received_data)
-            
     def get_all_posts(self):
         print('Getting all posts from the server')
-        try:
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
-                print("Step 1: Establishing connection...")
-                client_socket.connect((self.server_host, self.server_port))
-                print("Step 2: Sending request...")
-                request_data = {'action': 'get_all_posts'}
-                client_socket.sendall(pickle.dumps(request_data))
-                print("Step 3: Receiving response...")
-                response = self.receive_large_data(client_socket)
-                print("Received response:", response)
-                print("Step 4: Unpacking response...")
-                if response.get('success'):
-                    print('Success getting all the data')
-                    post_details = response.get('post_details')
-                    self.populate_posts(post_details)
-                else:
-                    print("Failed to get all the data:", response.get('message'))
-        except socket.error as se:
-            print("Socket error:", se)
-        except pickle.PickleError as pe:
-            print("Error in pickle operation:", pe)
-        except Exception as e:
-            print("ERROR:", e)
-            
+        retries = 5
+        for attempt in range(retries):
+            try:
+                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+                    print("Step 1: Establishing connection...")
+                    client_socket.connect((self.server_host, self.server_port))
+                    print("Step 2: Sending request...")
+                    request_data = {'action': 'get_all_posts'}
+                    client_socket.sendall(pickle.dumps(request_data))
+                    print("Step 3: Receiving response...")
+                    response = self.receive_large_data(client_socket)
+                    print("Received response:", response)
+                    print("Step 4: Unpacking response...")
+                    if response.get('success'):
+                        print('Success getting all the data')
+                        post_details = response.get('post_details')
+                        self.populate_posts(post_details)
+                        break 
+                    else:
+                        print("Failed to get all the data:", response.get('message'))
+            except socket.error as se:
+                print("Socket error:", se)
+            except pickle.PickleError as pe:
+                print("Error in pickle operation:", pe)
+                if attempt < retries - 1: 
+                    print("Retrying...")
+                    time.sleep(1)
+                    continue
+            except Exception as e:
+                print("ERROR:", e)
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id
         self.user_data = user_data
         print(f'User ID: {self.user_id}\nUser Data: {self.user_data}')
         self.ui.name_label.setText(f"Welcome, {self.user_data['username']}")
-
     def to_profile(self):
+        print('going to profile jaa')
         self.stacked_widget.setCurrentIndex(3)
     
 if __name__ == "__main__":

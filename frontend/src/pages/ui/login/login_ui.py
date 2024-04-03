@@ -28,7 +28,7 @@ class Ui_Dialog(object):
         font.setFamilies([u"Manrope"])
         Dialog.setFont(font)
         Dialog.setStyleSheet(u"QDialog{\n"
-"	background-color:rgb(241, 208, 215);\n"
+"	background-color:#f9eaec;\n"
 "}\n"
 "QLabel{\n"
 "	color: black;\n"
@@ -62,7 +62,7 @@ class Ui_Dialog(object):
         self.graphicsView.setStyleSheet(u"border-radius: 20px; background-color: white;")
         self.register_btn = QPushButton(Dialog)
         self.register_btn.setObjectName(u"register_btn")
-        self.register_btn.setGeometry(QRect(470, 570, 211, 41))
+        self.register_btn.setGeometry(QRect(440, 570, 261, 41))
         font2 = QFont()
         font2.setFamilies([u"Manrope"])
         font2.setPointSize(14)
@@ -72,14 +72,17 @@ class Ui_Dialog(object):
         self.password_input = QLineEdit(Dialog)
         self.password_input.setObjectName(u"password_input")
         self.password_input.setGeometry(QRect(440, 400, 261, 41))
-        self.password_input.setStyleSheet(u"background-color: rgb(234, 234, 234)")
+        self.password_input.setStyleSheet(u"background-color: rgb(234, 234, 234); border-radius: 5px; color:black;")
         self.login_btn = QPushButton(Dialog)
         self.login_btn.setObjectName(u"login_btn")
-        self.login_btn.setGeometry(QRect(470, 500, 211, 41))
+        self.login_btn.setGeometry(QRect(440, 500, 261, 41))
         self.login_btn.setFont(font2)
-        self.login_btn.setStyleSheet("font:600 Manrope; background-color:rgb(241, 208, 215);"
-                                     "text-align: center; color:black;"
-                                     "border-radius: 20px;")
+        self.login_btn.setStyleSheet("QPushButton {font: 600 Manrope;"
+                                        "background-color: #eab7c3;"
+                                        "text-align: center;"
+                                        "color: #983858;"
+                                        "border-radius: 20px;}"
+                                        "QPushButton:hover {background-color: #dd8fa1; color: #6e2d47;}")
         self.error_txt = QLabel(Dialog)
         self.error_txt.setObjectName(u"error_txt")
         self.error_txt.setGeometry(QRect(430, 450, 291, 21))
@@ -87,9 +90,12 @@ class Ui_Dialog(object):
         self.curate_label = QLabel(Dialog)
         self.curate_label.setObjectName(u"curate_label")
         self.curate_label.setGeometry(QRect(310, 0, 511, 281))
-        self.register_btn.setStyleSheet("font:600 Manrope; background-color:rgb(241, 208, 215);"
-                                        "text-align: center; color: black;"
-                                        "border-radius: 20px;")
+        self.register_btn.setStyleSheet("QPushButton {font: 600 Manrope;"
+                                        "background-color: #eab7c3;"
+                                        "text-align: center;"
+                                        "color: #983858;"
+                                        "border-radius: 20px;}"
+                                        "QPushButton:hover {background-color: #dd8fa1; color: #6e2d47;}")
         font3 = QFont()
         font3.setFamilies([u"Mogena"])
         font3.setPointSize(18)

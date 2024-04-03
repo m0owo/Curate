@@ -32,6 +32,21 @@ class ProfileUI(QDialog):
         self.server_port = server_port
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+
+        button_stylesheet = (
+            "QPushButton {"
+            "   border-radius: 5px;"
+            "   padding: 10px;"
+            "   background-color: #fff;"
+            "}"
+            "QPushButton:hover {"
+            "   background-color: #eee;"
+            "}"
+        )
+        self.ui.home_button.setStyleSheet(button_stylesheet)
+        self.ui.profile_button.setStyleSheet(button_stylesheet)
+        self.ui.wishlist_button.setStyleSheet(button_stylesheet)
+        self.ui.history_button.setStyleSheet(button_stylesheet)
         
         self.ui.home_button.clicked.connect(self.to_home_page)
         self.ui.history_button.clicked.connect(self.to_history_page)
