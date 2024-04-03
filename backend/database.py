@@ -49,11 +49,17 @@ def get_webp_data(image_name):
     except IOError:
         print(f'Unable to convert {full_image_path} to WebP format')
 
+def get_webp_datas(images_arr):
+    return [get_webp_data(x) for x in images_arr]
+
 # getting original image data
 def get_image_data(images_name):
     full_image_path = images_path_ms + images_name
     original_data = open(full_image_path, 'rb').read()
     return original_data
+
+def get_image_datas(images_arr):
+    return [get_image_data(x) for x in images_arr]
 
 #generates a random unique id
 def generate_id(type):
@@ -82,14 +88,24 @@ class Tag(persistent.Persistent):
         else:
             self.tag_text = tag_text
         self.link = link #what does the tag do
+        self.times_used = 0
     def get_tag_text(self):
         return self.tag_text
+    def add_times_used(self):
+        self.times_used += 1
+    def minus_times_used(self):
+        self.times_used -= 1
     def get_link(self):
         return self.link
+    def get_times_used(self):
+        return self.times_used
     def serialize(self):
         return {
             'tag_text': self.tag_text
         }
+    def print_info(self):
+        print(f'tag_text: {self.tag_text}\n'
+              f'times_used: {self.times_used}\n')
 
 #product in the post
 class Product(persistent.Persistent):
@@ -229,6 +245,7 @@ class PostDetails(persistent.Persistent):
         for tag in product.get_tags(): # make sure the tags are not repeated
             if tag not in self.tags:
                 self.tags.append(tag)
+                tag.add_times_used()
         self.info = p_info
         self.title = p_title
         self.created = datetime.now()
@@ -476,7 +493,7 @@ root.tags[tag9.get_tag_text()] = tag9
 # value = Collection() or Item()
 # product_id = {seller's user}{1...}
 item1_pics = ['IMG_7369.jpg']
-item1_pics_data = [get_webp_data(x) for x in item1_pics]
+item1_pics_data = get_webp_datas(item1_pics)
 # print(f'pofiasjldfjsd {len(item1_pics_data[0])}')
 # item1_pics_data2 = [get_image_data(x) for x in item1_pics]
 # print(f'pofiasjldfjsd {len(item1_pics_data2[0])}')
@@ -486,37 +503,35 @@ item1 = Item(generate_id("products"), user_1.get_username(), datetime(2024, 5, 2
 root.products[item1.get_seller() + item1.get_id()] = item1
 
 item2_pics = ['IMG_7370.jpg']
-item2_pics_data = [get_webp_data(x) for x in item2_pics]
+item2_pics_data = get_webp_datas(item2_pics)
 item2_tags = [root.tags['coquette'], root.tags['cute']]
 item2 = Item(generate_id("products"), user_1.get_username(), datetime(2024, 5, 20, 10, 15),
              100, 3, "item 2 laa", item2_pics_data, item2_tags)
 root.products[item2.get_seller() + item2.get_id()] = item2
 
 item3_pics = ['IMG_7102.jpg']
-item3_pics_data = [get_webp_data(x) for x in item3_pics]
+item3_pics_data = get_webp_datas(item3_pics)
 item3_tags = [root.tags['secondhand'], root.tags['fashion'], root.tags['cottagecore']]
 item3 = Item(generate_id('products'), user_2.get_username(),
              datetime(2024, 5, 21, 15, 20), 150, 10, 'Mona Top',
              item3_pics_data, item3_tags)
 root.products[item3.get_seller() + item3.get_id()] = item3
 
-# item3 = Item(generate_id('products'), user_2.get_username(),
-#              datetime(2024, 5, 21, 15, 20), 150, 10, "Mona Top",
-#              [get_webp_data(x) for x in ['IMG_7102.jpg']],
-#              [root.tags['secondhand'], root.tags['fashion'], root.tags['cottagecore']])
-# root.products[item3.get_seller() + item3.get_id()] = item3
+item4_pics = ['IMG_7105.jpg']
+item4_pics_data = get_webp_datas(item4_pics)
+item4_tags = [root.tags['custom'], root.tags['handmade'], root.tags['cottagecore']]
+item4 = Item(generate_id('products'), user_2.get_username(),
+             datetime(2024, 5, 22, 19, 30), 350, 5, "Crocheted Beanies",
+             item4_pics_data, item4_tags)
+root.products[item4.get_seller() + item4.get_id()] = item4
 
-# item4 = Item(generate_id('products'), user_2.get_username(),
-#              datetime(2024, 5, 22, 19, 30), 350, 5, "Crocheted Beanies",
-#              [get_webp_data(x) for x in ['IMG_7105.jpg']],
-#              [root.tags['custom'], root.tags['handmade'], root.tags['cottagecore']])
-# root.products[item4.get_seller() + item4.get_id()] = item4
-
-# item5 = Item(generate_id('products'), user_1.get_username(),
-#              datetime(2024, 5, 23, 19, 00), 75, 4, "Jellyfish Keychains",
-#              [get_webp_data(x) for x in ['IMG_7106.jpg']],
-#              [root.tags['keychains'], root.tags['handmade'], root.tags['jellyfish']])
-# root.products[item5.get_seller() + item5.get_id()] = item5
+item5_pics = ['IMG_7106.jpg']
+item5_pics_data = get_webp_datas(item5_pics)
+item5_tags = [root.tags['keychains'], root.tags['handmade'], root.tags['jellyfish']]
+item5 = Item(generate_id('products'), user_1.get_username(),
+             datetime(2024, 5, 24, 19, 30), 75, 4, "Jellyfish Keychains",
+             item5_pics_data, item5_tags)
+root.products[item5.get_seller() + item4.get_id()] = item5
 
 col1_pics = ['IMG_7368.jpg']
 col1_pics_data = [get_webp_data(x) for x in col1_pics]
@@ -531,6 +546,12 @@ root.posts[post1.get_id()] = post1
 post2 = PostDetails(generate_id('posts'), item3.get_seller(), item3, "haleisfls", "Mona Tops Post")
 root.posts[post2.get_id()] = post2
 
+post3 = PostDetails(generate_id('posts'), item4.get_seller(), item4, "smata baby smata im smata", "Crocheted Beanies")
+root.posts[post3.get_id()] = post3
+
+post4 = PostDetails(generate_id('posts'), item5.get_seller(), item5, "boongboongboong", "Jellyfish Keychains")
+root.posts[post4.get_id()] = post4
+
 transaction.commit()
 if  __name__ == "__main__":
     accounts = root.accounts
@@ -544,5 +565,9 @@ if  __name__ == "__main__":
     posts = root.posts
     for key in posts:
         posts[key].print_info()
+    
+    tags = root.tags
+    for key in tags:
+        tags[key].print_info()
         
     
