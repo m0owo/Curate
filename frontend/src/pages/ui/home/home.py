@@ -290,6 +290,8 @@ class HomeUI(QMainWindow):
         self.get_all_posts()
 
         self.ui.profile_button.clicked.connect(self.to_profile)
+        self.ui.history_button.clicked.connect(self.to_history)
+        self.ui.wishlist_button.clicked.connect(self.to_wishlist)
 
     def populate_posts(self, post_details):
         clear_widget(self.ui.scrollAreaWidgetContents)
@@ -357,6 +359,10 @@ class HomeUI(QMainWindow):
     def to_profile(self):
         print('going to profile jaa')
         self.stacked_widget.setCurrentIndex(3)
+    def to_history(self):
+        self.stacked_widget.setCurrentIndex(5)
+    def to_wishlist(self):
+        self.stacked_widget.setCurrentIndex(6)
     
 if __name__ == "__main__":
     app = QApplication(sys.argv)
