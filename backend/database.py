@@ -5,6 +5,7 @@ import io
 from pathlib import Path
 root_dir = Path('/Users/Miki Ajiki/desktop/Curate')
 sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
+sys.path.append('C:\school\Curate')
 sys.path.append(os.getcwd())
 sys.path.append(str(root_dir))
 import BTrees._OOBTree
@@ -285,7 +286,61 @@ class PostDetails(persistent.Persistent):
             'sales_type': self.sales_type, #cf no cc, bidding
             'status': self.status
         }
-        
+
+class Order(persistent.Persistent):
+    def __init__(self, order_id, product, buyer, seller, status):
+        self.order_id = order_id
+        self.product = product
+        self.buyer = buyer
+        self.seller = seller
+        self.order_date = datetime.now() #date order created
+        self.status = "unpaid"
+
+    def get_order_id(self):
+        return self.order_id
+    def get_product(self):
+        return self.product
+    def get_buyer(self):
+        return self.buyer
+    def get_seller(self):
+        return self.seller
+    def get_status(self):
+        return self.status
+    def get_order_date(self):
+        return self.ord_date
+    
+    def pay_product(self):
+        self.status = "shipping"
+
+    def confirm_shipment(self):
+        self.status = "completed"
+
+    def cancel_shipment(self):
+        self.status = "cancelled"
+    
+    def print_info(self):
+        print(
+            f'----Post Info----\n'
+            f'Order id: {self.order_id}\n'
+            f'Order Date: {self.order_date.strftime("%Y-%m-%d %H:%M:%S")}\n'
+            f'Order status: {self.status}\n'
+            f'Product: {self.product.get_id()}\n'
+            f'Buyer: {self.buyer.get_username()}\n'
+            f'Seller: {self.seller.get_username()}\n'
+        )
+
+    def serialize(self):
+        serialized_data = {
+            'order_id': self.order_id,
+            'buyer': self.buyer,
+            'seller': self.seller,
+            'status': self.status,
+            'order_date': self.order_date,
+        }
+        serialized_data.update(self.product.serialize())
+    
+
+
 class Account(persistent.Persistent):
     def __init__(self, id, email, password, username = "", sex = ""):
         self.id = id
@@ -299,6 +354,7 @@ class Account(persistent.Persistent):
         self.following = 0
         self.sex = sex
         self.products = persistent.list.PersistentList()
+        self.orders = persistent.list.PersistentList()
 
     def get_email(self):
         return self.email
