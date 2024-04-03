@@ -28,7 +28,6 @@ def create_thumbnail(image_path, thumbnail_size=(230, 230)):
             return thumbnail_data.getvalue()
     except IOError:
         print("Unable to create thumbnail.")
-
 def get_image_data(images_name):
     full_image_path = images_path_ms + images_name
     thumbnail_data = create_thumbnail(full_image_path)
@@ -76,7 +75,7 @@ class Product(persistent.Persistent):
         self.pr_id = pr_id
         self.pr_name = pr_name
         self.seller = seller
-        if datetime.now() >= start: #upcoming, live, sold out
+        if datetime.now() >= start: #upcoming, live, sold out = when stock is zero
             self.status = "live"
         else:
             self.status = "upcoming"
@@ -100,7 +99,7 @@ class Product(persistent.Persistent):
         return self.status
     def get_start_date(self):
         return self.start_date
-    def get_end_date(self):
+    def get_end_date(self): #ends sale when sold out
         if self.end_date:
             return self.end_date
         else:
@@ -135,6 +134,9 @@ class Collection(Product):
             self.items.append(i)
             for t in i.get_tags():
                 self.tags.append(t)
+        not_sold_out = any(item.get_status() != 'sold out' for item in self.items)
+        if not not_sold_out:
+            self.status = 'sold out'
     def get_items(self):
         return self.items
     def add_item(self, item):
@@ -153,26 +155,37 @@ class Collection(Product):
         })
         return serialized_data
 
-
 #individual items in a post
 class Item(Product):
-    def __init__(self, i_id, seller, start, price, i_name = "", images = [], tags = [], end = None):
+    def __init__(self, i_id, seller, start, price, stock, i_name = "", images = [], tags = [], end = None):
         super().__init__(i_id, seller, start, i_name, images, tags, end)
         self.price = price
+        self.stock = stock
+        self.update_stock(stock)
     def get_price(self):
         return self.price
     def get_image(self):
         return self.images
     def get_tags(self):
         return self.tags
+    def get_stock(self):
+        return self.stock
+    def update_stock(self, num): #change the stock value with purchases
+        self.stock = num
+        if num == 0:
+            self.status = 'sold out'
     def print_info(self):
         super().print_info()
         print("Price: " + str(self.price))
-        print(f'Item Name: {self.pr_name}\n')
+        print(f'Item Name: {self.pr_name}\n'
+              f'Remaining Stock: {self.stock}\n'
+              f'Status: {self.status}\n')
     def serialize(self):
         serialized_data = super().serialize()
         serialized_data.update({
-            'price': self.price
+            'price': self.price,
+            'stock': self.stock,
+            'status': self.status,
         })
         return serialized_data
 
@@ -196,6 +209,7 @@ class PostDetails(persistent.Persistent):
             self.product_type = 'Collection'
         elif isinstance(product, Item):
             self.product_type = 'Item'
+        self.status = self.product.get_status()
     def get_id(self):
         return self.id
     def get_author(self):
@@ -227,6 +241,7 @@ class PostDetails(persistent.Persistent):
             f'title: {self.title}\n'
             f'created: {self.created.strftime("%Y-%m-%d %H:%M:%S")}\n'
             f'sales type: {self.sales_type}\n'
+            f'post status: {self.status}\n'
         )
     def serialize(self):
         return {
@@ -239,7 +254,8 @@ class PostDetails(persistent.Persistent):
             'modified': self.modified, #date last modified
             'product_type': self.product_type, #tells whether the product is item/col
             'tags': [x.serialize() for x in self.tags], #list of tags
-            'sales_type': self.sales_type #cf no cc, bidding
+            'sales_type': self.sales_type, #cf no cc, bidding
+            'status': self.status
         }
         
 class Account(persistent.Persistent):
@@ -255,11 +271,13 @@ class Account(persistent.Persistent):
         self.following = 0
         self.sex = sex
         self.products = persistent.list.PersistentList()
-        # self.user_id = generate_user_id()
+
     def get_email(self):
         return self.email
+    
     def get_id(self):
         return self.id
+    
     def get_password(self):
         return self.password
 
@@ -274,6 +292,7 @@ class Account(persistent.Persistent):
 
     def add_product(self, product):
         self.products.add(product.get_id()) #id of the product
+
     def print_info(self):
         print(f'----User Info---\nEmail: {self.email}\n'
               f'Password: {self.password}\n'
@@ -293,7 +312,6 @@ class Account(persistent.Persistent):
             'following': self.following
         }
 
-
 class Address:
     def __init__(self, name, phone_number, province, district, sub_district, postal, details):
         self.name = name
@@ -303,10 +321,8 @@ class Address:
         self.sub_district = sub_district
         self.postal = postal
         self.details = details
-
     def set_details(self, new_details):
         self.details = new_details
-
     def serialize(self):
         return {
             'name': self.name,
@@ -317,26 +333,25 @@ class Address:
             'postal' : self.postal,
             'details': self.details
         }
-
     
 class Admin(Account):
     def __init__(self, id, email, password, username = ""):
         super().__init__(id, email, password, username)
         
-class Customer(Account):
-    def __init__(self, id, email, password, username = ""):
-        super().__init__(id, email, password, username)
+# class Customer(Account):
+#     def __init__(self, id, email, password, username = ""):
+#         super().__init__(id, email, password, username)
         
-class Seller(Account):
-    def __init__(self, id, email, password, username = ""):
-        super().__init__(id, email, password, username)
+# class Seller(Account):
+#     def __init__(self, id, email, password, username = ""):
+#         super().__init__(id, email, password, username)
         
-    def __init__(self, email, password):
-        super().__init__(email, password)
+#     def __init__(self, email, password):
+#         super().__init__(email, password)
         
 # accounts
 # key value = username
-admin_1 = Admin(generate_id('admins'), "admin1@gmail.com", "1234")
+admin_1 = Admin(generate_id('accounts'), "admin1@gmail.com", "1234")
 admin_1.set_username("adminnajaa~~")
 admin_1.phone_number = "000-000-0000"
 admin_1.sex = "Others"
@@ -344,10 +359,10 @@ admin_1.birthdate = date(2000, 10, 30)
 root.accounts[admin_1.get_username()] = admin_1
 
 # users
-user_1 = Account(generate_id('users'), "user1@gmail.com", "1234", "iammuser1")
+user_1 = Account(generate_id('accounts'), "user1@gmail.com", "1234", "iammuser1")
 root.accounts[user_1.get_username()] = user_1
 
-user_2 = Account(generate_id('users'), "user2@gmail.com", "1234")
+user_2 = Account(generate_id('accounts'), "user2@gmail.com", "1234")
 user_2.set_username("iammuser2")
 root.accounts[user_2.get_username()] = user_2
 
@@ -380,14 +395,14 @@ item1_pics = ['IMG_7369.jpg']
 item1_pics_data = [get_image_data(x) for x in item1_pics]
 item1_tags = [root.tags['coquette'], root.tags['cute']]
 item1 = Item(generate_id("products"), user_1.get_username(), datetime(2024, 5, 20, 10, 15),
-             50, "item 1", item1_pics_data, item1_tags)
+             50, 5, "item 1", item1_pics_data, item1_tags)
 root.products[item1.get_seller() + item1.get_id()] = item1
 
 item2_pics = ['IMG_7370.jpg']
 item2_pics_data = [get_image_data(x) for x in item2_pics]
 item2_tags = [root.tags['coquette'], root.tags['cute']]
 item2 = Item(generate_id("products"), user_1.get_username(), datetime(2024, 5, 20, 10, 15),
-             50, "item 2 laa", item1_pics_data, item1_tags)
+             50, 3, "item 2 laa", item1_pics_data, item1_tags)
 root.products[item2.get_seller() + item2.get_id()] = item2
 
 col1_pics = ['IMG_7368.jpg']
