@@ -5,10 +5,13 @@ from .login_ui import Ui_Dialog
 from ..home.home import HomeUI
 import socket
 import pickle
-
+current_directory = os.getcwd()
+print("Current directory:", current_directory)
+sys.path.append(current_directory)
 from backend import *
+
 class LoginUI(QDialog, QObject):
-    login_successful = Signal(int, dict)
+    login_successful = Signal(str, dict)
     def __init__(self, stacked_widget, server_host, server_port):
         super(LoginUI, self).__init__()
         self.stacked_widget = stacked_widget
@@ -23,7 +26,6 @@ class LoginUI(QDialog, QObject):
         
         self.server_host = server_host
         self.server_port = server_port
-    
     def to_homepage(self):
         self.stacked_widget.setCurrentIndex(1)
     

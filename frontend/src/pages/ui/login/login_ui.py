@@ -40,16 +40,22 @@ class Ui_Dialog(object):
         font1.setFamilies([u"Manrope"])
         font1.setPointSize(11)
         self.gmail.setFont(font1)
-        self.gmail.setStyleSheet(u"background-color: None")
+        self.gmail.setStyleSheet("font:600 16pt Manrope;color:black;"                         
+                                 "text-align: center; background-color: transparent;"
+                                 "border-radius: 5px;")
         self.gmail_input = QLineEdit(Dialog)
         self.gmail_input.setObjectName(u"gmail_input")
         self.gmail_input.setGeometry(QRect(440, 280, 261, 41))
-        self.gmail_input.setStyleSheet(u"background-color: rgb(234, 234, 234)")
+        self.gmail_input.setStyleSheet("font:16pt Manrope;color:black;"
+                                       "text-align: center;"
+                                       "border-radius: 5px; background-color: rgb(234, 234, 234)")
         self.gmail_2 = QLabel(Dialog)
         self.gmail_2.setObjectName(u"gmail_2")
         self.gmail_2.setGeometry(QRect(440, 370, 141, 31))
         self.gmail_2.setFont(font1)
-        self.gmail_2.setStyleSheet(u"background-color: None")
+        self.gmail_2.setStyleSheet("font:600 16pt Manrope;color:black;"
+                                   "text-align: center; background-color: transparent;"
+                                   "border-radius: 5px;")
         self.graphicsView = QGraphicsView(Dialog)
         self.graphicsView.setObjectName(u"graphicsView")
         self.graphicsView.setGeometry(QRect(370, 200, 410, 490))
@@ -71,8 +77,9 @@ class Ui_Dialog(object):
         self.login_btn.setObjectName(u"login_btn")
         self.login_btn.setGeometry(QRect(470, 500, 211, 41))
         self.login_btn.setFont(font2)
-        self.login_btn.setStyleSheet(u"border-radius: 20px;\n"
-"background-color:rgb(241, 208, 215);")
+        self.login_btn.setStyleSheet("font:600 Manrope; background-color:rgb(241, 208, 215);"
+                                     "text-align: center; color:black;"
+                                     "border-radius: 20px;")
         self.error_txt = QLabel(Dialog)
         self.error_txt.setObjectName(u"error_txt")
         self.error_txt.setGeometry(QRect(430, 450, 291, 21))
@@ -80,6 +87,9 @@ class Ui_Dialog(object):
         self.curate_label = QLabel(Dialog)
         self.curate_label.setObjectName(u"curate_label")
         self.curate_label.setGeometry(QRect(310, 0, 511, 281))
+        self.register_btn.setStyleSheet("font:600 Manrope; background-color:rgb(241, 208, 215);"
+                                        "text-align: center; color: black;"
+                                        "border-radius: 20px;")
         font3 = QFont()
         font3.setFamilies([u"Mogena"])
         font3.setPointSize(18)
@@ -104,10 +114,10 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
-        self.gmail.setText(QCoreApplication.translate("Dialog", u"Gmail", None))
+        self.gmail.setText(QCoreApplication.translate("Dialog", u"Email:", None))
         self.gmail_2.setText(QCoreApplication.translate("Dialog", u"Password:", None))
         self.register_btn.setText(QCoreApplication.translate("Dialog", u"Register", None))
-        self.login_btn.setText(QCoreApplication.translate("Dialog", u"login", None))
+        self.login_btn.setText(QCoreApplication.translate("Dialog", u"Login", None))
         self.error_txt.setText("")
         self.curate_label.setText("")
     # retranslateUi

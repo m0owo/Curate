@@ -2,7 +2,6 @@ import socket
 import pickle
 from database import *
 
-
 def handle_login(data):
     email = data.get('email')
     password = data.get('password')
@@ -10,14 +9,12 @@ def handle_login(data):
     # Retrieve user from the database based on email
     accounts = root.accounts
     for account_id, account in accounts.items():
-        if isinstance(account, Admin) or isinstance(account, Customer) or isinstance(account, Seller):
+        if isinstance(account, Admin) or isinstance(account, Customer) or isinstance(account, Seller) or isinstance(account, Account):
             if account.get_email() == email and account.get_password() == password:
-                print(f"ID: {account_id} or {account.get_email()} Account_name {account.username}")
-                return {'success': True, 'message': 'Login successful', 'user_id': account.id, 'user_data': account.serialize()}
-    
+                print(f"ID: {account.get_id()} or {account.get_email()} Account_name {account.get_username()}")
+                return {'success': True, 'message': 'Login successful', 'user_id': account.get_id(), 'user_data': account.serialize()}
     return {'success': False, 'message': 'Invalid credentials'}
 
-        
 def handle_registration(data):
     account_type = data.get('account_type')
     email = data.get('email')
@@ -25,7 +22,6 @@ def handle_registration(data):
     username = data.get('username')
     sex = data.get('sex')
     address = data.get('address')
-
     try:
         root = connection.root
         accounts = root.accounts
@@ -71,6 +67,28 @@ def get_user_data(data):
         return {'success': True, 'user_data': user_data}
     else:
         return {'success': False, 'message': 'User not found'}
+
+def send_large_data(conn, data):
+    CHUNK_SIZE = 4096
+    serialized_data = pickle.dumps(data)
+    total_chunks = (len(serialized_data) + CHUNK_SIZE - 1) // CHUNK_SIZE 
+    conn.sendall(pickle.dumps(total_chunks))
+    for i in range(total_chunks):
+        start_index = i * CHUNK_SIZE
+        end_index = min((i + 1) * CHUNK_SIZE, len(serialized_data))
+        chunk = serialized_data[start_index:end_index]
+        conn.sendall(chunk)
+
+def get_all_posts():
+    print("getting all posts server oo ee")
+    try:
+        post_details = root.posts
+        posts_data = [post.serialize() for post in post_details.values()]
+        print('posts data {posts_data}\n\n')
+        return {'success': True, 'post_details': posts_data}
+    except Exception as e:
+        print(e)
+        return {'success': False, 'message': "Failed to return post details"}
     
 def handle_save_new_info(data_dict):
     try:
@@ -96,17 +114,17 @@ def handle_save_new_info(data_dict):
     
 def handle_request(conn):
     try:
+        print("Handling request...")
         while True:
             data = conn.recv(4096)
             if not data:
                 print("No data received from client.")
                 break
-            
             print("Received data from client:", data)
-            
+
             data_dict = pickle.loads(data)
+            print("Received dictionary:", data_dict)
             action = data_dict.get('action')
-            
             print("Received action:", action)
             
             if action == 'login':
@@ -115,15 +133,22 @@ def handle_request(conn):
                 response = handle_registration(data_dict)
             elif action == 'save_new_info':
                 response = handle_save_new_info(data_dict)
+            elif action == 'get_all_posts':
+                print("Calling get_all_posts()")
+                response = get_all_posts()
+                send_large_data(conn, response)
             else:
+                print("Invalid action")
                 response = {'success': False, 'message': 'Invalid action'}
             
             print("Sending response to client:", response)
             conn.sendall(pickle.dumps(response))
+            conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
     except Exception as e:
         print("Error handling request:", e)
 
     finally:
+        print("Closing connection.")
         conn.close()
 
 

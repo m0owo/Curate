@@ -1,15 +1,17 @@
 import sys
 import os
+import pickle
+import socket
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import QPixmap, QPainterPath
 from .home_ui import *
-
+import zlib, base64
 current_directory = os.getcwd()
-print("Current directory:", current_directory)
 sys.path.append(current_directory)
+# sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
 
-from backend.database import *
+# from backend.database import *
 
 # from .icons_rc import *
 # from .logo_rc import *
@@ -25,21 +27,18 @@ class TagButton():
         if tag:
             self.tag_text = tag.get_tag_text()
             self.get_link = tag.get_link()
-        self.temp_text = text.lower() #i cant pass Tag object yet so this is just the text
+        self.temp_text = text.lower()
         self.container = container
 
         self.tag_button = QPushButton(self.container)
         self.tag_button.setText(self.temp_text)
 
         set_preferred_size(self.tag_button, 100)
-
-        cur_stylesheet = self.tag_button.styleSheet()
-        self.tag_button.setStyleSheet(cur_stylesheet + 
-            "QPushButton:hover{background-color:rgb(201, 212, 249); color:rgb(238, 248, 255);}")
     def get_drawing(self):
         return self.tag_button
     def get_tag_button(self):
         return self.tag_button
+    
 class PostTagButton(TagButton):
     def __init__(self, text, container, tag = None):
         super().__init__(text, container, tag)
@@ -47,12 +46,14 @@ class PostTagButton(TagButton):
         self.tag_button.setStyleSheet("QPushButton {font:600 11pt Manrope;color:rgb(137, 153, 211);"
                                       "text-align: center; background-color: #E8F3F2;"
                                       "border-radius: 5px;}QPushButton:hover{background-color:rgb(201, 212, 249); color:rgb(238, 248, 255);}")
+
 class SaleTypeTagButton(PostTagButton):
     def __init__(self, text, container, tag = None):
         super().__init__(text, container, tag)
         self.tag_button.setStyleSheet("QPushButton {font:600 11pt Manrope;text-align:center;"
                                       "background-color: rgb(250, 234, 225);color:rgb(176, 98, 106);"
                                       "border-radius: 5px;}QPushButton:hover{background-color:rgb(201, 212, 249); color:rgb(238, 248, 255);}")
+
 class ProductTypeTagButton(PostTagButton):
     def __init__(self, text, container, tag = None):
         super().__init__(text, container, tag)
@@ -62,9 +63,11 @@ class ProductTypeTagButton(PostTagButton):
 def clear_frame(frame):
         for widget in frame.findChildren(QPushButton):
             widget.deleteLater()
+
 def clear_widget(widget):
     for i in reversed(range(widget.layout().count())):
         widget.layout().itemAt(i).widget().setParent(None)
+
 def border_radius(pixmap, radius):
     mask = QPixmap(pixmap.size())
     mask.fill(Qt.transparent)
@@ -75,6 +78,7 @@ def border_radius(pixmap, radius):
     painter.fillPath(path, QColor(Qt.white))
     painter.end()
     pixmap.setMask(mask)
+
 def set_preferred_size(w, padding = 20, hpadding = 8):
     preferred_size = w.sizeHint()
     w.setFixedWidth(preferred_size.width())
@@ -83,20 +87,23 @@ def set_preferred_size(w, padding = 20, hpadding = 8):
     w.setMinimumWidth(min_width)
     min_height = w.fontMetrics().boundingRect(w.text()).height() + hpadding
     w.setMinimumHeight(min_height)
+
 class Post():
     def __init__(self, details, container):
         if details:
-            self.author = details.get_author()
-            self.product = details.get_product()
-            self.info = details.get_info()
-            self.title = details.get_title()
-            self.p_type = details.get_product_type().lower()
-            self.tags = details.get_tags()
-            self.created = details.get_created()
-            self.modified = details.get_modified()
+            self.id = details.get('post_id')
+            self.author = details.get('post_author')
+            self.product = details.get('product')
+            self.info = details.get('info')
+            self.title = details.get('title')
+            self.created = details.get('created')
+            self.modified = details.get('modified')
+            self.p_type = details.get('product_type')
+            self.tags = details.get('tags') #list of tags
+            self.s_type = details.get("sales_type")
             self.container = container
-            self.s_type = details.get_sales_type().lower()
  
+            # making the post
             post_layout = QVBoxLayout()
             post_layout.setAlignment(Qt.AlignCenter)
             post_layout.setContentsMargins(0, 0, 0, 0)
@@ -112,16 +119,16 @@ class Post():
             card_shadow.setYOffset(1)
             self.post.setGraphicsEffect(card_shadow)
 
-            #post image - figure out to keep many images, how to call images from qrc -> py
+            #post image
             self.post_image = QLabel(self.post)
             self.post_image.setFixedSize(QSize(230, 230))
             self.post_image.setStyleSheet("QLabel { background-color: transparent; }")
-            pic = QPixmap(u":/post_images/IMG_7109.jpg")
+            pic = QPixmap(u":/post_images/IMG_7109.jpg") #test image
             scaled_pic = pic.scaled(QSize(230, 300), Qt.KeepAspectRatio, Qt.SmoothTransformation)
             self.post_image.setPixmap(scaled_pic)
             post_layout.addWidget(self.post_image, alignment=Qt.AlignCenter)
 
-            # post info is all the information below the images
+            # post info is a widget for all the information below the images
             self.post_info = QWidget(self.post)
             post_layout.addWidget(self.post_info)
             post_info_layout = QVBoxLayout()
@@ -134,7 +141,7 @@ class Post():
             self.post_title.setStyleSheet(u"QLabel {font: 700 12pt \"Manrope\";}")
             self.post_title.setWordWrap(True)
             self.post_title.setAlignment(Qt.AlignCenter)
-            self.post_title.setText("TESTING TITLE")
+            self.post_title.setText(self.title)
             post_info_layout.addWidget(self.post_title, alignment=Qt.AlignCenter)
 
             # post tags
@@ -142,7 +149,6 @@ class Post():
             self.post_tags_frame.setWidgetResizable(True)
             post_info_layout.addWidget(self.post_tags_frame)
             
-            self.post_tags_widget = QWidget()
             self.post_tags_widget = QWidget()
             self.post_tags_frame.setWidget(self.post_tags_widget)
             self.post_tags_frame.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
@@ -165,9 +171,10 @@ class Post():
             self.sales_type = SaleTypeTagButton(self.s_type, self.post_tags_widget).get_drawing()
             self.sales_type.setFont(font)
             post_tags_layout.addWidget(self.sales_type)
-
+            
+            print(f'DRAMAMAMMAMAM {self.tags}')
             for tag in self.tags:
-                post_tag = PostTagButton(tag, self.post_tags_widget, None)
+                post_tag = PostTagButton(tag.get('tag_text'), self.post_tags_widget, None)
                 post_tags_layout.addWidget(post_tag.get_drawing())
             
             # post details:create date, start live date
@@ -187,29 +194,34 @@ class Post():
             post_details_layout.setSpacing(10)
 
             self.created_date = QLabel()
-            self.created_date.setText("date created: ")
+            self.created_date.setText(f'date created: {self.created.strftime("%Y-%m-%d %H:%M:%S")}')
             self.created_date.setAlignment(Qt.AlignCenter)
             post_details_layout.addWidget(self.created_date)
 
             self.live_date = QLabel()
-            self.live_date.setText("live date: ")
+            self.live_date.setText(f'live date: {self.product.get("start").strftime("%Y-%m-%d %H:%M:%S")}')
             self.live_date.setAlignment(Qt.AlignCenter)
             post_details_layout.addWidget(self.live_date)
+    
     def get_post(self):
         return self.post
         
 class HomeUI(QMainWindow):
-    def __init__(self, stacked_widget):
+    def __init__(self, stacked_widget, server_host, server_port, user_id = None):
         QMainWindow.__init__(self, None)
         self.stacked_widget = stacked_widget
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.server_host = server_host
+        self.server_port = server_port
+        self.user_id = user_id
+
         shadow = QGraphicsDropShadowEffect(self)
         shadow.setBlurRadius(10)
         shadow.setXOffset(1)
         shadow.setYOffset(2)
-
         self.ui.search_frame.setGraphicsEffect(shadow)
+
         button_stylesheet = (
             "QPushButton {"
             "   border-radius: 5px;"
@@ -248,33 +260,73 @@ class HomeUI(QMainWindow):
             self.tags_layout.addWidget(tag_button.get_tag_button())
         
         # drawing posts
+        self.get_all_posts()
+
+        self.ui.profile_button.clicked.connect(self.to_profile())
+
+    def populate_posts(self, post_details):
         clear_widget(self.ui.scrollAreaWidgetContents)
+        self.ui.scrollAreaWidgetContents.setMinimumSize(QSize(1000, 550))
+        post_widgets = []
+        i = 0
+        for post_detail in post_details:
+            print(f'WEE WOO WEE WOOO WEE WOO {post_detail}')
+            post = Post(post_detail, self.ui.scrollAreaWidgetContents)
+            post_widget = post.get_post()
+            post_widgets.append(post_widget)
 
-        # Post Details
-        # test_post = PostDetails("1", "Music", "This is very important", "bananas?", ["Acubi", "Cottagecore", "Acubi", "Cottagecore", "Acubi", "Cottagecore", "Acubi", "Cottagecore"])
-        # post_details = [test_post] * 14
-        # post_widgets = []
-        # i = 0
-        # for post_data in post_details:
-        #     post = Post(post_data, self.ui.scrollAreaWidgetContents)
-        #     post_widget = post.get_post()
-        #     post_widgets.append(post_widget)
+            row = i // 4
+            column = i % 4
 
-        #     row = i // 4
-        #     column = i % 4
-
-        #     self.ui.gridLayout.addWidget(post_widget, row, column)
-        #     i += 1
-        #     self.ui.scrollAreaWidgetContents.adjustSize()
-        self.ui.profile_button.clicked.connect(self.to_profile)
-        
+            self.ui.gridLayout.addWidget(post_widget, row, column)
+            self.ui.gridLayout.setAlignment(post_widget, Qt.AlignTop | Qt.AlignLeft)
+            i += 1
+        self.ui.scrollAreaWidgetContents.adjustSize()
+            
+    def receive_large_data(self, conn):
+        total_chunks = pickle.loads(conn.recv(4096))
+        received_data = b''
+        for _ in range(total_chunks):
+            chunk = conn.recv(4096)
+            received_data += chunk
+            print(f'chunk {chunk}')
+        return pickle.loads(received_data)
+            
+    def get_all_posts(self):
+        print('Getting all posts from the server')
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+                print("Step 1: Establishing connection...")
+                client_socket.connect((self.server_host, self.server_port))
+                print("Step 2: Sending request...")
+                request_data = {'action': 'get_all_posts'}
+                client_socket.sendall(pickle.dumps(request_data))
+                print("Step 3: Receiving response...")
+                response = self.receive_large_data(client_socket)
+                print("Received response:", response)
+                print("Step 4: Unpacking response...")
+                if response.get('success'):
+                    print('Success getting all the data')
+                    post_details = response.get('post_details')
+                    self.populate_posts(post_details)
+                else:
+                    print("Failed to get all the data:", response.get('message'))
+        except socket.error as se:
+            print("Socket error:", se)
+        except pickle.PickleError as pe:
+            print("Error in pickle operation:", pe)
+        except Exception as e:
+            print("ERROR:", e)
+            
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id
         self.user_data = user_data
+        print(f'User ID: {self.user_id}\nUser Data: {self.user_data}')
         self.ui.name_label.setText(f"Welcome, {self.user_data['username']}")
-        
+
     def to_profile(self):
         self.stacked_widget.setCurrentIndex(3)
+    
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     home_ui = HomeUI()

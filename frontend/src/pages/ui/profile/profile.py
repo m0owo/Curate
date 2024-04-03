@@ -40,6 +40,12 @@ class ProfileUI(QDialog):
         self.ui.address_button.clicked.connect(self.to_address_page)
         
         self.ui.save_button.clicked.connect(self.save_new_info)
+        self.name = self.ui.name_edit
+        self.mail = self.ui.mail_edit
+        self.phone = self.ui.phonenum_edit
+        self.male = self.ui.male_button
+        self.female = self.ui.female_button
+        # self.other = self.ui.others_button
     def to_home_page(self):
         self.stacked_widget.setCurrentIndex(1) 
     def to_history_page(self):
@@ -50,6 +56,14 @@ class ProfileUI(QDialog):
         self.stacked_widget.setCurrentIndex(3)
     def to_address_page(self):
         self.stacked_widget.setCurrentIndex(4)
+        print("Clicked to address page from info page")
+        
+    def to_infopage(self):
+        print("Clicked info page from info page")
+                
+    def save_new_info(self):
+        print(f"Name: {self.name.toPlainText()}, Mail: {self.mail.toPlainText()}, Phone: {self.phone.toPlainText()}") 
+             
         
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id

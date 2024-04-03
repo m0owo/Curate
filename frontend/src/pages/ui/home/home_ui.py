@@ -734,6 +734,7 @@ class Ui_MainWindow(object):
         self.name_label = QLabel(self.centralwidget)
         self.name_label.setObjectName(u"name_label")
         self.name_label.setGeometry(QRect(40, 10, 381, 16))
+        self.name_label.setStyleSheet("color: black;")
         font5 = QFont()
         font5.setPointSize(8)
         self.name_label.setFont(font5)
