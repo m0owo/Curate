@@ -9,7 +9,6 @@ from pages.ui.profile.profile import ProfileUI, ProfileAddressUI
 from pages.ui.history.history import HistoryUI
 from pages.ui.wishlist.wishlist import WishlistUI
 from pages.ui.collection.collection import CollectionUI
-from pages.ui.collection.collection import CollectionUI
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
@@ -19,16 +18,21 @@ if __name__ == "__main__":
     server_port = 8888
 
     login_ui = LoginUI(widget,server_host, server_port)
-    home_ui = HomeUI(widget, server_host, server_port, user_id = None)
+    home_ui = HomeUI(widget, server_host, server_port)
     register_ui = RegisterUI(server_host, server_port)
     profile_ui = ProfileUI(widget,server_host, server_port)
     profileaddress_ui = ProfileAddressUI(widget)
     history_ui = HistoryUI(widget)
     wishlist_ui = WishlistUI(widget)
+    collection_ui = CollectionUI(widget, server_host, server_port)
     
     # Connect the signal to the slot function   
     login_ui.login_successful.connect(home_ui.load_user_data)
     login_ui.login_successful.connect(profile_ui.load_user_data)
+    login_ui.login_successful.connect(collection_ui.load_user_data)
+    
+    home_ui.clicked.connect(collection_ui.load_post_data)
+    
 
     widget.addWidget(login_ui)
     widget.addWidget(home_ui)
@@ -37,6 +41,7 @@ if __name__ == "__main__":
     widget.addWidget(profileaddress_ui)
     widget.addWidget(history_ui)
     widget.addWidget(wishlist_ui)
+    widget.addWidget(collection_ui)
 
     widget.show()
 

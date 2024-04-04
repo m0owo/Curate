@@ -4,129 +4,23 @@ import pickle
 import socket
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
-from PySide6.QtGui import QPixmap, QPainterPath, QImage
+from PySide6.QtGui import QPixmap, QImage
 from .home_ui import *
-from datetime import datetime, date, timedelta
+from datetime import datetime, timedelta
 import time
+
 current_directory = os.getcwd()
 sys.path.append(current_directory)
-# sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
+sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
 
-# from backend.database import *
+from frontend.src.pages.ui.common import *
 
 # from .icons_rc import *
 # from .logo_rc import *
 # from .post_images_rc import *
 
-# def get_button_content_width(button):
-#     font_metrics = button.fontMetrics()
-#     text_width = font_metrics.horizontalAdvance(button.text())
-#     return text_width    
-
-class CountdownWidget(QWidget):
-    def __init__(self, target_datetime):
-        super().__init__()
-        self.target_datetime = target_datetime
-        self.remaining_time = 0
-        
-        self.label = QLabel()
-        self.label.setAlignment(Qt.AlignCenter)
-        
-        layout = QVBoxLayout()
-        layout.addWidget(self.label)
-        layout.setAlignment(Qt.AlignLeft)
-        layout.setContentsMargins(0, 0, 0, 0)
-        self.setLayout(layout)
-        
-        self.update_timer()
-        self.label.setStyleSheet("QLabel {font:600 11pt Manrope;color:rgb(137, 153, 211);"
-                                 "text-align: center; background-color: #E8F3F2;"
-                                 "border-radius: 5px; padding:5px}")
-
-    def update_timer(self):
-        current_datetime = datetime.now()
-        time_difference = self.target_datetime - current_datetime
-        self.remaining_time = max(0, time_difference.total_seconds())
-        days, remainder = divmod(self.remaining_time, 86400)
-        hours, remainder = divmod(remainder, 3600)
-        minutes, seconds = divmod(remainder, 60)
-        if self.remaining_time == 0:
-            self.label.setText("Time's up!")
-        elif days > 1:
-            self.label.setText(self.target_datetime.strftime("%d/%m/%Y @ %H:%M"))
-        else:
-            self.label.setText("{:02d} days {:02d}:{:02d}".format(int(days), int(hours), int(minutes)))
-            QTimer.singleShot(1000, self.update_timer)
-
-class TagButton():
-    def __init__(self, text, container, tag = None):
-        if tag:
-            self.tag_text = tag.get_tag_text()
-            self.get_link = tag.get_link()
-        self.temp_text = text.lower()
-        self.container = container
-
-        self.tag_button = QPushButton(self.container)
-        self.tag_button.setText(self.temp_text)
-        self.tag_button.setStyleSheet(self.tag_button.styleSheet() + "QPushButton:hover{background-color:rgb(201, 212, 249); color:rgb(238, 248, 255);}")
-
-        set_preferred_size(self.tag_button, 100)
-    def get_drawing(self):
-        return self.tag_button
-    def get_tag_button(self):
-        return self.tag_button
-    
-class PostTagButton(TagButton):
-    def __init__(self, text, container, tag = None):
-        super().__init__(text, container, tag)
-        set_preferred_size(self.tag_button, 10)
-        self.tag_button.setStyleSheet("QPushButton {font:600 11pt Manrope;color:rgb(137, 153, 211);"
-                                      "text-align: center; background-color: #E8F3F2;"
-                                      "border-radius: 5px;}QPushButton:hover{background-color:rgb(201, 212, 249); color:rgb(238, 248, 255);}")
-
-class SaleTypeTagButton(PostTagButton):
-    def __init__(self, text, container, tag = None):
-        super().__init__(text, container, tag)
-        self.tag_button.setStyleSheet("QPushButton {font:600 11pt Manrope;text-align:center;"
-                                      "background-color: rgb(250, 234, 225);color:rgb(176, 98, 106);"
-                                      "border-radius: 5px;}QPushButton:hover{background-color:rgb(242, 207, 199); color:rgb(179, 85, 82);}")
-
-class ProductTypeTagButton(PostTagButton):
-    def __init__(self, text, container, tag = None):
-        super().__init__(text, container, tag)
-        self.tag_button.setStyleSheet("QPushButton {font:600 11pt Manrope;text-align:center;"
-                                      "background-color:#feecc7;color:#fba224;"
-                                      "border-radius: 5px;}QPushButton:hover{background-color:#fdd78a; color:#fff5e1;}")
-def clear_frame(frame):
-        for widget in frame.findChildren(QPushButton):
-            widget.deleteLater()
-
-def clear_widget(widget):
-    for i in reversed(range(widget.layout().count())):
-        widget.layout().itemAt(i).widget().setParent(None)
-
-def border_radius(pixmap, radius):
-    mask = QPixmap(pixmap.size())
-    mask.fill(Qt.transparent)
-    painter = QPainter(mask)
-    painter.setRenderHint(QPainter.Antialiasing)
-    path = QPainterPath()
-    path.addRoundedRect(pixmap.rect(), radius, radius)
-    painter.fillPath(path, QColor(Qt.white))
-    painter.end()
-    pixmap.setMask(mask)
-
-def set_preferred_size(w, padding = 20, hpadding = 8):
-    preferred_size = w.sizeHint()
-    w.setFixedWidth(preferred_size.width())
-    w.setFixedWidth(preferred_size.height())
-    min_width = w.fontMetrics().boundingRect(w.text()).width() + padding
-    w.setMinimumWidth(min_width)
-    min_height = w.fontMetrics().boundingRect(w.text()).height() + hpadding
-    w.setMinimumHeight(min_height)
-
 class Post():
-    def __init__(self, details, container):
+    def __init__(self, details, container, home_ui):
         if details:
             self.id = details.get('post_id')
             self.author = details.get('post_author')
@@ -150,7 +44,6 @@ class Post():
                 self.price = f'฿{str(self.product.get("price"))}'
             self.container = container
             self.images = []
-            print(f"self.product.get {self.product.get('images')}")
             for image_data in self.product.get('images'):
                 image = QImage.fromData(image_data)
                 self.images.append(image)
@@ -160,7 +53,7 @@ class Post():
             post_layout.setAlignment(Qt.AlignCenter)
             post_layout.setContentsMargins(0, 0, 0, 0)
             post_layout.setSpacing(0)
-            self.post = QFrame(self.container)
+            self.post = ClickablePost(self.container, details, home_ui)
             self.post.setLayout(post_layout)
             self.post.setMinimumSize(QSize(230, 300))
             # self.post.setStyleSheet("border: 1px solid black;") #for showing the boxes
@@ -250,19 +143,19 @@ class Post():
 
             self.product_type_label = QLabel('Product Type:')
             self.product_type_label.setFont(label_font)
-            self.product_type = ProductTypeTagButton(self.p_type, self.post_tags_widget).get_drawing()
+            self.product_type = ProductTypeTagButton(self.p_type, self.post_tags_widget).get_tag_button()
             self.product_type.setFont(info_font)
             product_type_layout.addWidget(self.product_type_label)
             product_type_layout.addWidget(self.product_type)
 
             self.sales_type_label = QLabel('Sales Type:')
             self.sales_type_label.setFont(label_font)
-            self.sales_type = SaleTypeTagButton(self.s_type, self.post_tags_widget).get_drawing()
+            self.sales_type = SaleTypeTagButton(self.s_type, self.post_tags_widget).get_tag_button()
             self.sales_type.setFont(info_font)
             sales_type_layout.addWidget(self.sales_type_label)
             sales_type_layout.addWidget(self.sales_type)
             
-            print(f'DRAMAMAMMAMAM {self.tags}')
+            # print(f'DRAMAMAMMAMAM {self.tags}')
             # for tag in self.tags:
             #     post_tag = PostTagButton(tag.get('tag_text'), self.post_tags_widget, None)
             #     post_tags_layout.addWidget(post_tag.get_drawing())
@@ -314,27 +207,22 @@ class Post():
         while True:
             current_datetime = datetime.now()
             remaining_time = max(target_datetime - current_datetime, timedelta(0))
-            print(remaining_time)
+            # print(remaining_time)
             if remaining_time == timedelta(0):
                 self.update_status()
                 break
-
-class Spacer():
-    def __init__(self):
-        self.spacer = QWidget()
-        self.spacer.setFixedSize(QSize(230, 300))
-    def get_spacer(self):
-        return self.spacer
-    
+    def on_post_clicked(self):
+        print("Post clicked!")
+        
 class HomeUI(QMainWindow):
-    def __init__(self, stacked_widget, server_host, server_port, user_id = None):
+    clicked = Signal(object, list)
+    def __init__(self, stacked_widget, server_host, server_port):
         QMainWindow.__init__(self, None)
         self.stacked_widget = stacked_widget
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.server_host = server_host
         self.server_port = server_port
-        self.user_id = user_id
 
         shadow = QGraphicsDropShadowEffect(self)
         shadow.setBlurRadius(10)
@@ -391,16 +279,20 @@ class HomeUI(QMainWindow):
         self.ui.profile_button.clicked.connect(self.to_profile)
         self.ui.history_button.clicked.connect(self.to_history)
         self.ui.wishlist_button.clicked.connect(self.to_wishlist)
-
+    def handle_post_click(self, details):
+        sender = ('Home', 1)
+        self.clicked.connect(self.to_collection)
+        self.clicked.emit(details, [sender])
     def populate_posts(self, post_details):
         clear_widget(self.ui.scrollAreaWidgetContents)
         self.ui.scrollAreaWidgetContents.setMinimumSize(0, 0)
+        self.ui.gridLayout.setSpacing(20)
         post_widgets = []
         i = 0
         spacers_needed = 0 
         for post_detail in post_details:
-            print(f'WEE WOO WEE WOOO WEE WOO {post_detail}')
-            post = Post(post_detail, self.ui.scrollAreaWidgetContents)
+            # print(f'WEE WOO WEE WOOO WEE WOO {post_detail}')
+            post = Post(post_detail, self.ui.scrollAreaWidgetContents, self)
             post_widget = post.get_post()
             post_widgets.append(post_widget)
 
@@ -421,7 +313,7 @@ class HomeUI(QMainWindow):
         for _ in range(total_chunks):
             chunk = conn.recv(4096)
             received_data += chunk
-            print(f'chunk {chunk}')
+            # print(f'chunk {chunk}')
         return pickle.loads(received_data)
     def get_all_posts(self):
         print('Getting all posts from the server')
@@ -436,7 +328,7 @@ class HomeUI(QMainWindow):
                     client_socket.sendall(pickle.dumps(request_data))
                     print("Step 3: Receiving response...")
                     response = self.receive_large_data(client_socket)
-                    print("Received response:", response)
+                    # print("Received response:", response)
                     print("Step 4: Unpacking response...")
                     if response.get('success'):
                         print('Success getting all the data')
@@ -458,15 +350,16 @@ class HomeUI(QMainWindow):
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id
         self.user_data = user_data
-        print(f'User ID: {self.user_id}\nUser Data: {self.user_data}')
+        # print(f'User ID: {self.user_id}\nUser Data: {self.user_data}')
         self.ui.name_label.setText(f"Welcome, {self.user_data['username']}")
     def to_profile(self):
-        print('going to profile jaa')
         self.stacked_widget.setCurrentIndex(3)
     def to_history(self):
         self.stacked_widget.setCurrentIndex(5)
     def to_wishlist(self):
         self.stacked_widget.setCurrentIndex(6)
+    def to_collection(self):
+        self.stacked_widget.setCurrentIndex(7)
     
 if __name__ == "__main__":
     app = QApplication(sys.argv)

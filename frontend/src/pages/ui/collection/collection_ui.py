@@ -17,7 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
     QLabel, QLineEdit, QMainWindow, QPushButton,
-    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QScrollArea)
 from .icons_rc import *
 from .logo_rc import *
 from .posts_images_rc import *
@@ -201,8 +201,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setContentsMargins(0, 0, -1, 0)
         self.image_label = QLabel(self.product_frame)
         self.image_label.setObjectName(u"image_label")
-        self.image_label.setMinimumSize(QSize(420, 420))
-        self.image_label.setMaximumSize(QSize(400, 400))
+        self.image_label.setFixedSize(QSize(400, 400))
         self.image_label.setPixmap(QPixmap(u":/post_images/IMG_7107.jpg"))
         self.image_label.setScaledContents(True)
 
@@ -212,6 +211,7 @@ class Ui_MainWindow(object):
         self.frame_3.setObjectName(u"frame_3")
         self.frame_3.setFrameShape(QFrame.StyledPanel)
         self.frame_3.setFrameShadow(QFrame.Raised)
+        self.frame_3.setStyleSheet("QScrollArea{background-color: transparent;}") #add border here
         self.verticalLayout = QVBoxLayout(self.frame_3)
         self.verticalLayout.setSpacing(6)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -265,65 +265,45 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.label_4)
 
-        self.tags_frame = QFrame(self.frame_3)
+        self.tags_frame = QScrollArea(self.frame_3)
         self.tags_frame.setObjectName(u"tags_frame")
         sizePolicy1.setHeightForWidth(self.tags_frame.sizePolicy().hasHeightForWidth())
         self.tags_frame.setSizePolicy(sizePolicy1)
         self.tags_frame.setMaximumSize(QSize(16777215, 40))
-        self.tags_frame.setStyleSheet(u"QPushButton {\n"
-"	background-color: #FFFFFF;\n"
-"    border-radius: 10px;\n"
-"    border: solid;\n"
-"    border-width: 1px;\n"
-"    border-color:rgb(154, 152, 148);\n"
-"}\n"
-"\n"
-"QPushButton::hover {\n"
-"	background-color: #CCCCCC;\n"
-"}")
-        self.tags_frame.setFrameShape(QFrame.StyledPanel)
-        self.tags_frame.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_2 = QHBoxLayout(self.tags_frame)
-        self.horizontalLayout_2.setSpacing(10)
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 5)
-        self.pushButton = QPushButton(self.tags_frame)
-        self.pushButton.setObjectName(u"pushButton")
+        self.tags_frame.setStyleSheet("background-color: transparent;")
+                                #       "border: 1px solid black;") # add border here
+        self.tags_frame_widget = QWidget(self.tags_frame)
+        self.tags_frame_layout = QGridLayout(self.tags_frame_widget)
+        self.tags_frame_widget.setLayout(self.tags_frame_layout)
+        self.tags_frame.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.tags_frame.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+        # self.pushButton = QPushButton(self.tags_frame)
+        # self.pushButton.setObjectName(u"pushButton")
         sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
-        self.pushButton.setSizePolicy(sizePolicy2)
-        self.pushButton.setMinimumSize(QSize(0, 0))
-        font6 = QFont()
-        font6.setFamilies([u"Manrope"])
-        font6.setPointSize(12)
-        self.pushButton.setFont(font6)
+        # sizePolicy2.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
+        # self.pushButton.setSizePolicy(sizePolicy2)
+        # self.pushButton.setMinimumSize(QSize(0, 0))
+        # font6 = QFont()
+        # font6.setFamilies([u"Manrope"])
+        # font6.setPointSize(12)
+        # self.pushButton.setFont(font6)
 
-        self.horizontalLayout_2.addWidget(self.pushButton)
+        # self.pushButton_2 = QPushButton(self.tags_frame)
+        # self.pushButton_2.setObjectName(u"pushButton_2")
+        # sizePolicy2.setHeightForWidth(self.pushButton_2.sizePolicy().hasHeightForWidth())
+        # self.pushButton_2.setSizePolicy(sizePolicy2)
+        # self.pushButton_2.setMinimumSize(QSize(0, 0))
+        # self.pushButton_2.setFont(font6)
 
-        self.pushButton_2 = QPushButton(self.tags_frame)
-        self.pushButton_2.setObjectName(u"pushButton_2")
-        sizePolicy2.setHeightForWidth(self.pushButton_2.sizePolicy().hasHeightForWidth())
-        self.pushButton_2.setSizePolicy(sizePolicy2)
-        self.pushButton_2.setMinimumSize(QSize(0, 0))
-        self.pushButton_2.setFont(font6)
-
-        self.horizontalLayout_2.addWidget(self.pushButton_2)
-
-        self.pushButton_3 = QPushButton(self.tags_frame)
-        self.pushButton_3.setObjectName(u"pushButton_3")
-        sizePolicy2.setHeightForWidth(self.pushButton_3.sizePolicy().hasHeightForWidth())
-        self.pushButton_3.setSizePolicy(sizePolicy2)
-        self.pushButton_3.setMinimumSize(QSize(0, 0))
-        self.pushButton_3.setFont(font6)
-
-        self.horizontalLayout_2.addWidget(self.pushButton_3)
-
-        self.horizontalSpacer = QSpacerItem(80, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
-
-        self.horizontalLayout_2.addItem(self.horizontalSpacer)
-
+        # self.pushButton_3 = QPushButton(self.tags_frame)
+        # self.pushButton_3.setObjectName(u"pushButton_3")
+        # sizePolicy2.setHeightForWidth(self.pushButton_3.sizePolicy().hasHeightForWidth())
+        # self.pushButton_3.setSizePolicy(sizePolicy2)
+        # self.pushButton_3.setMinimumSize(QSize(0, 0))
+        # self.pushButton_3.setFont(font6)
 
         self.verticalLayout.addWidget(self.tags_frame)
 
@@ -354,55 +334,90 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.label_5)
 
-        self.date_label = QLabel(self.frame_3)
-        self.date_label.setObjectName(u"date_label")
-        sizePolicy1.setHeightForWidth(self.date_label.sizePolicy().hasHeightForWidth())
-        self.date_label.setSizePolicy(sizePolicy1)
-        self.date_label.setMaximumSize(QSize(16777215, 16777215))
         font7 = QFont()
         font7.setFamilies([u"Manrope"])
-        font7.setPointSize(12)
-        font7.setBold(False)
-        self.date_label.setFont(font7)
+        font7.setPointSize(14)
+        font7.setBold(True)
 
-        self.verticalLayout.addWidget(self.date_label)
+        self.product_type_widget = QWidget(self.frame_3)
+        self.product_type_layout = QHBoxLayout(self.product_type_widget)
+        self.product_type_layout.setContentsMargins(0, 0, 0, 0)
+        self.product_type_layout.setAlignment(Qt.AlignLeft|Qt.AlignTop)
+        self.product_type_widget.setLayout(self.product_type_layout)
+        self.product_type_widget.setFont(font7)
+        self.verticalLayout.addWidget(self.product_type_widget)
 
-        self.mode_label = QLabel(self.frame_3)
+        self.mode_widget = QWidget(self.frame_3)
+        self.mode_layout = QHBoxLayout(self.mode_widget)
+        self.mode_layout.setAlignment(Qt.AlignLeft|Qt.AlignTop)
+        self.mode_layout.setContentsMargins(0, 0, 0, 0)
+        self.mode_widget.setLayout(self.mode_layout)
+        self.mode_label = QLabel(self.mode_widget)
         self.mode_label.setObjectName(u"mode_label")
         sizePolicy1.setHeightForWidth(self.mode_label.sizePolicy().hasHeightForWidth())
         self.mode_label.setSizePolicy(sizePolicy1)
         self.mode_label.setMaximumSize(QSize(16777215, 16777215))
         self.mode_label.setFont(font7)
+        self.mode_layout.addWidget(self.mode_label)
+        self.verticalLayout.addWidget(self.mode_widget)
 
-        self.verticalLayout.addWidget(self.mode_label)
+        self.live_date_widget = QWidget(self.frame_3)
+        self.live_date_layout = QHBoxLayout(self.live_date_widget)
+        self.live_date_layout.setContentsMargins(0, 0, 0, 0)
+        self.live_date_layout.setAlignment(Qt.AlignLeft|Qt.AlignTop)
+        self.live_date_widget.setLayout(self.live_date_layout)
+        self.live_date_widget.setFont(font7)
+        self.date_label = QLabel(self.live_date_widget)
+        self.live_date_layout.addWidget(self.date_label)
+        self.date_label.setObjectName(u"date_label")
+        sizePolicy1.setHeightForWidth(self.date_label.sizePolicy().hasHeightForWidth())
+        self.date_label.setSizePolicy(sizePolicy1)
+        self.date_label.setMaximumSize(QSize(16777215, 16777215))
+        self.date_label.setFont(font7)
+        self.verticalLayout.addWidget(self.live_date_widget)
 
-        self.description_label = QLabel(self.frame_3)
+        self.description_area = QScrollArea(self.frame_3)
+        self.description_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.description_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.description_area.setMinimumSize(QSize(610, 50))
+        self.description_area.setMaximumSize(QSize(610, 100))
+        self.description_area.setStyleSheet('background-color: transparent;')
+        self.description_widget = QWidget(self.description_area)
+        self.description_widget.setMinimumSize(QSize(610, 50))
+        self.description_widget.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+        self.description_layout = QHBoxLayout(self.description_widget)
+        self.description_layout.setSpacing(5)
+        self.description_layout.setContentsMargins(0, 0, 0, 0)
+        self.description_layout.setAlignment(Qt.AlignLeft|Qt.AlignTop)
+        self.description_widget.setLayout(self.description_layout)
+        self.description_area.setWidget(self.description_widget)
+        self.description_label = QLabel(self.description_widget)
+        self.description_layout.addWidget(self.description_label)
         self.description_label.setObjectName(u"description_label")
         sizePolicy2.setHeightForWidth(self.description_label.sizePolicy().hasHeightForWidth())
         self.description_label.setSizePolicy(sizePolicy2)
         self.description_label.setMaximumSize(QSize(16777215, 16777215))
         self.description_label.setFont(font7)
         self.description_label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
-
-        self.verticalLayout.addWidget(self.description_label)
+        self.verticalLayout.addWidget(self.description_area)
 
         self.frame_5 = QFrame(self.frame_3)
         self.frame_5.setObjectName(u"frame_5")
         sizePolicy1.setHeightForWidth(self.frame_5.sizePolicy().hasHeightForWidth())
         self.frame_5.setSizePolicy(sizePolicy1)
         self.frame_5.setMaximumSize(QSize(16777215, 40))
-        self.frame_5.setStyleSheet(u"QPushButton {\n"
-"	background-color: #FFFFFF;\n"
-"    border-radius: 10px;\n"
-"    border: solid;\n"
-"    border-width: 1px;\n"
-"    border-color:rgb(154, 152, 148);\n"
-"}\n"
-"\n"
-"\n"
-"QPushButton::hover {\n"
-"	background-color: #CCCCCC;\n"
-"}")
+#         self.frame_5.setStyleSheet(u"QPushButton {\n"
+# "	background-color: #FFFFFF;\n"
+# "    border-radius: 10px;\n"
+# "    border: solid;\n"
+# "    border-width: 1px;\n"
+# "    border-color:rgb(154, 152, 148);\n"
+# "}\n"
+# "\n"
+# "\n"
+# "QPushButton::hover {\n"
+# "	background-color: #CCCCCC;\n"
+# "}")
         self.frame_5.setFrameShape(QFrame.StyledPanel)
         self.frame_5.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_3 = QHBoxLayout(self.frame_5)
@@ -510,18 +525,18 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.frame_9.sizePolicy().hasHeightForWidth())
         self.frame_9.setSizePolicy(sizePolicy1)
         self.frame_9.setMaximumSize(QSize(16777215, 40))
-        self.frame_9.setStyleSheet(u"QPushButton {\n"
-"	background-color: #FFFFFF;\n"
-"    border-radius: 10px;\n"
-"    border: solid;\n"
-"    border-width: 1px;\n"
-"    border-color:rgb(154, 152, 148)\n"
-"}\n"
-"\n"
-"\n"
-"QPushButton::hover {\n"
-"	background-color: #CCCCCC;\n"
-"}")
+#         self.frame_9.setStyleSheet(u"QPushButton {\n"
+# "	background-color: #FFFFFF;\n"
+# "    border-radius: 10px;\n"
+# "    border: solid;\n"
+# "    border-width: 1px;\n"
+# "    border-color:rgb(154, 152, 148);\n"
+# "}\n"
+# "\n"
+# "\n"
+# "QPushButton::hover {\n"
+# "	background-color: #CCCCCC;\n"
+# "}")
         self.frame_9.setFrameShape(QFrame.StyledPanel)
         self.frame_9.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_6 = QHBoxLayout(self.frame_9)
@@ -575,18 +590,18 @@ class Ui_MainWindow(object):
         self.frame_7.setFrameShadow(QFrame.Raised)
         self.gridLayout_2 = QGridLayout(self.frame_7)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.jion_date_label = QLabel(self.frame_7)
-        self.jion_date_label.setObjectName(u"jion_date_label")
-        sizePolicy1.setHeightForWidth(self.jion_date_label.sizePolicy().hasHeightForWidth())
-        self.jion_date_label.setSizePolicy(sizePolicy1)
-        self.jion_date_label.setMaximumSize(QSize(16777215, 16777215))
+        self.join_date_label = QLabel(self.frame_7)
+        self.join_date_label.setObjectName(u"join_date_label")
+        sizePolicy1.setHeightForWidth(self.join_date_label.sizePolicy().hasHeightForWidth())
+        self.join_date_label.setSizePolicy(sizePolicy1)
+        self.join_date_label.setMaximumSize(QSize(16777215, 16777215))
         font11 = QFont()
         font11.setFamilies([u"Manrope"])
         font11.setPointSize(14)
         font11.setBold(False)
-        self.jion_date_label.setFont(font11)
+        self.join_date_label.setFont(font11)
 
-        self.gridLayout_2.addWidget(self.jion_date_label, 2, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.join_date_label, 2, 0, 1, 1)
 
         self.follower_label = QLabel(self.frame_7)
         self.follower_label.setObjectName(u"follower_label")
@@ -615,7 +630,6 @@ class Ui_MainWindow(object):
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
-
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.search_icon.setText("")
@@ -632,20 +646,20 @@ class Ui_MainWindow(object):
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Collection", None))
         self.name_label.setText(QCoreApplication.translate("MainWindow", u"Collection_name", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Tags", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"tag_1", None))
-        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"tag_2", None))
-        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"tag_3", None))
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Information", None))
-        self.date_label.setText(QCoreApplication.translate("MainWindow", u"Sale Begins: Mon 26 Jan 19:00", None))
-        self.mode_label.setText(QCoreApplication.translate("MainWindow", u"Mode: CF NO CC", None))
-        self.description_label.setText(QCoreApplication.translate("MainWindow", u"Description: awooooooooooooooo ga", None))
+        # self.pushButton.setText(QCoreApplication.translate("MainWindow", u"tag_1", None))
+        # self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"tag_2", None))
+        # self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"tag_3", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Post Details", None))
+        self.date_label.setText(QCoreApplication.translate("MainWindow", u"Scheduled For:", None))
+        self.mode_label.setText(QCoreApplication.translate("MainWindow", u"Sales Type:", None))
+        self.description_label.setText(QCoreApplication.translate("MainWindow", u"Description:", None))
         self.add_to_wishlist_bt.setText(QCoreApplication.translate("MainWindow", u"Add to Wishlist", None))
         self.view_products_bt.setText(QCoreApplication.translate("MainWindow", u"View All Products", None))
         self.label_9.setText("")
         self.store_name_label.setText(QCoreApplication.translate("MainWindow", u"store_name", None))
         self.contact_button.setText(QCoreApplication.translate("MainWindow", u"Contact", None))
         self.visit_shop_button.setText(QCoreApplication.translate("MainWindow", u"Visit Shop", None))
-        self.jion_date_label.setText(QCoreApplication.translate("MainWindow", u"Joined:  20/03/24", None))
+        self.join_date_label.setText(QCoreApplication.translate("MainWindow", u"Joined:  20/03/24", None))
         self.follower_label.setText(QCoreApplication.translate("MainWindow", u"Followers:  2", None))
         self.col_count_label.setText(QCoreApplication.translate("MainWindow", u"Collections:  71", None))
     # retranslateUi
