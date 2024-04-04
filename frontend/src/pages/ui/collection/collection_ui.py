@@ -160,6 +160,9 @@ class Ui_MainWindow(object):
         self.page_label.setGeometry(QRect(30, 20, 71, 30))
         self.page_label.setFont(font2)
         self.page_label.setAlignment(Qt.AlignCenter)
+        self.page_widget = QWidget(self.centralwidget)
+        self.page_widget_layout = QHBoxLayout()
+        self.page_widget.setLayout(self.page_widget_layout)
         self.frame_2 = QFrame(self.header)
         self.frame_2.setObjectName(u"frame_2")
         self.frame_2.setGeometry(QRect(0, 10, 120, 71))
@@ -175,7 +178,7 @@ class Ui_MainWindow(object):
         self.curate_label.setPixmap(QPixmap(u":/logos/curatelogo.png"))
         self.curate_label.setScaledContents(True)
         self.curate_label.setAlignment(Qt.AlignCenter)
-        self.path_label = QLabel(self.centralwidget)
+        self.path_label = QLabel()
         self.path_label.setObjectName(u"path_label")
         self.path_label.setGeometry(QRect(60, 110, 591, 61))
         font4 = QFont()
@@ -186,6 +189,10 @@ class Ui_MainWindow(object):
         self.path_label.setStyleSheet(u"QLabel {\n"
 "	color: #8C237C;\n"
 "}")
+        self.path_widget = QWidget(self.centralwidget)
+        self.path_widget.setGeometry(QRect(60, 110, 591, 61))
+        self.path_widget.setFont(font4)
+        self.path_widget.setStyleSheet("color: #8C237C;\n")
         self.path_label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
         self.product_frame = QFrame(self.centralwidget)
         self.product_frame.setObjectName(u"product_frame")
@@ -212,6 +219,7 @@ class Ui_MainWindow(object):
         self.frame_3.setFrameShape(QFrame.StyledPanel)
         self.frame_3.setFrameShadow(QFrame.Raised)
         self.frame_3.setStyleSheet("QScrollArea{background-color: transparent;}") #add border here
+        self.frame_3.setMaximumHeight(400)
         self.verticalLayout = QVBoxLayout(self.frame_3)
         self.verticalLayout.setSpacing(6)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -250,6 +258,7 @@ class Ui_MainWindow(object):
         self.line.setLineWidth(2)
         self.line.setFrameShape(QFrame.HLine)
         self.line.setFrameShadow(QFrame.Sunken)
+        # self.line.setStyleSheet("QFrame#line { color: black; border: 0.1em solid black; }")
 
         self.verticalLayout.addWidget(self.line)
 
@@ -319,7 +328,7 @@ class Ui_MainWindow(object):
         self.line_2.setLineWidth(2)
         self.line_2.setFrameShape(QFrame.HLine)
         self.line_2.setFrameShadow(QFrame.Sunken)
-
+        # self.line_2.setStyleSheet("QFrame#line_2 { color: black; border: 0.1em solid black; }")
         self.verticalLayout.addWidget(self.line_2)
 
         self.label_5 = QLabel(self.frame_3)
@@ -342,6 +351,7 @@ class Ui_MainWindow(object):
         self.product_type_widget = QWidget(self.frame_3)
         self.product_type_layout = QHBoxLayout(self.product_type_widget)
         self.product_type_layout.setContentsMargins(0, 0, 0, 0)
+        self.product_type_layout.setSpacing(0)
         self.product_type_layout.setAlignment(Qt.AlignLeft|Qt.AlignTop)
         self.product_type_widget.setLayout(self.product_type_layout)
         self.product_type_widget.setFont(font7)
@@ -351,54 +361,49 @@ class Ui_MainWindow(object):
         self.mode_layout = QHBoxLayout(self.mode_widget)
         self.mode_layout.setAlignment(Qt.AlignLeft|Qt.AlignTop)
         self.mode_layout.setContentsMargins(0, 0, 0, 0)
+        self.mode_layout.setSpacing(0)
         self.mode_widget.setLayout(self.mode_layout)
-        self.mode_label = QLabel(self.mode_widget)
-        self.mode_label.setObjectName(u"mode_label")
+        self.mode_label = QLabel()
         sizePolicy1.setHeightForWidth(self.mode_label.sizePolicy().hasHeightForWidth())
         self.mode_label.setSizePolicy(sizePolicy1)
         self.mode_label.setMaximumSize(QSize(16777215, 16777215))
-        self.mode_label.setFont(font7)
-        self.mode_layout.addWidget(self.mode_label)
         self.verticalLayout.addWidget(self.mode_widget)
 
         self.live_date_widget = QWidget(self.frame_3)
         self.live_date_layout = QHBoxLayout(self.live_date_widget)
         self.live_date_layout.setContentsMargins(0, 0, 0, 0)
+        self.live_date_layout.setSpacing(0)
         self.live_date_layout.setAlignment(Qt.AlignLeft|Qt.AlignTop)
         self.live_date_widget.setLayout(self.live_date_layout)
         self.live_date_widget.setFont(font7)
-        self.date_label = QLabel(self.live_date_widget)
-        self.live_date_layout.addWidget(self.date_label)
+        self.date_label = QLabel()
         self.date_label.setObjectName(u"date_label")
         sizePolicy1.setHeightForWidth(self.date_label.sizePolicy().hasHeightForWidth())
         self.date_label.setSizePolicy(sizePolicy1)
         self.date_label.setMaximumSize(QSize(16777215, 16777215))
-        self.date_label.setFont(font7)
         self.verticalLayout.addWidget(self.live_date_widget)
 
         self.description_area = QScrollArea(self.frame_3)
         self.description_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.description_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.description_area.setMinimumSize(QSize(610, 50))
-        self.description_area.setMaximumSize(QSize(610, 100))
+        self.description_area.setFixedSize(QSize(630, 50))
         self.description_area.setStyleSheet('background-color: transparent;')
         self.description_widget = QWidget(self.description_area)
-        self.description_widget.setMinimumSize(QSize(610, 50))
+        self.description_widget.setMinimumSize(QSize(630, 50))
         self.description_widget.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
         self.description_layout = QHBoxLayout(self.description_widget)
         self.description_layout.setSpacing(5)
         self.description_layout.setContentsMargins(0, 0, 0, 0)
+        self.description_layout.setSpacing(0)
         self.description_layout.setAlignment(Qt.AlignLeft|Qt.AlignTop)
         self.description_widget.setLayout(self.description_layout)
         self.description_area.setWidget(self.description_widget)
-        self.description_label = QLabel(self.description_widget)
-        self.description_layout.addWidget(self.description_label)
+        self.description_label = QLabel()
         self.description_label.setObjectName(u"description_label")
         sizePolicy2.setHeightForWidth(self.description_label.sizePolicy().hasHeightForWidth())
         self.description_label.setSizePolicy(sizePolicy2)
         self.description_label.setMaximumSize(QSize(16777215, 16777215))
-        self.description_label.setFont(font7)
-        self.description_label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
+        self.description_label.setAlignment(Qt.AlignLeft)
         self.verticalLayout.addWidget(self.description_area)
 
         self.frame_5 = QFrame(self.frame_3)
@@ -406,25 +411,25 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.frame_5.sizePolicy().hasHeightForWidth())
         self.frame_5.setSizePolicy(sizePolicy1)
         self.frame_5.setMaximumSize(QSize(16777215, 40))
-#         self.frame_5.setStyleSheet(u"QPushButton {\n"
-# "	background-color: #FFFFFF;\n"
-# "    border-radius: 10px;\n"
-# "    border: solid;\n"
-# "    border-width: 1px;\n"
-# "    border-color:rgb(154, 152, 148);\n"
-# "}\n"
-# "\n"
-# "\n"
-# "QPushButton::hover {\n"
-# "	background-color: #CCCCCC;\n"
-# "}")
+        self.frame_5.setStyleSheet(u"QPushButton {\n"
+"	background-color: #FFFFFF;\n"
+"    border-radius: 10px;\n"
+"    border: solid;\n"
+"    border-width: 1px;\n"
+"    border-color:rgb(154, 152, 148);\n"
+"}\n"
+"\n"
+"\n"
+"QPushButton::hover {\n"
+"	background-color: #CCCCCC;\n"
+"}")
         self.frame_5.setFrameShape(QFrame.StyledPanel)
         self.frame_5.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_3 = QHBoxLayout(self.frame_5)
         self.horizontalLayout_3.setSpacing(15)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.add_to_wishlist_bt = QPushButton(self.frame_5)
+        self.add_to_wishlist_bt = QPushButton()
         self.add_to_wishlist_bt.setObjectName(u"add_to_wishlist_bt")
         sizePolicy2.setHeightForWidth(self.add_to_wishlist_bt.sizePolicy().hasHeightForWidth())
         self.add_to_wishlist_bt.setSizePolicy(sizePolicy2)
@@ -434,30 +439,54 @@ class Ui_MainWindow(object):
         font8.setPointSize(14)
         self.add_to_wishlist_bt.setFont(font8)
 
-        self.horizontalLayout_3.addWidget(self.add_to_wishlist_bt)
+        # self.horizontalLayout_3.addWidget(self.add_to_wishlist_bt)
 
-        self.view_products_bt = QPushButton(self.frame_5)
+        self.view_products_bt = QPushButton()
         self.view_products_bt.setObjectName(u"view_products_bt")
         sizePolicy2.setHeightForWidth(self.view_products_bt.sizePolicy().hasHeightForWidth())
         self.view_products_bt.setSizePolicy(sizePolicy2)
         self.view_products_bt.setMinimumSize(QSize(0, 0))
         self.view_products_bt.setFont(font8)
+        # self.horizontalLayout_3.addWidget(self.view_products_bt)
 
-        self.horizontalLayout_3.addWidget(self.view_products_bt)
+        self.next_item_bt = QPushButton()
+        sizePolicy2.setHeightForWidth(self.view_products_bt.sizePolicy().hasHeightForWidth())
+        self.next_item_bt.setSizePolicy(sizePolicy2)
+        self.next_item_bt.setMinimumSize(QSize(0, 0))
+        self.next_item_bt.setFont(font8)
+        self.next_item_bt.setText('Next Item')
 
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
+        self.prev_item_bt = QPushButton()
+        sizePolicy2.setHeightForWidth(self.view_products_bt.sizePolicy().hasHeightForWidth())
+        self.prev_item_bt.setSizePolicy(sizePolicy2)
+        self.prev_item_bt.setMinimumSize(QSize(0, 0))
+        self.prev_item_bt.setFont(font8)
+        self.prev_item_bt.setText('Prev Item')
 
-        self.horizontalLayout_3.addItem(self.horizontalSpacer_2)
+        self.go_to_item = QPushButton()
+        sizePolicy2.setHeightForWidth(self.view_products_bt.sizePolicy().hasHeightForWidth())
+        self.go_to_item.setSizePolicy(sizePolicy2)
+        self.go_to_item.setMinimumSize(QSize(0, 0))
+        self.go_to_item.setFont(font8)
+        self.go_to_item.setText('Go to Items')
 
+        self.back_to_col = QPushButton()
+        sizePolicy2.setHeightForWidth(self.view_products_bt.sizePolicy().hasHeightForWidth())
+        self.back_to_col.setSizePolicy(sizePolicy2)
+        self.back_to_col.setMinimumSize(QSize(0, 0))
+        self.back_to_col.setFont(font8)
+        self.back_to_col.setText('Go Back to Collection')
 
+        # self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
+
+        # self.horizontalLayout_3.addItem(self.horizontalSpacer_2)
         self.verticalLayout.addWidget(self.frame_5)
-
 
         self.horizontalLayout.addWidget(self.frame_3)
 
         self.shop_frame = QFrame(self.centralwidget)
         self.shop_frame.setObjectName(u"shop_frame")
-        self.shop_frame.setGeometry(QRect(60, 610, 1080, 140))
+        self.shop_frame.setGeometry(QRect(60, 600, 1080, 140))
         self.shop_frame.setMinimumSize(QSize(1080, 140))
         self.shop_frame.setMaximumSize(QSize(16777215, 140))
         font9 = QFont()
@@ -581,6 +610,7 @@ class Ui_MainWindow(object):
         self.line_3.setLineWidth(2)
         self.line_3.setFrameShape(QFrame.VLine)
         self.line_3.setFrameShadow(QFrame.Sunken)
+        # self.line_3.setStyleSheet("QFrame#line_3 { color: black; border: 0.1em solid black; }")
 
         self.horizontalLayout_4.addWidget(self.line_3)
 
@@ -649,12 +679,12 @@ class Ui_MainWindow(object):
         # self.pushButton.setText(QCoreApplication.translate("MainWindow", u"tag_1", None))
         # self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"tag_2", None))
         # self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"tag_3", None))
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Post Details", None))
-        self.date_label.setText(QCoreApplication.translate("MainWindow", u"Scheduled For:", None))
-        self.mode_label.setText(QCoreApplication.translate("MainWindow", u"Sales Type:", None))
-        self.description_label.setText(QCoreApplication.translate("MainWindow", u"Description:", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"", None))
+        self.date_label.setText(QCoreApplication.translate("MainWindow", u":", None))
+        self.mode_label.setText(QCoreApplication.translate("MainWindow", u"", None))
+        self.description_label.setText(QCoreApplication.translate("MainWindow", u"", None))
         self.add_to_wishlist_bt.setText(QCoreApplication.translate("MainWindow", u"Add to Wishlist", None))
-        self.view_products_bt.setText(QCoreApplication.translate("MainWindow", u"View All Products", None))
+        self.view_products_bt.setText(QCoreApplication.translate("MainWindow", u"View All Items", None))
         self.label_9.setText("")
         self.store_name_label.setText(QCoreApplication.translate("MainWindow", u"store_name", None))
         self.contact_button.setText(QCoreApplication.translate("MainWindow", u"Contact", None))
@@ -663,4 +693,3 @@ class Ui_MainWindow(object):
         self.follower_label.setText(QCoreApplication.translate("MainWindow", u"Followers:  2", None))
         self.col_count_label.setText(QCoreApplication.translate("MainWindow", u"Collections:  71", None))
     # retranslateUi
-

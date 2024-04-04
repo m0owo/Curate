@@ -29,8 +29,6 @@ class Post():
         post_layout.setAlignment(Qt.AlignCenter)
         post_layout.setContentsMargins(0, 0, 0, 0)
         post_layout.setSpacing(0)
-        if not self.post:
-            print("gay")
         self.post.setLayout(post_layout)
         self.post.setMinimumSize(QSize(self.POST_WIDTH, 300))
         self.post.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
@@ -241,7 +239,7 @@ class Post():
         print("Post clicked!")
         
 class HomeUI(QMainWindow):
-    clicked = Signal(object, list)
+    post_clicked = Signal(object, list)
     def __init__(self, stacked_widget, server_host, server_port):
         QMainWindow.__init__(self, None)
         self.stacked_widget = stacked_widget
@@ -298,20 +296,21 @@ class HomeUI(QMainWindow):
 
         # drawing tags
         self.get_pop_tags()
-        # pop_tags = {"Crochet", "Y2K", "Summer Outfit", "Bam Yang Gang", "Acubi"}
-        # for pop_tag in pop_tags:
-        #     TagButton(pop_tag, self.ui.tags_frame)
-            # self.ui.tags_layout.addWidget(tag_button.get_tag_button())
         
         # drawing posts
         self.get_all_posts()
 
     def handle_post_click(self, details):
-        sender = ('Home', 1)
-        self.clicked.connect(self.to_collection)
-        self.clicked.emit(details, [sender])
+        # sender information is for the path to product and the stackedwidget and stackedwidget index
+        # page > collection > item
+        sender = ('Home', self.stacked_widget, 1)
+        self.post_clicked.connect(self.to_collection) 
+        
+        # emits the signal with the product details and the sender info
+        self.post_clicked.emit(details, [sender])
 
     def populate_posts(self, post_details):
+        #clear the scroll area
         clear_widget(self.ui.scrollAreaWidgetContents)
         self.ui.scrollAreaWidgetContents.setMinimumSize(0, 0)
         self.ui.gridLayout.setSpacing(20)
@@ -384,9 +383,12 @@ class HomeUI(QMainWindow):
         self.populate_tags(pop_tags)
 
     def populate_tags(self, pop_tags):
+        print("Populating tags...")
+        print("Pop tags:", pop_tags)
         for pop_tag in pop_tags:
+            print("Adding tag:", pop_tag)
             TagButton(pop_tag, self.ui.tags_frame)
-        return pop_tags
+        print("Tags populated successfully.")
     
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id

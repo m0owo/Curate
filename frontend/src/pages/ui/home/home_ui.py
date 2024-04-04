@@ -191,7 +191,7 @@ class Ui_MainWindow(object):
         self.tags_layout = QHBoxLayout(self.tags_frame)
         self.tags_layout.setSpacing(1)
         self.tags_frame.setLayout(self.tags_layout)
-        self.tagbutton = QPushButton(self.tags_frame)
+        self.tagbutton = QPushButton()
         self.tagbutton.setObjectName(u"tagbutton")
         self.tagbutton.setGeometry(QRect(30, 20, 121, 41))
         self.tagbutton.setStyleSheet(u"")

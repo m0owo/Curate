@@ -61,7 +61,7 @@ class TagButton():
         self.temp_text = text.lower()
         self.container = container
         if container:
-            self.tag_button = QPushButton(self.container)
+            self.tag_button = QPushButton()
             self.container.layout().addWidget(self.tag_button)
         else:
             self.tag_button = QPushButton()
@@ -110,7 +110,7 @@ class ProductTypeTagButton(PostTagButton):
                                       "border-radius: 5px;}QPushButton:hover{background-color:#fdd78a; color:#fff5e1;}")
 def clear_frame(frame):
     for widget in frame.findChildren(QPushButton):
-        widget.deleteLater()
+        frame.layout().removeWidget(widget)
 
 def remove_children(frame):
     layout = frame.layout()  # Get the layout managing the frame
@@ -125,10 +125,50 @@ def remove_children(frame):
                 if sublayout:
                     remove_children(sublayout.parentWidget())  # Recursively remove children
 
+# def clear_widget(widget):
+#     for i in reversed(range(widget.layout().count())):
+#         widget.layout().itemAt(i).widget().setParent(None)
 
 def clear_widget(widget):
-    for i in reversed(range(widget.layout().count())):
-        widget.layout().itemAt(i).widget().setParent(None)
+    # If widget is a layout, clear its contents
+    if hasattr(widget, "count"):
+        for i in reversed(range(widget.count())):
+            item = widget.itemAt(i)
+            if item is not None:
+                widget.removeItem(item)
+    # If widget is a container, clear its child widgets
+    elif hasattr(widget, "layout"):
+        layout = widget.layout()
+        if layout is not None:
+            for i in reversed(range(layout.count())):
+                item = layout.itemAt(i)
+                if item is not None and item.widget() is not None:
+                    item.widget().setParent(None)
+    # If widget is a single widget, set its parent to None
+    elif isinstance(widget, QWidget):
+        widget.setParent(None)
+
+
+def remove_cur_layout(label):
+    current_layout = label.layout()
+    if current_layout:
+        # Remove the layout from the label
+        while current_layout.count():
+            item = current_layout.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
+            else:
+                layout = item.layout()
+                if layout is not None:
+                    while layout.count():
+                        inner_item = layout.takeAt(0)
+                        inner_widget = inner_item.widget()
+                        if inner_widget is not None:
+                            inner_widget.deleteLater()
+                    layout.deleteLater()
+        del current_layout
+
 
 def border_radius(pixmap, radius):
     mask = QPixmap(pixmap.size())
@@ -173,10 +213,11 @@ class PathDivider(QLabel):
 
 class PathSource(QLabel):
     clicked = Signal(object)
-    def __init__(self, source_name, stack_index, collection_ui):
+    def __init__(self, source_name, stack, stack_index, collection_ui):
         super().__init__()
         self.setText(source_name)
         self.stack_index = stack_index
+        self.stack = stack
         self.clicked.connect(collection_ui.handle_path_click)
     def mousePressEvent(self, event):
         print("Mouse pressed on path")
@@ -186,3 +227,5 @@ class PathSource(QLabel):
         return self
     def get_stack_index(self):
         return self.stack_index
+    def get_name(self):
+        return self.text()
