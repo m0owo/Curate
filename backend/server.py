@@ -55,20 +55,11 @@ def handle_registration(data):
         return {'success': False, 'message': str(e)}
 
 def get_user_data(data):
-    user_id = data.get('user_id')
+    user_name = data.get('username')
     accounts = root.accounts
-    if user_id in accounts:
-        user = accounts[user_id]
+    if user_name in accounts:
+        user_data = accounts[user_name].serialize()
         #Add attributes as needed
-        user_data = {
-            'name': user.username,  
-            'mail': user.mail,
-            'phone': user.phone,
-            'address' : user.address,
-            'follower' : user.follower,
-            'following' : user.following,
-            'sex' : user.sex
-        }
         return {'success': True, 'user_data': user_data}
     else:
         return {'success': False, 'message': 'User not found'}
@@ -127,7 +118,25 @@ def handle_save_new_info(data_dict):
             return {'success': False, 'message': 'Account not found'}
     except Exception as e:
         return {'success': False, 'message': str(e)}
-    
+
+def handle_new_address(data_dict):
+    try:
+        new_info = data_dict.get('new_info')
+        username = data_dict.get('username')
+        
+        account = root.accounts[username]
+        if account:
+            new_address = Address(new_info["name"], new_info["phone"], new_info["province"], new_info["district"], 
+                                  new_info["sub_district"], new_info["postal_code"], new_info["details"])
+            account.addresses.append(new_address)
+
+            transaction.commit()
+            return {'success': True, 'message': 'New address saved successfully'}
+        else:
+            return {'success': False, 'message': 'Account not found'}
+    except Exception as e:
+        return {'success': False, 'message': str(e)}
+        
 def handle_request(conn):
     try:
         print("Handling request...")
@@ -157,6 +166,10 @@ def handle_request(conn):
                 print("Calling get_all_orders()")
                 response = get_all_orders()
                 send_large_data(conn, response)
+            elif action == 'save_new_address':
+                response = handle_new_address(data_dict)
+            elif action == "get_user_data":
+                response = get_user_data(data_dict)
             else:
                 print("Invalid action")
                 response = {'success': False, 'message': 'Invalid action'}

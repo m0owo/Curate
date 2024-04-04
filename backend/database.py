@@ -21,6 +21,7 @@ from frontend.public.images.post_images.db_test_pics import *
 images_path = str(root_dir / 'frontend' / 'public' / 'images' / 'post_images' / 'db_test_pics') + '/'
 images_path_ms = 'frontend/public/images/post_images/db_test_pics/'
 images_path_putter = 'C:\school\Curate\\frontend\public\images\post_images\db_test_pics\\'
+images_path_k = r'C:\Users\Miki Ajiki\Desktop\Curate\frontend\public\images\post_images\db_test_pics\\'
 
 # # creating a smaller version of the image
 # def create_thumbnail(image_path, thumbnail_size=(230, 230)):
@@ -41,7 +42,7 @@ images_path_putter = 'C:\school\Curate\\frontend\public\images\post_images\db_te
 
 # getting webP image data
 def get_webp_data(image_name):
-    full_image_path = images_path_putter + image_name
+    full_image_path = images_path_k + image_name
     try:
         with Image.open(full_image_path) as img:
             webp_data = io.BytesIO()
@@ -369,7 +370,7 @@ class Account(persistent.Persistent):
         self.phone_number = ""
         self.username = username
         self.birthdate = None
-        self.addresses = persistent.list.PersistentList()  # Correct attribute name
+        self.addresses = persistent.list.PersistentList()
         self.follower = 0
         self.following = 0
         self.sex = sex
@@ -398,9 +399,12 @@ class Account(persistent.Persistent):
         self.products.add(product.get_id()) #id of the product
 
     def print_info(self):
+        serialized_addresses = [address.serialize() for address in self.addresses]
         print(f'----User Info---\nEmail: {self.email}\n'
               f'Password: {self.password}\n'
-              f'Username: {self.username}\n')
+              f'Username: {self.username}\n'
+              f'Adderres: {serialized_addresses}')
+
 
     def serialize(self):
         serialized_addresses = [address.serialize() for address in self.addresses]
@@ -442,16 +446,26 @@ class Admin(Account):
     def __init__(self, id, email, password, username = ""):
         super().__init__(id, email, password, username)
         
-# class Customer(Account):
-#     def __init__(self, id, email, password, username = ""):
-#         super().__init__(id, email, password, username)
+class Customer(Account):
+    def __init__(self, id, email, password, username = ""):
+        super().__init__(id, email, password, username)
+        self.wishlists = persistent.list.PersistentList()
         
-# class Seller(Account):
-#     def __init__(self, id, email, password, username = ""):
-#         super().__init__(id, email, password, username)
+class Seller(Account):
+    def __init__(self, id, email, password, username = ""):
+        super().__init__(id, email, password, username)
         
-#     def __init__(self, email, password):
-#         super().__init__(email, password)
+
+class Store:
+    def __init__(self, user_name, store_name, email, phone_num, description, picture):
+        self.user_name = user_name
+        self.store_name = store_name
+        self.email = email
+        self.phone_num = phone_num
+        self.description = description
+        self.picture = self.picture
+        self.items = persistent.list.PersistentList()
+        self.collections = persistent.list.PersistentList()
         
 # accounts
 # key value = username

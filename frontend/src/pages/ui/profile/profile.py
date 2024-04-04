@@ -2,9 +2,10 @@ from .profile_ui import Ui_Dialog
 from .profile_address_ui import Ui_Dialog as Ui_Dialog_Address
 from .add_address_ui import Ui_Dialog as Ui_Add_Address
 from PySide6.QtWidgets import *
-from PySide6.QtCore import QDate, Qt
+from PySide6.QtCore import *
 import socket, pickle
 import json, os
+from PySide6.QtGui import *
 
 # Get the directory of the current script (profile.py)
 current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -23,7 +24,74 @@ with open(districts_file_path, 'r', encoding='utf-8') as f:
 
 with open(sub_districts_file_path, 'r', encoding='utf-8') as f:
     sub_districts = json.load(f)
+    
+def clear_frame(frame):
+        for widget in frame.findChildren(QPushButton):
+            widget.deleteLater()
 
+def clear_widget(widget):
+    for i in reversed(range(widget.layout().count())):
+        widget.layout().itemAt(i).widget().setParent(None)
+        
+def clear_layout(layout):
+    while layout.count():
+        item = layout.takeAt(0)
+        widget = item.widget()
+        if widget is not None:
+            widget.deleteLater()
+class Post():
+    def __init__(self, details, container):
+        if details:
+            self.name = details.get('name')
+            self.phone_number = details.get('phone_number')
+            self.details = details.get('details')
+            self.sub_district = details.get('sub_district')
+            self.district = details.get('district')
+            self.province = details.get('province')
+            self.postal_code = details.get('postal')
+            self.container = container
+            self.container.setStyleSheet(u"border: None;")
+
+            info_text = f"{self.name} {self.phone_number}"
+            self.address = f"{self.details} {self.sub_district} {self.district} {self.province} {self.postal_code}"
+            
+            # Create a main widget to hold the info and address_label
+            self.main_widget = QWidget()
+            self.main_widget.setStyleSheet(u"border: 1px solid black;")
+            main_layout = QVBoxLayout(self.main_widget)
+            main_layout.setAlignment(Qt.AlignTop)
+
+            # name and phone number
+            self.info = QLabel(info_text)
+            self.info.setStyleSheet(u"QLabel {font: 700 11pt \"Manrope\";border: None;}")
+            self.info.setWordWrap(True)
+            self.info.setAlignment(Qt.AlignLeft)
+            main_layout.addWidget(self.info)
+
+            self.address_label = QLabel(self.address)
+            self.address_label.setStyleSheet(u"QLabel {font: 9pt \"Manrope\"; border: None;}")
+            self.address_label.setWordWrap(True)
+            self.address_label.setAlignment(Qt.AlignLeft)
+            main_layout.addWidget(self.address_label)
+            
+            # Set fixed size for the main widget
+            self.main_widget.setFixedSize(550, 90)
+            
+            # Add spacer to push the widget to the top if container layout exists
+            if container.layout():
+                main_layout.addStretch(1)
+        
+            # Add the main widget to the container
+            if container.layout() is None:
+                container.setLayout(QVBoxLayout())
+            container.layout().insertWidget(0, self.main_widget)
+
+
+
+    def get_post(self):
+        return self.main_widget
+
+    
 class ProfileUI(QDialog):
     def __init__(self, stacked_widget,server_host, server_port):
         super(ProfileUI, self).__init__()
@@ -136,9 +204,11 @@ class ProfileUI(QDialog):
          
 
 class ProfileAddressUI(QDialog):
-    def __init__(self, stacked_widget):
+    def __init__(self, stacked_widget, server_host, server_port):
         super(ProfileAddressUI, self).__init__()
         self.stacked_widget = stacked_widget
+        self.server_host = server_host
+        self.server_port = server_port
         self.ui = Ui_Dialog_Address()
         self.ui.setupUi(self)
         self.ui.home_button.clicked.connect(self.to_home_page)
@@ -147,6 +217,11 @@ class ProfileAddressUI(QDialog):
         self.ui.info_button.clicked.connect(self.to_info_page)
         self.ui.address_button.clicked.connect(self.to_address_page)
         self.ui.add_address_button.clicked.connect(self.add_address)
+        
+        # Create a QTimer object for periodic updates
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_address_data)
+        self.timer.start(2000)  # 2 seconds interval (adjust as needed)
     
     def to_home_page(self):
         self.stacked_widget.setCurrentIndex(1) 
@@ -158,50 +233,201 @@ class ProfileAddressUI(QDialog):
         self.stacked_widget.setCurrentIndex(3)
     def to_address_page(self):
         self.stacked_widget.setCurrentIndex(4)
+    
+    def load_user_data(self, user_id, user_data):
+        self.user_id = user_id
+        self.user_data = user_data
+        self.populate_address_widgets(self.user_data["addresses"])
         
+    def populate_address_widgets(self, addresses):
+        layout = self.ui.verticalLayout_2
+        clear_layout(layout)
+        self.ui.scrollAreaWidgetContents.setMinimumSize(QSize(550, 420))
+        num_empty_layouts = max(0, 4 - len(addresses))
+        layout.setSpacing(100)
+        # Iterate through addresses and create post widgets
+        for post_detail in addresses:
+            print(f'WEE WOO WEE WOOO WEE WOO {post_detail}')
+            post = Post(post_detail, self.ui.scrollAreaWidgetContents)
+            post_widget = post.get_post()
+            layout.addWidget(post_widget)
+
+        # Fill empty layouts
+        for _ in range(num_empty_layouts):
+            empty_widget = QWidget()
+            empty_widget.setStyleSheet("border: None;")
+            layout.addWidget(empty_widget)
+
+        # Adjust the size of the scroll area widget contents
+        self.ui.scrollAreaWidgetContents.adjustSize()
+    
     def add_address(self):
-        add_address_dialog = AddAddressUI()  # Create an instance of AddAddressUI
-        add_address_dialog.exec()
+        add_address_dialog = AddAddressUI(self.server_host, self.server_port, self.user_data)
+        add_address_dialog.exec_()
+        
+    def fetch_user_data(self, username):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+            try:
+                client_socket.connect((self.server_host, self.server_port))
+                request_data = {'action': 'get_user_data', 'username': username}
+                client_socket.sendall(pickle.dumps(request_data))
+                response = client_socket.recv(4096)
+                response_data = pickle.loads(response)
+                if response_data['success']:
+                    print("Get new user data done!")
+                    return response_data['user_data']
+                else:
+                    print("Failed to save new information:", response_data['message'])
+            except Exception as e:
+                print("Error saving new information:", e)
+                
+    def update_address_data(self):
+        # Dummy method for updating address data periodically
+        print("Updating address data...")
+        username = self.user_data.get("username")
+        if username:
+            user_data = self.fetch_user_data(username)
+            if user_data:
+                self.populate_address_widgets(user_data.get("addresses"))
+                print("Address data updated successfully")
+            else:
+                print("Failed to fetch updated user data")
         
 
 class AddAddressUI(QDialog):
-    def __init__(self):
+    def __init__(self, server_host, server_port, user_data):
         super(AddAddressUI, self).__init__()
         self.ui = Ui_Add_Address()
+        self.server_host = server_host
+        self.server_port = server_port
+        self.user_data = user_data
         self.ui.setupUi(self)
         self.ui.cancel_button.clicked.connect(self.reject)
+        self.selected_district_code = None
         
         for province in provinces:
             self.ui.province_combobox.addItem(province['provinceNameEn'])
+            
+        for district in districts:
+            self.ui.district_combobox.addItem(district['districtNameEn'])
+            
+        for sub_district in sub_districts:
+            self.ui.sub_district_combobox.addItem(sub_district['subdistrictNameEn'])
         
         self.ui.province_combobox.currentIndexChanged.connect(self.handle_province_changed)
         self.ui.district_combobox.currentIndexChanged.connect(self.handle_district_changed)
         self.ui.sub_district_combobox.currentIndexChanged.connect(self.handle_sub_district_changed)
-        self.ui.postal_code_combobox.currentIndexChanged.connect(self.handle_postal_code_changed)
         
+        self.ui.save_button.clicked.connect(self.save_address_db)
         
+        self.load_user_data()
+        
+    def load_user_data(self):
+        print("load user data from the create address")
+
+        self.ui.name_edit.clear()
+        self.ui.phone_number_edit.clear()
+        self.ui.name_edit.setText(self.user_data['username'])
+        self.ui.phone_number_edit.setText(self.user_data['phone_number'])
+        
+    def save_address_db(self):
+        new_info = {
+            'name': self.ui.name_edit.text(),
+            'phone': self.ui.phone_number_edit.text(),
+            'province': self.ui.province_combobox.currentText(),
+            'district': self.ui.district_combobox.currentText(),
+            'sub_district': self.ui.sub_district_combobox.currentText(),
+            'postal_code' : self.ui.postal_code_combobox.currentText(),
+            'details' : self.ui.details_textedit.toPlainText()
+        }
+        print(new_info)
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+            try:
+                client_socket.connect((self.server_host, self.server_port))
+                request_data = {'action': 'save_new_address', 'new_info': new_info, 'username' : self.user_data["username"]}
+                client_socket.sendall(pickle.dumps(request_data))
+                response = client_socket.recv(4096)
+                response_data = pickle.loads(response)
+                if response_data['success']:
+                    print("New information saved successfully")
+                    self.accept()
+                else:
+                    print("Failed to save new information:", response_data['message'])
+            except Exception as e:
+                print("Error saving new information:", e)
+                
     def handle_province_changed(self, index):
         # Clear existing items in district_combobox
         self.ui.district_combobox.clear()
-        # Find districts corresponding to the selected province
-        # selected_province = next((p for p in provinces_data if p['provinceNameEn'] == province_name), None)
-        # if selected_province:
-        #     province_code = selected_province['provinceCode']
-        #     districts = [d for d in districts if d['provinceCode'] == province_code]
-        #     for district in districts:
-        #         self.ui.district_combobox.addItem(district['districtNameEn'])
+        self.ui.sub_district_combobox.clear()
+        self.ui.postal_code_combobox.clear()
+        
+        selected_province_name = self.ui.province_combobox.currentText()
+        
+        selected_province_code = None
+        for province in provinces:
+            if province['provinceNameEn'] == selected_province_name:
+                selected_province_code = province['provinceCode']
+                break
+        
+        # Filter districts based on the selected province
+        for district in districts:
+            if district['provinceCode'] == selected_province_code:
+                self.ui.district_combobox.addItem(district['districtNameEn'])
+                self.ui.postal_code_combobox.addItem(str(district['provinceCode']))
+        
+        # Filter sub-districts based on the selected province and district (if applicable)
+        for sub_district in sub_districts:
+            if sub_district['provinceCode'] == selected_province_code:
+                self.ui.sub_district_combobox.addItem(sub_district['subdistrictNameEn'])
+                self.ui.postal_code_combobox.addItem(str(sub_district['subdistrictCode']))
+        
+                
 
     def handle_district_changed(self, index):
-        # Update sub-district combobox based on selected district
-        selected_district = self.district_combobox.currentText()
-        # Logic to populate sub-district combobox based on the selected district
+        # Clear existing items in sub_district_combobox
+        self.ui.sub_district_combobox.clear()
+        self.ui.postal_code_combobox.clear()
+
+        # Get the selected province and district
+        selected_province_name = self.ui.province_combobox.currentText()
+        selected_district_name = self.ui.district_combobox.currentText()
+
+        # Find the province code for the selected province
+        selected_province_code = None
+        for province in provinces:
+            if province['provinceNameEn'] == selected_province_name:
+                selected_province_code = province['provinceCode']
+                break
+
+        # Find the district code for the selected district
+        for district in districts:
+            if district['districtNameEn'] == selected_district_name and district['provinceCode'] == selected_province_code:
+                self.selected_district_code = district['districtCode']
+                break
+
+        # Filter sub-districts based on the selected district code
+        for sub_district in sub_districts:
+            if sub_district['districtCode'] == self.selected_district_code:
+                self.ui.sub_district_combobox.addItem(sub_district['subdistrictNameEn'])
+                self.ui.postal_code_combobox.addItem(str(sub_district['postalCode']))
+
 
     def handle_sub_district_changed(self, index):
-        # Update province and district combobox based on selected sub-district
-        selected_sub_district = self.sub_district_combobox.currentText()
-        # Logic to update province and district combobox based on the selected sub-district
-
-    def handle_postal_code_changed(self, index):
-        # Update province, district, and sub-district combobox based on selected postal code
-        selected_postal_code = self.postal_code_combobox.currentText()
-        # Logic to update province, district, and sub-district combobox based on the selected postal code
+        self.ui.postal_code_combobox.clear()
+        
+        selected_sub_district_name = self.ui.sub_district_combobox.currentText()
+        
+        # Find the postal code for the selected sub-district
+        selected_sub_district_postal_code = None
+        for sub_district in sub_districts:
+            if sub_district['subdistrictNameEn'] == selected_sub_district_name:
+                # Check if the district codes match to handle districts with the same name
+                if sub_district['districtCode'] == self.selected_district_code:
+                    selected_sub_district_postal_code = sub_district['postalCode']
+                    break
+        
+        # Update postal code combobox with the postal code of the selected sub-district
+        if selected_sub_district_postal_code is not None:
+            self.ui.postal_code_combobox.addItem(str(selected_sub_district_postal_code))
+        
