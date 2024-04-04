@@ -95,6 +95,17 @@ def get_all_posts():
         print(e)
         return {'success': False, 'message': "Failed to return post details"}
     
+def get_all_orders():
+    print("getting orders")
+    try:
+        order_details = root.orders
+        orders_data = [order.serialize() for order in order_details.values()]
+        print(f'order data {orders_data}\n\n')
+        return {'success': True, 'order_details': orders_data}
+    except Exception as e:
+        print(e)
+        return {'success': False, 'message': "Failed to return order details"}
+    
 def handle_save_new_info(data_dict):
     try:
         new_info = data_dict.get('new_info')
@@ -141,6 +152,10 @@ def handle_request(conn):
             elif action == 'get_all_posts':
                 print("Calling get_all_posts()")
                 response = get_all_posts()
+                send_large_data(conn, response)
+            elif action == 'get_all_orders':
+                print("Calling get_all_orders()")
+                response = get_all_orders()
                 send_large_data(conn, response)
             else:
                 print("Invalid action")

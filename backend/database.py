@@ -20,6 +20,7 @@ from frontend.public.images.post_images.db_test_pics import *
 #for getting image data
 images_path = str(root_dir / 'frontend' / 'public' / 'images' / 'post_images' / 'db_test_pics') + '/'
 images_path_ms = 'frontend/public/images/post_images/db_test_pics/'
+images_path_putter = 'C:\school\Curate\\frontend\public\images\post_images\db_test_pics\\'
 
 # # creating a smaller version of the image
 # def create_thumbnail(image_path, thumbnail_size=(230, 230)):
@@ -40,7 +41,7 @@ images_path_ms = 'frontend/public/images/post_images/db_test_pics/'
 
 # getting webP image data
 def get_webp_data(image_name):
-    full_image_path = images_path_ms + image_name
+    full_image_path = images_path_putter + image_name
     try:
         with Image.open(full_image_path) as img:
             webp_data = io.BytesIO()
@@ -79,6 +80,7 @@ root.products = BTrees.OOBTree.BTree()
 root.posts = BTrees.OOBTree.BTree()
 root.tags = BTrees.OOBTree.BTree()
 root.addresses = BTrees.OOBTree.BTree()
+root.orders = BTrees.OOBTree.BTree()
 
 #topic tags, prolly gonna keep information like statistics??
 class Tag(persistent.Persistent):
@@ -305,13 +307,13 @@ class PostDetails(persistent.Persistent):
         }
 
 class Order(persistent.Persistent):
-    def __init__(self, order_id, product, buyer, seller, status):
+    def __init__(self, order_id, product, buyer, seller, status="unpaid"):
         self.order_id = order_id
         self.product = product
         self.buyer = buyer
         self.seller = seller
         self.order_date = datetime.now() #date order created
-        self.status = "unpaid"
+        self.status = status
 
     def get_order_id(self):
         return self.order_id
@@ -341,20 +343,21 @@ class Order(persistent.Persistent):
             f'Order id: {self.order_id}\n'
             f'Order Date: {self.order_date.strftime("%Y-%m-%d %H:%M:%S")}\n'
             f'Order status: {self.status}\n'
-            f'Product: {self.product.get_id()}\n'
-            f'Buyer: {self.buyer.get_username()}\n'
-            f'Seller: {self.seller.get_username()}\n'
+            f'Buyer: {self.buyer}\n'
+            f'Seller: {self.seller}\n'
         )
 
     def serialize(self):
         serialized_data = {
             'order_id': self.order_id,
-            'buyer': self.buyer,
-            'seller': self.seller,
-            'status': self.status,
+            'order_buyer': self.buyer,
+            'order_seller': self.seller,
+            'order_status': self.status,
             'order_date': self.order_date,
         }
         serialized_data.update(self.product.serialize())
+
+        return serialized_data
     
 
 
@@ -545,12 +548,18 @@ root.posts[post1.get_id()] = post1
 
 post2 = PostDetails(generate_id('posts'), item3.get_seller(), item3, "haleisfls", "Mona Tops Post")
 root.posts[post2.get_id()] = post2
-
 post3 = PostDetails(generate_id('posts'), item4.get_seller(), item4, "smata baby smata im smata", "Crocheted Beanies")
 root.posts[post3.get_id()] = post3
 
 post4 = PostDetails(generate_id('posts'), item5.get_seller(), item5, "boongboongboong", "Jellyfish Keychains")
 root.posts[post4.get_id()] = post4
+
+order1 = Order(generate_id('orders'), item1, user_2.get_username(), user_1.get_username())
+root.orders[order1.get_order_id()] = order1
+
+order2 = Order(generate_id('orders'), item2, user_2.get_username(), user_1.get_username(), status="shipping")
+root.orders[order2.get_order_id()] = order2
+
 
 transaction.commit()
 if  __name__ == "__main__":
@@ -558,16 +567,20 @@ if  __name__ == "__main__":
     for key in accounts:
         accounts[key].print_info()
 
-    products = root.products
-    for key in products:
-        products[key].print_info()
+    # products = root.products
+    # for key in products:
+    #     products[key].print_info()
     
     posts = root.posts
     for key in posts:
         posts[key].print_info()
-    
+
     tags = root.tags
     for key in tags:
         tags[key].print_info()
+
+    orders = root.orders
+    for key in orders:
+        orders[key].print_info()
         
     

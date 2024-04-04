@@ -22,17 +22,18 @@ if __name__ == "__main__":
     register_ui = RegisterUI(server_host, server_port)
     profile_ui = ProfileUI(widget,server_host, server_port)
     profileaddress_ui = ProfileAddressUI(widget)
-    history_ui = HistoryUI(widget)
+    history_ui = HistoryUI(widget, server_host, server_port)
     wishlist_ui = WishlistUI(widget)
     collection_ui = CollectionUI(widget, server_host, server_port)
     
     # Connect the signal to the slot function   
     login_ui.login_successful.connect(home_ui.load_user_data)
     login_ui.login_successful.connect(profile_ui.load_user_data)
+    login_ui.login_successful.connect(history_ui.load_user_data)
     login_ui.login_successful.connect(collection_ui.load_user_data)
     
     home_ui.clicked.connect(collection_ui.load_post_data)
-    
+
 
     widget.addWidget(login_ui)
     widget.addWidget(home_ui)
