@@ -327,7 +327,7 @@ class Order(persistent.Persistent):
     def get_status(self):
         return self.status
     def get_order_date(self):
-        return self.ord_date
+        return self.order_date
     
     def pay_product(self):
         self.status = "shipping"
@@ -376,6 +376,7 @@ class Account(persistent.Persistent):
         self.sex = sex
         self.products = persistent.list.PersistentList()
         self.orders = persistent.list.PersistentList()
+        self.wishlist = persistent.list.PersistentList()
 
     def get_email(self):
         return self.email
@@ -398,6 +399,9 @@ class Account(persistent.Persistent):
     def add_product(self, product):
         self.products.add(product.get_id()) #id of the product
 
+    def add_wishlist(self, product):
+        self.wishlist.append(product)
+
     def print_info(self):
         serialized_addresses = [address.serialize() for address in self.addresses]
         print(f'----User Info---\nEmail: {self.email}\n'
@@ -408,6 +412,7 @@ class Account(persistent.Persistent):
 
     def serialize(self):
         serialized_addresses = [address.serialize() for address in self.addresses]
+        serialized_products = [products.serialize() for products in self.wishlist]
         return {
             'id': self.id,
             'email': self.email,
@@ -417,7 +422,8 @@ class Account(persistent.Persistent):
             'birthdate': self.birthdate,
             'phone_number': self.phone_number,
             'follower': self.follower,
-            'following': self.following
+            'following': self.following,
+            'wishlist': serialized_products
         }
 
 class Address:
@@ -568,12 +574,18 @@ root.posts[post3.get_id()] = post3
 post4 = PostDetails(generate_id('posts'), item5.get_seller(), item5, "boongboongboong", "Jellyfish Keychains")
 root.posts[post4.get_id()] = post4
 
-order1 = Order(generate_id('orders'), item1, user_2.get_username(), user_1.get_username())
+
+# order history appear only in admin_1 interface (admin_1 is the buyer)
+order1 = Order(generate_id('orders'), item1, admin_1.get_username(), user_1.get_username())
 root.orders[order1.get_order_id()] = order1
 
-order2 = Order(generate_id('orders'), item2, user_2.get_username(), user_1.get_username(), status="shipping")
+order2 = Order(generate_id('orders'), item2, admin_1.get_username(), user_1.get_username(), status="shipping")
 root.orders[order2.get_order_id()] = order2
 
+#wishlist testing admin_1 only
+admin_1.add_wishlist(item1)
+admin_1.add_wishlist(item2)
+admin_1.add_wishlist(item3)
 
 transaction.commit()
 if  __name__ == "__main__":
@@ -596,5 +608,13 @@ if  __name__ == "__main__":
     orders = root.orders
     for key in orders:
         orders[key].print_info()
-        
+
+    order_details = root.orders
+    new_order_details = []
+    for order_detail in order_details:
+        if order_details[order_detail].buyer == "adminnajaa~~":
+            new_order_details.append(order_details[order_detail])
+    orders_data = [order.serialize() for order in new_order_details]   
+    print(orders_data)
+    
     

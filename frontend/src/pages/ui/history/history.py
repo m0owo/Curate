@@ -19,7 +19,11 @@ class HistoryBox(QFrame):
         self.order_id = order_details.get('order_id')
         self.price = order_details.get('price')
         self.order_status = order_details.get('order_status')
+        binary_image = order_details.get('images')[0]
+        image = QImage.fromData(binary_image)
+        self.pixmap = QPixmap.fromImage(image)
 
+        self.ui.product_image_label.setPixmap(self.pixmap)
         self.ui.product_name_label.setText(self.product_name)
         self.ui.order_id_label.setText(str(self.order_id))
         self.ui.price_label.setText(str(self.price) + " B")
@@ -34,19 +38,22 @@ class HistoryUI(QMainWindow):
         self.ui.setupUi(self)
         self.server_host = server_host
         self.server_port = server_port
+        self.filter = "all"
 
         self.ui.home_button.clicked.connect(self.to_home_page)
         self.ui.wishlist_button.clicked.connect(self.to_wishlist_page)
         self.ui.profile_button.clicked.connect(self.to_profile_page)
 
-        self.ui.all.clicked.connect(lambda: self.get_all_orders("all"))
-        self.ui.to_pay.clicked.connect(lambda: self.get_all_orders("unpaid"))
-        self.ui.to_be_delivered.clicked.connect(lambda: self.get_all_orders("shipping"))
-        self.ui.completed.clicked.connect(lambda: self.get_all_orders("completed"))
-        self.ui.cancelled.clicked.connect(lambda: self.get_all_orders("cancelled"))
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(lambda: self.update_history_data(self.filter))
+        self.timer.start(2000)
 
-
-        self.get_all_orders("all")
+        self.ui.all.clicked.connect(lambda: self.update_history_data())
+        self.ui.to_pay.clicked.connect(lambda: self.update_history_data("unpaid"))
+        self.ui.to_be_delivered.clicked.connect(lambda: self.update_history_data("shipping"))
+        self.ui.completed.clicked.connect(lambda: self.update_history_data("completed"))
+        self.ui.cancelled.clicked.connect(lambda: self.update_history_data("cancelled"))
+        
 
     def to_home_page(self):
         self.stacked_widget.setCurrentIndex(1)
@@ -64,16 +71,18 @@ class HistoryUI(QMainWindow):
                 widget.deleteLater()
 
     def populate_orders(self, order_details, filter):
+        self.filter = filter
         self.clear_frame(self.ui.scrollAreaWidgetContents)
         layout = self.ui.scrollAreaWidgetContents.layout()
         for order_detail in order_details:
             # print(f'populating {order_detail}')
-            if filter == "all":
-                order = HistoryBox(order_detail)
-                layout.addWidget(order)
-            elif order_detail.get('order_status') == filter:
-                order = HistoryBox(order_detail)
-                layout.addWidget(order)
+            if order_detail.get('order_buyer') == self.user_data.get('username'):
+                if filter == "all":
+                    order = HistoryBox(order_detail)
+                    layout.addWidget(order)
+                elif order_detail.get('order_status') == filter:
+                    order = HistoryBox(order_detail)
+                    layout.addWidget(order)
         spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         layout.addItem(spacer)
 
@@ -87,7 +96,7 @@ class HistoryUI(QMainWindow):
                 # print(f'chunk {chunk}')
             return pickle.loads(received_data)
 
-    def get_all_orders(self, filter):
+    def get_all_orders(self, filter="all"):
         print('Getting orders from the server')
         retries = 10
         for attempt in range(retries):
@@ -96,7 +105,7 @@ class HistoryUI(QMainWindow):
                     print("Step 1: Establishing connection...")
                     client_socket.connect((self.server_host, self.server_port))
                     print("Step 2: Sending request...")
-                    request_data = {'action': 'get_all_orders'}
+                    request_data = {'action': 'get_all_orders', 'user_name' : self.user_data["username"]}
                     client_socket.sendall(pickle.dumps(request_data))
                     print("Step 3: Receiving response...")
                     response = self.receive_large_data(client_socket)
@@ -104,9 +113,8 @@ class HistoryUI(QMainWindow):
                     print("Step 4: Unpacking response...")
                     if response.get('success'):
                         print('Success getting all the data')
-                        order_details = response.get('order_details')
-                        self.populate_orders(order_details, filter)
-                        break 
+                        return response.get('order_details')
+        
                     else:
                         print("Failed to get all the data:", response.get('message'))
             except socket.error as se:
@@ -123,7 +131,17 @@ class HistoryUI(QMainWindow):
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id
         self.user_data = user_data
-        print(f'User ID: {self.user_id}\nUser Data: {self.user_data}')
+        
+
+    def update_history_data(self, filter="all"):
+        username = self.user_data.get("username")
+        if username:
+            user_data = self.get_all_orders()
+            if user_data:
+                self.populate_orders(user_data, filter)
+            else:
+                print("Fail")
+
     
 if __name__ == "__main__":
     app = QApplication(sys.argv)

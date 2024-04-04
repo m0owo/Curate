@@ -86,11 +86,18 @@ def get_all_posts():
         print(e)
         return {'success': False, 'message': "Failed to return post details"}
     
-def get_all_orders():
+def get_all_orders(data):
     print("getting orders")
     try:
+        username = data.get("user_name")
         order_details = root.orders
-        orders_data = [order.serialize() for order in order_details.values()]
+        new_order_details = []
+        order_details = root.orders
+        new_order_details = []
+        for order_detail in order_details:
+            if order_details[order_detail].buyer == username:
+                new_order_details.append(order_details[order_detail])
+        orders_data = [order.serialize() for order in new_order_details]   
         print(f'order data {orders_data}\n\n')
         return {'success': True, 'order_details': orders_data}
     except Exception as e:
@@ -154,6 +161,7 @@ def handle_request(conn):
             
             if action == 'login':
                 response = handle_login(data_dict)
+                send_large_data(conn, response)
             elif action == 'register':
                 response = handle_registration(data_dict)
             elif action == 'save_new_info':
@@ -164,7 +172,7 @@ def handle_request(conn):
                 send_large_data(conn, response)
             elif action == 'get_all_orders':
                 print("Calling get_all_orders()")
-                response = get_all_orders()
+                response = get_all_orders(data_dict)
                 send_large_data(conn, response)
             elif action == 'save_new_address':
                 response = handle_new_address(data_dict)

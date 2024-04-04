@@ -5,6 +5,7 @@ from .login_ui import Ui_Dialog
 from ..home.home import HomeUI
 import socket
 import pickle
+import traceback
 current_directory = os.getcwd()
 print("Current directory:", current_directory)
 sys.path.append(current_directory)
@@ -31,6 +32,15 @@ class LoginUI(QDialog, QObject):
     
     def to_registerpage(self):
         self.stacked_widget.setCurrentIndex(2)
+
+    def receive_large_data(self, conn):
+        total_chunks = pickle.loads(conn.recv(4096))
+        received_data = b''
+        for _ in range(total_chunks):
+            chunk = conn.recv(4096)
+            received_data += chunk
+            # print(f'chunk {chunk}')
+        return pickle.loads(received_data)
         
     def login(self):
         email = self.ui.gmail_input.text()
@@ -39,15 +49,14 @@ class LoginUI(QDialog, QObject):
         if not email or not password:
             self.ui.error_txt.setText('Please enter both email and password')
             return
-        
+    
         # Create a socket connection to the server
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             try:
                 client_socket.connect((self.server_host, self.server_port))
                 request_data = {'action': 'login', 'email': email, 'password': password}
                 client_socket.sendall(pickle.dumps(request_data))
-                response = client_socket.recv(4096)
-                response_data = pickle.loads(response)
+                response_data = self.receive_large_data(client_socket)
                 if response_data.get('success'):
                     # Login successful, proceed to homepage
                     user_id = response_data.get('user_id')
@@ -59,6 +68,7 @@ class LoginUI(QDialog, QObject):
                     # Display error message
                     self.ui.error_txt.setText('Invalid Gmail or Password')
             except Exception as e:
+                traceback.print_exc()
                 self.ui.error_txt.setText(str(e))
                 print(e)
 
