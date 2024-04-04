@@ -55,20 +55,11 @@ def handle_registration(data):
         return {'success': False, 'message': str(e)}
 
 def get_user_data(data):
-    user_id = data.get('user_id')
+    user_name = data.get('username')
     accounts = root.accounts
-    if user_id in accounts:
-        user = accounts[user_id]
+    if user_name in accounts:
+        user_data = accounts[user_name].serialize()
         #Add attributes as needed
-        user_data = {
-            'name': user.username,  
-            'mail': user.mail,
-            'phone': user.phone,
-            'address' : user.address,
-            'follower' : user.follower,
-            'following' : user.following,
-            'sex' : user.sex
-        }
         return {'success': True, 'user_data': user_data}
     else:
         return {'success': False, 'message': 'User not found'}
@@ -95,11 +86,18 @@ def get_all_posts():
         print(e)
         return {'success': False, 'message': "Failed to return post details"}
     
-def get_all_orders():
+def get_all_orders(data):
     print("getting orders")
     try:
+        username = data.get("user_name")
         order_details = root.orders
-        orders_data = [order.serialize() for order in order_details.values()]
+        new_order_details = []
+        order_details = root.orders
+        new_order_details = []
+        for order_detail in order_details:
+            if order_details[order_detail].buyer == username:
+                new_order_details.append(order_details[order_detail])
+        orders_data = [order.serialize() for order in new_order_details]   
         print(f'order data {orders_data}\n\n')
         return {'success': True, 'order_details': orders_data}
     except Exception as e:
@@ -127,7 +125,25 @@ def handle_save_new_info(data_dict):
             return {'success': False, 'message': 'Account not found'}
     except Exception as e:
         return {'success': False, 'message': str(e)}
-    
+
+def handle_new_address(data_dict):
+    try:
+        new_info = data_dict.get('new_info')
+        username = data_dict.get('username')
+        
+        account = root.accounts[username]
+        if account:
+            new_address = Address(new_info["name"], new_info["phone"], new_info["province"], new_info["district"], 
+                                  new_info["sub_district"], new_info["postal_code"], new_info["details"])
+            account.addresses.append(new_address)
+
+            transaction.commit()
+            return {'success': True, 'message': 'New address saved successfully'}
+        else:
+            return {'success': False, 'message': 'Account not found'}
+    except Exception as e:
+        return {'success': False, 'message': str(e)}
+        
 def handle_request(conn):
     try:
         print("Handling request...")
@@ -145,6 +161,7 @@ def handle_request(conn):
             
             if action == 'login':
                 response = handle_login(data_dict)
+                send_large_data(conn, response)
             elif action == 'register':
                 response = handle_registration(data_dict)
             elif action == 'save_new_info':
@@ -155,8 +172,12 @@ def handle_request(conn):
                 send_large_data(conn, response)
             elif action == 'get_all_orders':
                 print("Calling get_all_orders()")
-                response = get_all_orders()
+                response = get_all_orders(data_dict)
                 send_large_data(conn, response)
+            elif action == 'save_new_address':
+                response = handle_new_address(data_dict)
+            elif action == "get_user_data":
+                response = get_user_data(data_dict)
             else:
                 print("Invalid action")
                 response = {'success': False, 'message': 'Invalid action'}

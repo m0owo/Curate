@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1200</width>
-    <height>800</height>
+    <height>803</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -106,7 +106,7 @@ QLabel#page_label{
       <string/>
      </property>
      <property name="icon">
-      <iconset>
+      <iconset resource="../../../public/images/icons/icons.qrc">
        <normaloff>:/icon_images/home_icon.png</normaloff>:/icon_images/home_icon.png</iconset>
      </property>
      <property name="iconSize">
@@ -129,7 +129,7 @@ QLabel#page_label{
       <string/>
      </property>
      <property name="icon">
-      <iconset>
+      <iconset resource="../../../public/images/icons/icons.qrc">
        <normaloff>:/icon_images/history_icon.png</normaloff>:/icon_images/history_icon.png</iconset>
      </property>
      <property name="iconSize">
@@ -152,7 +152,7 @@ QLabel#page_label{
       <string/>
      </property>
      <property name="icon">
-      <iconset>
+      <iconset resource="../../../public/images/icons/icons.qrc">
        <normaloff>:/icon_images/wishlist_icon.png</normaloff>:/icon_images/wishlist_icon.png</iconset>
      </property>
      <property name="iconSize">
@@ -175,7 +175,7 @@ QLabel#page_label{
       <string/>
      </property>
      <property name="icon">
-      <iconset>
+      <iconset resource="../../../public/images/icons/icons.qrc">
        <normaloff>:/icon_images/profile_icon.png</normaloff>:/icon_images/profile_icon.png</iconset>
      </property>
      <property name="iconSize">
@@ -289,7 +289,7 @@ QLabel#page_label{
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>:/logos/curatelogo.png</pixmap>
+      <pixmap resource="../../../public/images/logos/logo.qrc">:/logos/curatelogo.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -309,7 +309,15 @@ QLabel#page_label{
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(246, 254, 255);</string>
+     <string notr="true">QLabel{
+	color: black;
+}
+QPushButton{
+	 background-color: rgb(88,130,126); 
+	color:white;
+	border-radius: 20px;
+	border: None;
+}</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -329,7 +337,10 @@ QLabel#page_label{
      <property name="styleSheet">
       <string notr="true">QPushButton{
 	border: None;
+	background-color: None;
+	color: black;
 }
+
 QPushButton:hover {
     background-color: rgb(88,130,126);
 	border-radius: 20px;
@@ -355,6 +366,7 @@ QPushButton:hover {
       <property name="font">
        <font>
         <family>Manrope</family>
+        <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -381,6 +393,7 @@ QPushButton:hover {
       <property name="font">
        <font>
         <family>Manrope</family>
+        <pointsize>11</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -407,6 +420,7 @@ QPushButton:hover {
       <property name="font">
        <font>
         <family>Manrope</family>
+        <pointsize>11</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -421,6 +435,33 @@ QPushButton:hover {
        <string>Address</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="create_shop_button">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>190</y>
+        <width>171</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Manrope</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: black;</string>
+      </property>
+      <property name="text">
+       <string>Create Shop</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QFrame" name="editinfo_frame">
      <property name="geometry">
@@ -432,14 +473,8 @@ QPushButton:hover {
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">QLabel{
-	color: black;
-}
-QPushButton{
-	 background-color: rgb(88,130,126); 
-	color:white;
-	border-radius: 20px;
-}</string>
+      <string notr="true">QFrame{
+background-color:rgb(232, 243, 242)}</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -447,7 +482,7 @@ QPushButton{
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <widget class="QLabel" name="page_label_5">
+     <widget class="QLabel" name="address_label">
       <property name="geometry">
        <rect>
         <x>40</x>
@@ -470,18 +505,19 @@ QPushButton{
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="page_label_6">
+     <widget class="QLabel" name="my_address_label">
       <property name="geometry">
        <rect>
         <x>50</x>
         <y>90</y>
-        <width>101</width>
+        <width>111</width>
         <height>41</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Manrope</family>
+        <pointsize>10</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -496,7 +532,7 @@ QPushButton{
      <widget class="QPushButton" name="add_address_button">
       <property name="geometry">
        <rect>
-        <x>450</x>
+        <x>440</x>
         <y>90</y>
         <width>171</width>
         <height>51</height>
@@ -505,7 +541,7 @@ QPushButton{
       <property name="font">
        <font>
         <family>Manrope</family>
-        <pointsize>10</pointsize>
+        <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -530,19 +566,20 @@ QPushButton{
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: white;
+       <string notr="true">QFrame{
+	background-color: white;
+}
+
 QScrollArea {
-                border: 1px solid gray;
-                border-radius: 4px;
-            }
-            QScrollBar:vertical {
-                background: lightgray;
-                width: 10px;
-            }
-            QScrollBar::handle:vertical {
-                background: darkgray;
-                border-radius: 5px;
-            }</string>
+	border-radius: 4px;
+
+}
+
+QPushBitton{
+	border-radius: 5px;
+}
+
+</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
@@ -553,11 +590,30 @@ QScrollArea {
       <widget class="QScrollArea" name="scrollArea">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>571</width>
-         <height>401</height>
+         <x>0</x>
+         <y>0</y>
+         <width>591</width>
+         <height>421</height>
         </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QScrollArea{
+	border: None;
+}
+
+QWidget{
+	border-radius: 15px;
+	border: 1px solid black
+}
+QLabel{
+	border: None;
+}
+
+QPushButton{
+	border: None;
+}
+
+</string>
        </property>
        <property name="widgetResizable">
         <bool>true</bool>
@@ -567,241 +623,364 @@ QScrollArea {
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>569</width>
-          <height>399</height>
+          <width>589</width>
+          <height>419</height>
          </rect>
         </property>
-        <widget class="QWidget" name="widget" native="true">
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <widget class="QWidget" name="verticalLayoutWidget">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>10</y>
-           <width>531</width>
-           <height>80</height>
+           <x>20</x>
+           <y>20</y>
+           <width>551</width>
+           <height>381</height>
           </rect>
          </property>
-         <widget class="QLabel" name="page_label_7">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>10</y>
-            <width>211</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>Manrope</family>
-            <pointsize>8</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moomoo Iceland +66  123456789&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-         <widget class="QLabel" name="page_label_8">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>40</y>
-            <width>371</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>Manrope</family>
-            <pointsize>8</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;123 Skycastle Soi Disney Road Disney , Disneyland, 12345&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </widget>
-        <widget class="QWidget" name="widget_2" native="true">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>100</y>
-           <width>531</width>
-           <height>80</height>
-          </rect>
-         </property>
-         <widget class="QLabel" name="page_label_14">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>10</y>
-            <width>211</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>Manrope</family>
-            <pointsize>8</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moomoo Iceland +66  123456789&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-         <widget class="QLabel" name="page_label_15">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>40</y>
-            <width>371</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>Manrope</family>
-            <pointsize>8</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;123 Skycastle Soi Disney Road Disney , Disneyland, 12345&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </widget>
-        <widget class="QWidget" name="widget_3" native="true">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>190</y>
-           <width>531</width>
-           <height>80</height>
-          </rect>
-         </property>
-         <widget class="QLabel" name="page_label_16">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>10</y>
-            <width>211</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>Manrope</family>
-            <pointsize>8</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moomoo Iceland +66  123456789&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-         <widget class="QLabel" name="page_label_17">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>40</y>
-            <width>371</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>Manrope</family>
-            <pointsize>8</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;123 Skycastle Soi Disney Road Disney , Disneyland, 12345&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </widget>
-        <widget class="QWidget" name="widget_4" native="true">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>280</y>
-           <width>531</width>
-           <height>80</height>
-          </rect>
-         </property>
-         <widget class="QLabel" name="page_label_18">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>10</y>
-            <width>211</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>Manrope</family>
-            <pointsize>8</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moomoo Iceland +66  123456789&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-         <widget class="QLabel" name="page_label_19">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>40</y>
-            <width>371</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>Manrope</family>
-            <pointsize>8</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;123 Skycastle Soi Disney Road Disney , Disneyland, 12345&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QWidget" name="widget_3" native="true">
+            <property name="font">
+             <font>
+              <family>Manrope</family>
+              <pointsize>10</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <widget class="QLabel" name="first_label_3">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>10</y>
+               <width>401</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font>
+               <family>Manrope</family>
+               <pointsize>10</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moomoo Iceland +66  123456789&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="address_label_4">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>40</y>
+               <width>411</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font>
+               <family>Manrope</family>
+               <pointsize>9</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;123 Skycastle Soi Disney Road Disney , Disneyland, 12345&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="pushButton_3">
+             <property name="geometry">
+              <rect>
+               <x>430</x>
+               <y>20</y>
+               <width>111</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font>
+               <family>Manrope</family>
+               <pointsize>9</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton{
+	background-color: rgb(88,130,126); 
+	color:white;
+	border-radius: 20px;
+}</string>
+             </property>
+             <property name="text">
+              <string>edit</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widget_2" native="true">
+            <property name="font">
+             <font>
+              <family>Manrope</family>
+              <pointsize>10</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <widget class="QLabel" name="first_label_2">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>10</y>
+               <width>401</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font>
+               <family>Manrope</family>
+               <pointsize>10</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moomoo Iceland +66  123456789&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="address_label_3">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>40</y>
+               <width>411</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font>
+               <family>Manrope</family>
+               <pointsize>9</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;123 Skycastle Soi Disney Road Disney , Disneyland, 12345&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="pushButton_2">
+             <property name="geometry">
+              <rect>
+               <x>430</x>
+               <y>20</y>
+               <width>111</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font>
+               <family>Manrope</family>
+               <pointsize>9</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton{
+	background-color: rgb(88,130,126); 
+	color:white;
+	border-radius: 20px;
+}</string>
+             </property>
+             <property name="text">
+              <string>edit</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widget_4" native="true">
+            <property name="font">
+             <font>
+              <family>Manrope</family>
+              <pointsize>10</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <widget class="QLabel" name="first_label_4">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>10</y>
+               <width>401</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font>
+               <family>Manrope</family>
+               <pointsize>10</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moomoo Iceland +66  123456789&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="address_label_5">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>40</y>
+               <width>411</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font>
+               <family>Manrope</family>
+               <pointsize>9</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;123 Skycastle Soi Disney Road Disney , Disneyland, 12345&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="pushButton_4">
+             <property name="geometry">
+              <rect>
+               <x>430</x>
+               <y>20</y>
+               <width>111</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font>
+               <family>Manrope</family>
+               <pointsize>9</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton{
+	background-color: rgb(88,130,126); 
+	color:white;
+	border-radius: 20px;
+}</string>
+             </property>
+             <property name="text">
+              <string>edit</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widget" native="true">
+            <property name="font">
+             <font>
+              <family>Manrope</family>
+              <pointsize>10</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <widget class="QLabel" name="first_label">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>10</y>
+               <width>401</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font>
+               <family>Manrope</family>
+               <pointsize>10</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moomoo Iceland +66  123456789&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="address_label_2">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>40</y>
+               <width>411</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font>
+               <family>Manrope</family>
+               <pointsize>9</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;123 Skycastle Soi Disney Road Disney , Disneyland, 12345&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="pushButton">
+             <property name="geometry">
+              <rect>
+               <x>430</x>
+               <y>20</y>
+               <width>111</width>
+               <height>41</height>
+              </rect>
+             </property>
+             <property name="font">
+              <font>
+               <family>Manrope</family>
+               <pointsize>9</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton{
+	background-color: rgb(88,130,126); 
+	color:white;
+	border-radius: 20px;
+}</string>
+             </property>
+             <property name="text">
+              <string>edit</string>
+             </property>
+            </widget>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </widget>
       </widget>

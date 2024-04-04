@@ -177,7 +177,7 @@ class Ui_MainWindow(object):
         self.page_label_2.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
         self.scrollArea = QScrollArea(self.centralwidget)
         self.scrollArea.setObjectName(u"scrollArea")
-        self.scrollArea.setGeometry(QRect(60, 180, 1070, 621))
+        self.scrollArea.setGeometry(QRect(60, 180, 1080, 621))
         self.scrollArea.setMinimumSize(QSize(1070, 0))
         self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)

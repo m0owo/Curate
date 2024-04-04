@@ -18,6 +18,9 @@
 	background-color: white; 
 	border: None;
 }
+QFrame{
+	border: None;	
+}
 QLabel{
 	color: black;
 }
@@ -318,7 +321,7 @@ QLabel#page_label{
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(246, 254, 255);</string>
+     <string notr="true"/>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -335,10 +338,35 @@ QLabel#page_label{
        <height>601</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Manrope</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(232,243,242);
-border-radius: 20px;
+      <string notr="true">QFrame{
+	background-color: rgb(232,243,242);
+	border-radius: 20px;
+}
+QVBoxLayout{
+	background-color: rgb(232,243,242);
+}
+QPushButton{
+	border-radius: 20px;
+	color: white;
+}
 
+QRadioButton{
+	background-color: rgb(232,243,242);
+}
+
+QTextEdit{
+	color: black;
+}
+QTextLabel{
+	background-color: None
+}
 QDateEdit {
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -434,7 +462,7 @@ QDateEdit::down-arrow, QDateEdit::up-arrow {
           <string notr="true">color: black;</string>
          </property>
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:400;&quot;&gt;Gmail&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:400;&quot;&gt;Email&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -508,8 +536,8 @@ QDateEdit::down-arrow, QDateEdit::up-arrow {
        <rect>
         <x>240</x>
         <y>120</y>
-        <width>340</width>
-        <height>30</height>
+        <width>341</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="font">
@@ -527,7 +555,7 @@ QDateEdit::down-arrow, QDateEdit::up-arrow {
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;sample_name&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;sample_name&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
      <widget class="QTextEdit" name="mail_edit">
@@ -535,8 +563,8 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>240</x>
         <y>200</y>
-        <width>340</width>
-        <height>30</height>
+        <width>341</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="font">
@@ -552,7 +580,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;sample_gmail&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;sample_email&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
      <widget class="QTextEdit" name="phonenum_edit">
@@ -560,8 +588,8 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>240</x>
         <y>280</y>
-        <width>340</width>
-        <height>30</height>
+        <width>341</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="font">
@@ -579,7 +607,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;sameple_phonenumber&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;sameple_phonenumber&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
      <widget class="QRadioButton" name="male_button">
@@ -594,6 +622,7 @@ p, li { white-space: pre-wrap; }
       <property name="font">
        <font>
         <family>Manrope</family>
+        <pointsize>10</pointsize>
        </font>
       </property>
       <property name="styleSheet">
@@ -615,6 +644,7 @@ p, li { white-space: pre-wrap; }
       <property name="font">
        <font>
         <family>Manrope</family>
+        <pointsize>10</pointsize>
        </font>
       </property>
       <property name="styleSheet">
@@ -627,7 +657,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QRadioButton" name="others_button">
       <property name="geometry">
        <rect>
-        <x>420</x>
+        <x>430</x>
         <y>360</y>
         <width>91</width>
         <height>22</height>
@@ -636,6 +666,7 @@ p, li { white-space: pre-wrap; }
       <property name="font">
        <font>
         <family>Manrope</family>
+        <pointsize>10</pointsize>
        </font>
       </property>
       <property name="text">
@@ -727,6 +758,7 @@ QPushButton:hover {
       <property name="font">
        <font>
         <family>Manrope</family>
+        <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -753,6 +785,7 @@ QPushButton:hover {
       <property name="font">
        <font>
         <family>Manrope</family>
+        <pointsize>11</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -779,6 +812,7 @@ QPushButton:hover {
       <property name="font">
        <font>
         <family>Manrope</family>
+        <pointsize>11</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -791,6 +825,33 @@ QPushButton:hover {
       </property>
       <property name="text">
        <string>Address</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="address_button_2">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>190</y>
+        <width>171</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Manrope</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: black;</string>
+      </property>
+      <property name="text">
+       <string>Create Shop</string>
       </property>
      </widget>
     </widget>

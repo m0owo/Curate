@@ -11,7 +11,8 @@ import time
 
 current_directory = os.getcwd()
 sys.path.append(current_directory)
-sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
+# sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
+sys.path.append(r'/Users/Miki Ajiki/desktop/Curate')
 
 from frontend.src.pages.ui.common import *
 
@@ -335,6 +336,7 @@ class HomeUI(QMainWindow):
         self.ui.scrollAreaWidgetContents.adjustSize()
         return post_widgets
     
+        
     def receive_large_data(self, conn):
         total_chunks = pickle.loads(conn.recv(4096))
         received_data = b''
