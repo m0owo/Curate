@@ -17,7 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QFrame, QGridLayout,
     QLabel, QLineEdit, QMainWindow, QPushButton,
-    QScrollArea, QSizePolicy, QWidget)
+    QScrollArea, QSizePolicy, QWidget, QHBoxLayout)
 from .icons_rc import *
 from .logo_rc import *
 from .posts_images_rc import *
@@ -188,6 +188,9 @@ class Ui_MainWindow(object):
 "}")
         self.tags_frame.setFrameShape(QFrame.StyledPanel)
         self.tags_frame.setFrameShadow(QFrame.Raised)
+        self.tags_layout = QHBoxLayout(self.tags_frame)
+        self.tags_layout.setSpacing(1)
+        self.tags_frame.setLayout(self.tags_layout)
         self.tagbutton = QPushButton(self.tags_frame)
         self.tagbutton.setObjectName(u"tagbutton")
         self.tagbutton.setGeometry(QRect(30, 20, 121, 41))

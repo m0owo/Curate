@@ -21,6 +21,28 @@ from frontend.src.pages.ui.common import *
 
 class Post():
     def __init__(self, details, container, home_ui):
+        self.POST_WIDTH = 230
+        self.post = ClickablePost(container, details, home_ui)
+
+        # making the clickable frame for the post
+        post_layout = QVBoxLayout()
+        post_layout.setAlignment(Qt.AlignCenter)
+        post_layout.setContentsMargins(0, 0, 0, 0)
+        post_layout.setSpacing(0)
+        if not self.post:
+            print("gay")
+        self.post.setLayout(post_layout)
+        self.post.setMinimumSize(QSize(self.POST_WIDTH, 300))
+        self.post.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+        # self.post.setStyleSheet("border: 1px solid black;") #for showing the boxes
+        self.post.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        card_shadow = QGraphicsDropShadowEffect(self.post)
+        card_shadow.setBlurRadius(10)
+        card_shadow.setXOffset(1)
+        card_shadow.setYOffset(1)
+        self.post.setGraphicsEffect(card_shadow)
+
+        # check the post details exists
         if details:
             self.id = details.get('post_id')
             self.author = details.get('post_author')
@@ -34,164 +56,168 @@ class Post():
             self.s_type = details.get('sales_type')
             self.start = self.product.get('start')
             self.status = details.get('status')
+
+            #if collection: price is tuple(min, max), otherwise its just price string
             if self.p_type.lower() == 'collection':
                 price_range = self.product.get('price_range')
                 if price_range[0] != price_range[1]:
-                    self.price = f'฿{str(price_range[0])} - ฿{str(price_range[1])}'
+                    self.price = price_range
+                    self.price_str = f'฿{str(self.price[0])} - ฿{str(self.price[1])}'
                 else:
                     self.price = f'฿{price_range[0]}'
             elif self.p_type.lower() == 'item':
-                self.price = f'฿{str(self.product.get("price"))}'
-            self.container = container
+                self.price = self.product.get('price')
+                self.price_str = f'฿{str(self.price)}'
+
+            # converting binary image data into QImages
             self.images = []
             for image_data in self.product.get('images'):
                 image = QImage.fromData(image_data)
                 self.images.append(image)
-
-            # making the post
-            post_layout = QVBoxLayout()
-            post_layout.setAlignment(Qt.AlignCenter)
-            post_layout.setContentsMargins(0, 0, 0, 0)
-            post_layout.setSpacing(0)
-            self.post = ClickablePost(self.container, details, home_ui)
-            self.post.setLayout(post_layout)
-            self.post.setMinimumSize(QSize(230, 300))
-            # self.post.setStyleSheet("border: 1px solid black;") #for showing the boxes
-            self.post.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-            card_shadow = QGraphicsDropShadowEffect(self.post)
-            card_shadow.setBlurRadius(10)
-            card_shadow.setXOffset(1)
-            card_shadow.setYOffset(1)
-            self.post.setGraphicsEffect(card_shadow)
-
-            #post image
-            self.post_image = QLabel(self.post)
-            self.post_image.setFixedSize(QSize(230, 230))
-            self.post_image.setStyleSheet("QLabel { background-color: transparent; }")
-            # pic = QPixmap(u":/post_images/IMG_7109.jpg") #test image
-            pic = QPixmap(self.images[0])
-            post_layout.addWidget(self.post_image, alignment=Qt.AlignTop | Qt.AlignCenter)
-            width = self.post.width()
-            scaled_pic = pic.scaled(QSize(width, width), Qt.KeepAspectRatio, Qt.SmoothTransformation)
-            self.post_image.setPixmap(scaled_pic)
-
-            # post info is a widget for all the information below the images
-            self.post_info = QWidget(self.post)
-            post_layout.addWidget(self.post_info)
-            post_info_layout = QVBoxLayout()
-            post_info_layout.setSpacing(10)
-            self.post_info.setLayout(post_info_layout)
-            self.post_info.setMinimumSize(QSize(200, 100))
-
-            # post title
-            self.post_title = QLabel(self.post_info)
-            self.post_title.setMinimumSize(QSize(200, 16))
-            self.post_title.setStyleSheet(u"QLabel {font: 700 16pt \"Manrope\";}")
-            self.post_title.setWordWrap(True)
-            self.post_title.setAlignment(Qt.AlignLeft)
-            self.post_title.setText(self.title)
-            post_info_layout.addWidget(self.post_title, alignment=Qt.AlignCenter)
-
-            # post tags
-            # self.post_tags_frame = QScrollArea(self.post_info)
-            # self.post_tags_frame.setWidgetResizable(True)
-            # post_info_layout.addWidget(self.post_tags_frame)
             
-            self.post_tags_widget = QWidget()
-            self.post_tags_widget.setMinimumSize(QSize(200, 40))
-            post_info_layout.addWidget(self.post_tags_widget)
-            # self.post_tags_frame.setWidget(self.post_tags_widget)
-            # self.post_tags_frame.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-            # self.post_tags_frame.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-            # self.post_tags_frame.setContentsMargins(0, 0, 0, 0)
-            # self.post_tags_frame.setFixedSize(QSize(200, 40))
+            self.container = container #the post frame
 
-            post_tags_layout = QVBoxLayout(self.post_tags_widget)
-            post_tags_layout.setContentsMargins(0, 0, 0, 0)
-            post_tags_layout.setSpacing(5)
+            self.draw_post_image()
+            self.draw_post_info()
 
-            self.product_type_widget = QWidget()
-            product_type_layout = QHBoxLayout(self.product_type_widget)
-            product_type_layout.setAlignment(Qt.AlignLeft)
-            product_type_layout.setContentsMargins(0, 0, 0, 0)
-            post_tags_layout.addWidget(self.product_type_widget)
+    def update_post_image(self, new_image):
+        scaled_pic = new_image.scaled(QSize(self.POST_WIDTH, self.POST_WIDTH), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.post_image.setPixmap(scaled_pic)
 
-            self.sales_type_widget = QWidget()
-            sales_type_layout = QHBoxLayout(self.sales_type_widget)
-            sales_type_layout.setAlignment(Qt.AlignLeft)
-            sales_type_layout.setContentsMargins(0, 0, 0, 0)
-            post_tags_layout.addWidget(self.sales_type_widget)
+    def draw_post_image(self):
+        #post image
+        self.post_image = QLabel(self.post)
+        self.post_image.setFixedSize(QSize(self.POST_WIDTH, self.POST_WIDTH))
+        self.post_image.setStyleSheet("QLabel { background-color: transparent; }")
+        self.post.layout().addWidget(self.post_image, alignment=Qt.AlignTop | Qt.AlignCenter)
 
-            info_font = QFont()
-            info_font.setFamilies([u"Manrope"])
-            info_font.setPointSize(10)
-            info_font.setBold(True)
-            label_font = QFont()
-            label_font.setFamilies([u"Manrope"])
-            label_font.setPointSize(11)
+        # pic = QPixmap(u":/post_images/IMG_7109.jpg") #test image
+        # post image is the first image from the post product
+        pic = QPixmap(self.images[0])
+        self.update_post_image(pic)
+        return pic
+        
+    def update_post_title(self, new_title):
+        self.post_title.setText(new_title)
+        return self.post_title
+    
+    def update_status_countdown(self, new_start_date):
+        new_countdown = CountdownWidget(new_start_date)
+        return new_countdown
+    
+    def update_product_type(self, new_p_type):
+        new_product_type = ProductTypeTagButton(new_p_type, self.post_tags_widget).get_tag_button()
+        return new_product_type
+    
+    def update_sales_type(self, new_s_type):
+        new_sales_type = SaleTypeTagButton(new_s_type, self.post_tags_widget).get_tag_button()
+        self.sales_type = new_sales_type
+        return self.sales_type
+    
+    def update_price(self, new_price):
+        self.price_label.setText(new_price)
+
+    def draw_post_info(self):
+        # post info is a widget for all the information below the images
+        self.post_info = QWidget(self.post)
+        post_info_layout = QVBoxLayout()
+        post_info_layout.setSpacing(10)
+        if not self.post_info:
+            print('jasofj')
+        self.post_info.setLayout(post_info_layout)
+        self.post_info.setMinimumSize(QSize(200, 100))
+        self.post.layout().addWidget(self.post_info)
+
+        # post title
+        self.post_title = QLabel(self.post_info)
+        self.post_title.setMinimumSize(QSize(200, 16))
+        self.post_title.setStyleSheet(u"QLabel {font: 700 16pt \"Manrope\";}")
+        self.post_title.setWordWrap(True)
+        self.post_title.setAlignment(Qt.AlignLeft)
+        post_info_layout.addWidget(self.post_title, alignment=Qt.AlignCenter)
+        self.update_post_title(self.title)
+        
+        info_font = QFont()
+        info_font.setFamilies([u"Manrope"])
+        info_font.setPointSize(10)
+        info_font.setBold(True)
+
+        label_font = QFont()
+        label_font.setFamilies([u"Manrope"])
+        label_font.setPointSize(11)
+
+        # self info tag widgets
+        self.post_tags_widget = QWidget()
+        self.post_tags_widget.setMinimumSize(QSize(200, 40))
+        post_info_layout.addWidget(self.post_tags_widget)
+        post_tags_layout = QVBoxLayout(self.post_tags_widget)
+        post_tags_layout.setContentsMargins(0, 0, 0, 0)
+        post_tags_layout.setSpacing(5)
+
+        # product type widget
+        self.product_type_widget = QWidget()
+        product_type_layout = QHBoxLayout(self.product_type_widget)
+        product_type_layout.setAlignment(Qt.AlignLeft)
+        product_type_layout.setContentsMargins(0, 0, 0, 0)
+        post_tags_layout.addWidget(self.product_type_widget)
+
+        # sales type widget
+        self.sales_type_widget = QWidget()
+        sales_type_layout = QHBoxLayout(self.sales_type_widget)
+        sales_type_layout.setAlignment(Qt.AlignLeft)
+        sales_type_layout.setContentsMargins(0, 0, 0, 0)
+        post_tags_layout.addWidget(self.sales_type_widget)
+        
+        # status tag widget
+        self.status_widget = QWidget()
+        status_layout = QHBoxLayout(self.status_widget)
+        status_layout.setContentsMargins(0, 0, 0, 0)
+        status_layout.setAlignment(Qt.AlignLeft)
+        post_tags_layout.addWidget(self.status_widget)
+
+        # status
+        self.status_label = QLabel('Scheduled For:')
+        self.status_label.setFont(label_font)
+        self.status_countdown = self.update_status_countdown(self.start)
+        status_layout.addWidget(self.status_label)
+        status_layout.addWidget(self.status_countdown)
+
+        # product type
+        self.product_type_label = QLabel('Product Type:')
+        self.product_type_label.setFont(label_font)
+        self.product_type = self.update_product_type(self.p_type)
+        self.product_type.setFont(info_font)
+        product_type_layout.addWidget(self.product_type_label)
+        product_type_layout.addWidget(self.product_type)
+
+        # sales type
+        self.sales_type_label = QLabel('Sales Type:')
+        self.sales_type_label.setFont(label_font)
+        self.sales_type = self.update_sales_type(self.s_type)
+        self.sales_type.setFont(info_font)
+        sales_type_layout.addWidget(self.sales_type_label)
+        sales_type_layout.addWidget(self.sales_type)
+
+        # post details widget
+        self.post_details_widget = QWidget()
+        post_info_layout.addWidget(self.post_details_widget)
+        post_details_layout = QHBoxLayout(self.post_details_widget)
+        post_details_layout.setContentsMargins(0, 0, 0, 0)
+        post_details_layout.setSpacing(10)
+
+        # price
+        self.price_label = QLabel()
+        self.price_label.setStyleSheet("font:500 16pt Manrope;")
+        self.price_label.setAlignment(Qt.AlignLeft)
+        self.update_price(self.price_str)
+        post_details_layout.addWidget(self.price_label)
             
-            self.status_widget = QWidget()
-            status_layout = QHBoxLayout(self.status_widget)
-            status_layout.setContentsMargins(0, 0, 0, 0)
-            status_layout.setAlignment(Qt.AlignLeft)
-            self.status_label = QLabel('Scheduled For:')
-            self.status_label.setFont(label_font)
-            self.status_countdown = CountdownWidget(self.start)
-            status_layout.addWidget(self.status_label)
-            status_layout.addWidget(self.status_countdown)
-            post_tags_layout.addWidget(self.status_widget)
+        # self.created_date = QLabel()
+        # self.created_date.setText(f'date created: {self.created.strftime("%Y-%m-%d %H:%M:%S")}')
+        # self.created_date.setAlignment(Qt.AlignCenter)
+        # post_details_layout.addWidget(self.created_date)
 
-            self.product_type_label = QLabel('Product Type:')
-            self.product_type_label.setFont(label_font)
-            self.product_type = ProductTypeTagButton(self.p_type, self.post_tags_widget).get_tag_button()
-            self.product_type.setFont(info_font)
-            product_type_layout.addWidget(self.product_type_label)
-            product_type_layout.addWidget(self.product_type)
-
-            self.sales_type_label = QLabel('Sales Type:')
-            self.sales_type_label.setFont(label_font)
-            self.sales_type = SaleTypeTagButton(self.s_type, self.post_tags_widget).get_tag_button()
-            self.sales_type.setFont(info_font)
-            sales_type_layout.addWidget(self.sales_type_label)
-            sales_type_layout.addWidget(self.sales_type)
-            
-            # print(f'DRAMAMAMMAMAM {self.tags}')
-            # for tag in self.tags:
-            #     post_tag = PostTagButton(tag.get('tag_text'), self.post_tags_widget, None)
-            #     post_tags_layout.addWidget(post_tag.get_drawing())
-            
-            # post details:create date, start live date
-            # self.post_details_frame = QScrollArea(self.post_info)
-            # self.post_details_frame.setMinimumSize(QSize(200, 40))
-            # self.post_details_frame.setStyleSheet(u"QLabel {font: 400 12pt \"Manrope\";}")
-            # self.post_details_frame.setWidgetResizable(True)
-            # post_info_layout.addWidget(self.post_details_frame)
-            self.post_details_widget = QWidget()
-            post_info_layout.addWidget(self.post_details_widget)
-            # self.post_details_frame.setWidget(self.post_details_widget)
-            # self.post_details_frame.setMaximumSize(QSize(200, 40))
-            # self.post_details_frame.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-            # self.post_details_frame.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-
-            post_details_layout = QHBoxLayout(self.post_details_widget)
-            post_details_layout.setContentsMargins(0, 0, 0, 0)
-            post_details_layout.setSpacing(10)
-
-            self.price_label = QLabel()
-            self.price_label.setText(self.price)
-            self.price_label.setStyleSheet("font:500 16pt Manrope;")
-            self.price_label.setAlignment(Qt.AlignLeft)
-            post_details_layout.addWidget(self.price_label)
-            
-            # self.created_date = QLabel()
-            # self.created_date.setText(f'date created: {self.created.strftime("%Y-%m-%d %H:%M:%S")}')
-            # self.created_date.setAlignment(Qt.AlignCenter)
-            # post_details_layout.addWidget(self.created_date)
-
-            # self.live_date = QLabel()
-            # self.live_date.setText(f'live date: {self.product.get("start").strftime("%Y-%m-%d %H:%M:%S")}')
-            # self.live_date.setAlignment(Qt.AlignCenter)
-            # post_details_layout.addWidget(self.live_date)
+        # seller profile?
     def get_post(self):
         return self.post
     def get_status(self):
@@ -224,17 +250,17 @@ class HomeUI(QMainWindow):
         self.server_host = server_host
         self.server_port = server_port
 
+        # nav bar
         shadow = QGraphicsDropShadowEffect(self)
         shadow.setBlurRadius(10)
         shadow.setXOffset(1)
-        shadow.setYOffset(2)
+        shadow.setYOffset(1)
         self.ui.search_frame.setGraphicsEffect(shadow)
         shadow2 = QGraphicsDropShadowEffect(self)
         shadow2.setBlurRadius(10)
         shadow2.setXOffset(1)
-        shadow2.setYOffset(2)
-        self.ui.page_label.setGraphicsEffect(shadow)
-
+        shadow2.setYOffset(1)
+        self.ui.page_label.setGraphicsEffect(shadow2)
         button_stylesheet = (
             "QPushButton {"
             "   border-radius: 5px;"
@@ -250,6 +276,11 @@ class HomeUI(QMainWindow):
         self.ui.wishlist_button.setStyleSheet(button_stylesheet)
         self.ui.history_button.setStyleSheet(button_stylesheet)
 
+        self.ui.profile_button.clicked.connect(self.to_profile)
+        self.ui.history_button.clicked.connect(self.to_history)
+        self.ui.wishlist_button.clicked.connect(self.to_wishlist)
+        # self.ui.home_button.clicked.connect(self.to_home)
+
         filter_stylesheet = (
             "QPushButton {"
             "   border-radius: 20px;"
@@ -262,27 +293,24 @@ class HomeUI(QMainWindow):
         )
         self.ui.filter_button.setStyleSheet(filter_stylesheet)
 
-        self.tags_layout = QHBoxLayout()
-        self.tags_layout.setSpacing(1)
-        self.ui.tags_frame.setLayout(self.tags_layout)
+        # clearing tags frame
         clear_frame(self.ui.tags_frame)
 
-        #drawing tags
-        pop_tags = {"Crochet", "Y2K", "Summer Outfit", "Bam Yang Gang", "Acubi"}
-        for pop_tag in pop_tags:
-            tag_button = TagButton(pop_tag, self.ui.tags_frame)
-            self.tags_layout.addWidget(tag_button.get_tag_button())
+        # drawing tags
+        self.get_pop_tags()
+        # pop_tags = {"Crochet", "Y2K", "Summer Outfit", "Bam Yang Gang", "Acubi"}
+        # for pop_tag in pop_tags:
+        #     TagButton(pop_tag, self.ui.tags_frame)
+            # self.ui.tags_layout.addWidget(tag_button.get_tag_button())
         
         # drawing posts
         self.get_all_posts()
 
-        self.ui.profile_button.clicked.connect(self.to_profile)
-        self.ui.history_button.clicked.connect(self.to_history)
-        self.ui.wishlist_button.clicked.connect(self.to_wishlist)
     def handle_post_click(self, details):
         sender = ('Home', 1)
         self.clicked.connect(self.to_collection)
         self.clicked.emit(details, [sender])
+
     def populate_posts(self, post_details):
         clear_widget(self.ui.scrollAreaWidgetContents)
         self.ui.scrollAreaWidgetContents.setMinimumSize(0, 0)
@@ -306,7 +334,8 @@ class HomeUI(QMainWindow):
             spacer = Spacer().get_spacer()
             self.ui.gridLayout.addWidget(spacer)
         self.ui.scrollAreaWidgetContents.adjustSize()
-
+        return post_widgets
+    
     def receive_large_data(self, conn):
         total_chunks = pickle.loads(conn.recv(4096))
         received_data = b''
@@ -315,6 +344,7 @@ class HomeUI(QMainWindow):
             received_data += chunk
             # print(f'chunk {chunk}')
         return pickle.loads(received_data)
+    
     def get_all_posts(self):
         print('Getting all posts from the server')
         retries = 100
@@ -347,17 +377,32 @@ class HomeUI(QMainWindow):
                     print("Retrying...")
                     time.sleep(1)
                     continue
+
+    def get_pop_tags(self, user_id = None):
+        #get the most popular tags first if no user_id
+        pop_tags = {"Crochet", "Y2K", "Summer Outfit", "Bam Yang Gang", "Acubi"}
+        self.populate_tags(pop_tags)
+
+    def populate_tags(self, pop_tags):
+        for pop_tag in pop_tags:
+            TagButton(pop_tag, self.ui.tags_frame)
+        return pop_tags
+    
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id
         self.user_data = user_data
         # print(f'User ID: {self.user_id}\nUser Data: {self.user_data}')
         self.ui.name_label.setText(f"Welcome, {self.user_data['username']}")
+
     def to_profile(self):
         self.stacked_widget.setCurrentIndex(3)
+
     def to_history(self):
         self.stacked_widget.setCurrentIndex(5)
+
     def to_wishlist(self):
         self.stacked_widget.setCurrentIndex(6)
+
     def to_collection(self):
         self.stacked_widget.setCurrentIndex(7)
     

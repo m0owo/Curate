@@ -62,9 +62,9 @@ class TagButton():
         self.container = container
         if container:
             self.tag_button = QPushButton(self.container)
+            self.container.layout().addWidget(self.tag_button)
         else:
             self.tag_button = QPushButton()
-        self.tag_button.setText(self.temp_text)
         self.tag_button.setText(self.temp_text)
         tag_button_stylesheet = ("QPushButton {"  # Change QLabel to QPushButton
         "    font: 600 14pt Manrope;"
