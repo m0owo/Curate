@@ -213,12 +213,12 @@ class PathDivider(QLabel):
 
 class PathSource(QLabel):
     clicked = Signal(object)
-    def __init__(self, source_name, stack, stack_index, collection_ui):
+    def __init__(self, source_name, stack, stack_index, product_ui):
         super().__init__()
         self.setText(source_name)
         self.stack_index = stack_index
         self.stack = stack
-        self.clicked.connect(collection_ui.handle_path_click)
+        self.clicked.connect(product_ui.handle_path_click)
     def mousePressEvent(self, event):
         print("Mouse pressed on path")
         if event.button() == Qt.LeftButton:
@@ -229,3 +229,7 @@ class PathSource(QLabel):
         return self.stack_index
     def get_name(self):
         return self.text()
+    def get_stacked_widget(self):
+        return self.stack
+    def get_stacked_index(self):
+        return self.stack_index

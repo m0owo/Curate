@@ -28,6 +28,9 @@ class HistoryBox(QFrame):
         self.ui.order_id_label.setText(str(self.order_id))
         self.ui.price_label.setText(str(self.price) + " B")
         self.ui.status_label.setText("Status: " + self.order_status)
+        
+        self.user_id = None
+        self.user_data = None
 
 
 class HistoryUI(QMainWindow):
@@ -53,6 +56,9 @@ class HistoryUI(QMainWindow):
         self.ui.to_be_delivered.clicked.connect(lambda: self.update_history_data("shipping"))
         self.ui.completed.clicked.connect(lambda: self.update_history_data("completed"))
         self.ui.cancelled.clicked.connect(lambda: self.update_history_data("cancelled"))
+
+        self.user_id = None
+        self.user_data = None
         
 
     def to_home_page(self):
@@ -134,14 +140,16 @@ class HistoryUI(QMainWindow):
         
 
     def update_history_data(self, filter="all"):
-        username = self.user_data.get("username")
-        if username:
-            user_data = self.get_all_orders()
-            if user_data:
-                self.populate_orders(user_data, filter)
-            else:
-                print("Fail")
-
+        if self.user_data != None:
+            username = self.user_data.get("username")
+            if username:
+                user_data = self.get_all_orders()
+                if user_data:
+                    self.populate_orders(user_data, filter)
+                else:
+                    print("Fail")
+        # else:
+        #     print("History has no attribute user data")
     
 if __name__ == "__main__":
     app = QApplication(sys.argv)

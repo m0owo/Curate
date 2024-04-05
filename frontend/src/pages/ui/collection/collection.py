@@ -54,6 +54,7 @@ class CollectionUI(QMainWindow):
     def load_post_data(self, details, path):
         # getting info from home ui's signal
         # keep items in a list so its just a list of one item for Item obj
+        
         # self.stacked_products.insertWidget(0, self)
         index = 1
         self.p_type = details.get('product_type')
@@ -71,7 +72,7 @@ class CollectionUI(QMainWindow):
                 index += 1
 
         self.product_name = details.get('title')
-        print(self.product_name)
+
         self.path = [path, [self.product_name, self.stacked_products, 0]]
         self.s_type = details.get('sales_type')
         self.tags = details.get('tags')
@@ -97,28 +98,25 @@ class CollectionUI(QMainWindow):
         self.ui.name_label.setText(self.product_name)
 
         # making the path label
-        font4 = QFont()
-        font4.setFamily("Manrope")
-        font4.setPointSize(20)
-        font4.setBold(True)
-        self.page_label = QLabel(self.ui.page_widget)
-        self.page_label.setText('')
-        self.page_label.setGeometry(QRect(60, 110, 591, 61))
-        self.page_label.setFont(font4)
-        self.page_label.setStyleSheet("color: #8C237C;\n")
-        path_layout = QHBoxLayout(self.page_label)
-        self.page_label.setLayout(path_layout)
-        clear_widget(path_layout)
-        path_layout.setAlignment(Qt.AlignLeft)
-        path_layout.setSpacing(0)
         path_font = QFont()
         path_font.setFamily("Manrope")
         path_font.setPointSize(20)
         path_font.setBold(True)
-        clear_widget(self.ui.page_widget)
-        clear_widget(self.ui.page_widget_layout)
-        clear_widget(path_layout)
+
+        clear_widget(self.ui.path_widget)
+        self.path_label = QLabel(self.ui.path_widget)
+        self.ui.path_widget_layout.addWidget(self.path_label)
+        self.ui.path_widget_layout.setContentsMargins(0, 0, 0, 0)
+        # self.path_label.setText('TESt')
+        self.path_label.setGeometry(QRect(60, 110, 591, 61))
+        self.path_label.setFont(path_font)
+        self.path_label.setStyleSheet("color: #8C237C;\n")
+        path_layout = QHBoxLayout(self.path_label)
+        self.path_label.setLayout(path_layout)
+        path_layout.setAlignment(Qt.AlignLeft)
+        path_layout.setSpacing(0)
         print(f'path {path}')
+
         for x in path:
             # PathSource(source name, stack, stack_index, collection_ui) returns a Clickable Label
             path_source = PathSource(x[0], x[1], x[2], self).get_path_source()
@@ -135,12 +133,10 @@ class CollectionUI(QMainWindow):
             # self.ui.path_label.setStyleSheet('border: 1px solid black;') #to check box
 
         # path to current page
-        path_source = PathSource(self.product_name, self.stacked_widget, self.stacked_widget.currentIndex(), self).get_path_source()
-        path_source.setStyleSheet('color: #8C237C;')
+        path_source = PathSource(self.product_name, self.stacked_products, 1, self).get_path_source()
         path_source.setFont(path_font)
         path_layout.addWidget(path_source)
         set_preferred_size(path_source)
-        path_layout.addWidget(path_source)
 
         # tags frame for this post
         self.ui.tags_frame_widget.setFixedSize(QSize(600, 50))
@@ -151,27 +147,41 @@ class CollectionUI(QMainWindow):
         self.populate_tags()
         
         # Info Section
-        # self.ui.frame_3.setStyleSheet(f'border:1px solid black;')
-        # self.ui.product_type_label.setText(self.p_type)
-        # self.ui.mode_label.setText(self.s_type)
-        # self.ui.date_label.setText(self.start.strftime('%B %d, %y @ %I:%M %p'))
-        # self.add_info_widget('Product Type:', self.ui.product_type_layout, info_font)
-        # self.add_info_widget('Sales Type:', self.ui.mode_layout, info_font)
-        # self.add_info_widget('Scheduled For:', self.ui.live_date_layout, info_font)
-        # self.add_info_widget('Description:', self.ui.description_layout, info_font)
-        # info_font.setPointSize(12)
-        # info_font.setBold(False)
-        # self.add_info_widget(self.p_type, self.ui.product_type_layout, info_font)
-        # self.add_info_widget(self.s_type, self.ui.mode_layout, info_font)
-        # self.add_info_widget(self.start.strftime('%B %d, %y @ %I:%M %p'), self.ui.live_date_layout, info_font)
-        # self.add_info_widget(self.info, self.ui.description_layout, info_font)
+        self.ui.label_5.setText("Product Information")
+        self.ui.frame_3.setStyleSheet(f'border:1px solid black;')
+        self.ui.product_type_label_label.setText("Product Type:")
+        self.ui.product_type_label_label.setFont(info_font)
+
+        self.ui.mode_label_label.setText("Sales Type:")
+        self.ui.mode_label_label.setFont(info_font)
+
+        self.ui.date_label_label.setText("Scheduled For:")
+        self.ui.date_label_label.setFont(info_font)
+
+        self.ui.description_label_label.setText("Description:")
+        self.ui.description_label_label.setFont(info_font)
+
+        info_font.setPointSize(12)
+        info_font.setBold(False)
+        self.ui.product_type_label.setText(self.p_type)
+        self.ui.product_type_label.setFont(info_font)
+
+        self.ui.mode_label.setText(self.s_type)
+        self.ui.mode_label.setFont(info_font)
+
+        self.ui.date_label.setText(self.start.strftime('%B %d, %y @ %I:%M %p'))
+        self.ui.date_label.setFont(info_font)
+
+        self.ui.description_label.setText(self.info)
+        self.ui.description_label.setFont(info_font)
 
         # Buttons
         self.ui.horizontalLayout_3.addWidget(self.ui.add_to_wishlist_bt)
+
         self.ui.horizontalLayout_3.addWidget(self.ui.view_products_bt)
+
         self.ui.horizontalLayout_3.addWidget(self.ui.go_to_item)
-        # self.ui.horizontalLayout_3.addWidget(self.ui.prev_item_bt)
-        # self.ui.horizontalLayout_3.addWidget(self.ui.next_item_bt)
+        self.ui.go_to_item.clicked.connect(self.to_stacked_products())
     
     def populate_tags(self):
         # calculate the total width of all tags plus padding to get how many rows needed
@@ -216,7 +226,12 @@ class CollectionUI(QMainWindow):
         print('Received userdata and userid')
     
     def handle_path_click(self, path_source):
-        print(f'{path_source.get_name()} clicked')
+        print(f'\n{path_source.get_name()} clicked')
+        print(f'{path_source.get_stacked_widget()}')
+        print(f'{path_source.get_stacked_index()}\n')
+        stacked_widget = path_source.get_stacked_widget()
+        index = path_source.get_stacked_index()
+        stacked_widget.setCurrentIndex(index)
 
     def to_profile(self):
         self.stacked_widget.setCurrentIndex(3)
@@ -226,6 +241,11 @@ class CollectionUI(QMainWindow):
         self.stacked_widget.setCurrentIndex(6)
     def to_home(self):
         self.stacked_widget.setCurrentIndex(1)
+    
+    def to_stacked_products(self):
+        print('go to items')
+        self.stacked_products.show()
+        self.stacked_products.setCurrentIndex(2)
 
 class ItemUI(QMainWindow):
     # has the details of the item, has the container of the item, and the path to the item
@@ -236,6 +256,9 @@ class ItemUI(QMainWindow):
         self.ui.setupUi(self)
         self.stacked_container = stacked_container # the stack im in
         self.index = index # the index im at
+        self.stacked_widget = stacked_widget
+        self.server_host = server_host
+        self.server_port = server_port
 
         # nav bar
         button_stylesheet = (
@@ -295,17 +318,25 @@ class ItemUI(QMainWindow):
         self.ui.verticalLayout.addWidget(self.ui.label_2)
         self.ui.verticalLayout.addWidget(self.ui.name_label)
 
-        # making the path label
-        remove_cur_layout(self.ui.path_label)
-        self.ui.path_label.setText('')
-        path_layout = QHBoxLayout(self.ui.path_label)
-        path_layout.setAlignment(Qt.AlignLeft)
-        path_layout.setSpacing(0)
         path_font = QFont()
         path_font.setFamily("Manrope")
         path_font.setPointSize(20)
         path_font.setBold(True)
+
+        clear_widget(self.ui.path_widget)
+        self.path_label = QLabel(self.ui.path_widget)
+        self.ui.path_widget_layout.addWidget(self.path_label)
+        self.ui.path_widget_layout.setContentsMargins(0, 0, 0, 0)
+        # self.path_label.setText('TESt')
+        self.path_label.setGeometry(QRect(60, 110, 591, 61))
+        self.path_label.setFont(path_font)
+        self.path_label.setStyleSheet("color: #8C237C;\n")
+        path_layout = QHBoxLayout(self.path_label)
+        self.path_label.setLayout(path_layout)
+        path_layout.setAlignment(Qt.AlignLeft)
+        path_layout.setSpacing(0)
         print(f'path {path}')
+
         for x in path:
             # PathSource(source name, stack, stack_index, collection_ui) returns a Clickable Label
             path_source = PathSource(x[0], x[1], x[2], self).get_path_source()
@@ -319,13 +350,13 @@ class ItemUI(QMainWindow):
             set_preferred_size(divider)
             divider.setFont(path_font)
             path_layout.addWidget(divider)
+            # self.ui.path_label.setStyleSheet('border: 1px solid black;') #to check box
 
-        path_source = PathSource(self.product_name, self.stacked_container, self.stacked_container.currentIndex(), self).get_path_source()
-        path_source.setStyleSheet('color: #8C237C;')
+        # path to current page
+        path_source = PathSource(self.product_name, self.stacked_widget, self.stacked_widget.currentIndex(), self).get_path_source()
         path_source.setFont(path_font)
         path_layout.addWidget(path_source)
         set_preferred_size(path_source)
-        path_layout.addWidget(path_source)
 
         # tags frame for this post
         self.ui.tags_frame_widget.setFixedSize(QSize(600, 50))

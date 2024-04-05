@@ -335,7 +335,6 @@ class HomeUI(QMainWindow):
             self.ui.gridLayout.addWidget(spacer)
         self.ui.scrollAreaWidgetContents.adjustSize()
         return post_widgets
-    
         
     def receive_large_data(self, conn):
         total_chunks = pickle.loads(conn.recv(4096))

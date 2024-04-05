@@ -266,6 +266,8 @@ class ProfileAddressUI(QDialog):
         self.ui.address_button.clicked.connect(self.to_address_page)
         self.ui.add_address_button.clicked.connect(self.add_address)
         self.ui.create_shop_button.clicked.connect(self.to_store_page)
+        self.user_id = None
+        self.user_data = None
         
         # Create a QTimer object for periodic updates
         self.timer = QTimer(self)
@@ -315,6 +317,15 @@ class ProfileAddressUI(QDialog):
     def add_address(self):
         add_address_dialog = AddAddressUI(self.server_host, self.server_port, self.user_data)
         add_address_dialog.exec_()
+
+    def receive_large_data(self, conn):
+        total_chunks = pickle.loads(conn.recv(4096))
+        received_data = b''
+        for _ in range(total_chunks):
+            chunk = conn.recv(4096)
+            received_data += chunk
+            # print(f'chunk {chunk}')
+        return pickle.loads(received_data)
         
     def fetch_user_data(self, username):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
@@ -322,8 +333,9 @@ class ProfileAddressUI(QDialog):
                 client_socket.connect((self.server_host, self.server_port))
                 request_data = {'action': 'get_user_data', 'username': username}
                 client_socket.sendall(pickle.dumps(request_data))
-                response = client_socket.recv(4096)
-                response_data = pickle.loads(response)
+                # response = client_socket.recv(4096)
+                response_data = self.receive_large_data(client_socket)
+                # response_data = pickle.loads(response)
                 if response_data['success']:
                     # print("Get new user data done!")
                     return response_data['user_data']
@@ -333,15 +345,19 @@ class ProfileAddressUI(QDialog):
                 print("Error saving new information:", e)
                 
     def update_address_data(self):
-        # print("Updating address data...")
-        username = self.user_data.get("username")
-        if username:
-            user_data = self.fetch_user_data(username)
-            if user_data:
-                self.populate_address_widgets(user_data.get("addresses"))
-                # print("Address data updated successfully")
-            else:
-                print("Failed to fetch updated user data")
+        # Dummy method for updating address data periodically
+        print("Updating address data...")
+        if self.user_data:
+            username = self.user_data.get("username")
+            if username:
+                user_data = self.fetch_user_data(username)
+                if user_data:
+                    self.populate_address_widgets(user_data.get("addresses"))
+                    print("Address data updated successfully")
+                else:
+                    print("Failed to fetch updated user data")
+        # else:
+        #     print("cannot update address data, no user data")
         
 
 class AddAddressUI(QDialog):
@@ -374,7 +390,7 @@ class AddAddressUI(QDialog):
         
     def load_user_data(self):
         print("load user data from the create address")
-
+        
         self.ui.name_edit.clear()
         self.ui.phone_number_edit.clear()
         self.ui.name_edit.setText(self.user_data['username'])
