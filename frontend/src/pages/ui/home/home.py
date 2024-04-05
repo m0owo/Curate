@@ -121,8 +121,7 @@ class Post():
         self.post_info = QWidget(self.post)
         post_info_layout = QVBoxLayout()
         post_info_layout.setSpacing(10)
-        if not self.post_info:
-            print('jasofj')
+
         self.post_info.setLayout(post_info_layout)
         self.post_info.setMinimumSize(QSize(200, 100))
         self.post.layout().addWidget(self.post_info)
@@ -232,7 +231,6 @@ class Post():
         while True:
             current_datetime = datetime.now()
             remaining_time = max(target_datetime - current_datetime, timedelta(0))
-            # print(remaining_time)
             if remaining_time == timedelta(0):
                 self.update_status()
                 break
@@ -319,7 +317,6 @@ class HomeUI(QMainWindow):
         i = 0
         spacers_needed = 0 
         for post_detail in post_details:
-            # print(f'WEE WOO WEE WOOO WEE WOO {post_detail}')
             post = Post(post_detail, self.ui.scrollAreaWidgetContents, self)
             post_widget = post.get_post()
             post_widgets.append(post_widget)
@@ -342,7 +339,6 @@ class HomeUI(QMainWindow):
         for _ in range(total_chunks):
             chunk = conn.recv(4096)
             received_data += chunk
-            # print(f'chunk {chunk}')
         return pickle.loads(received_data)
     def send_large_data(self, connection, data):
         try:
@@ -365,7 +361,6 @@ class HomeUI(QMainWindow):
                     client_socket.sendall(pickle.dumps(request_data))
                     print("Step 3: Receiving response...")
                     response = self.receive_large_data(client_socket)
-                    # print("Received response:", response)
                     print("Step 4: Unpacking response...")
                     if response.get('success'):
                         print('Success getting all the data')
@@ -391,8 +386,6 @@ class HomeUI(QMainWindow):
         self.populate_tags(pop_tags)
 
     def populate_tags(self, pop_tags):
-        print("Populating tags...")
-        print("Pop tags:", pop_tags)
         for pop_tag in pop_tags:
             print("Adding tag:", pop_tag)
             TagButton(pop_tag, self.ui.tags_frame)
@@ -401,7 +394,6 @@ class HomeUI(QMainWindow):
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id
         self.user_data = user_data
-        # print(f'User ID: {self.user_id}\nUser Data: {self.user_data}')
         self.ui.name_label.setText(f"Welcome, {self.user_data['username']}")
 
     def to_profile(self):
@@ -414,6 +406,7 @@ class HomeUI(QMainWindow):
         self.stacked_widget.setCurrentIndex(6)
 
     def to_collection(self):
+        print('Going to COllection')
         self.stacked_widget.setCurrentIndex(7)
     
 if __name__ == "__main__":

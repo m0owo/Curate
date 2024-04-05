@@ -42,7 +42,7 @@ images_path_k = r'C:\Users\Miki Ajiki\Desktop\Curate\frontend\public\images\post
 
 # getting webP image data
 def get_webp_data(image_name):
-    full_image_path = images_path_k + image_name
+    full_image_path = images_path_ms + image_name
     try:
         with Image.open(full_image_path) as img:
             webp_data = io.BytesIO()
@@ -113,12 +113,12 @@ class Tag(persistent.Persistent):
 
 #product in the post
 class Product(persistent.Persistent):
-    def __init__(self, pr_id, seller, start, pr_name = "", images = [], tags = [], end = None):
+    def __init__(self, pr_id, seller, start, description = "", pr_name = "", images = [], tags = [], end = None):
         self.pr_id = pr_id
         self.pr_name = pr_name
         self.seller = seller
         if datetime.now() >= start: #upcoming, live, sold out = when stock is zero
-            self.status = "live"
+            self.status = "available"
         else:
             self.status = "upcoming"
         self.created = datetime.now() #date post created
@@ -129,6 +129,7 @@ class Product(persistent.Persistent):
         for image in images:
             self.images.append(image)
         self.tags = persistent.list.PersistentList()
+        self.description = description
         for tag in tags:
             self.tags.append(tag)
     def get_id(self):
@@ -153,6 +154,7 @@ class Product(persistent.Persistent):
               f'Seller: {self.seller}\n'
               f'Status: {self.status}')
         print(f'Start Date: {self.start_date.strftime("%Y-%m-%d %H:%M:%S")}')
+        print(f'Description {self.description}')
     def serialize(self):
         return {
             'product_id': self.pr_id,
@@ -164,13 +166,14 @@ class Product(persistent.Persistent):
             'start': self.start_date,
             'end': self.end_date,
             'images' : self.images,
-            'tags': [tag.serialize() for tag in self.tags] 
+            'tags': [tag.serialize() for tag in self.tags],
+            'description': self.description
         }
         
 #collection of items in a post, items would be persistent list in real??
 class Collection(Product):
-    def __init__(self, c_id, seller, start, items, c_name = "", images = [], tags = [], end = None):
-        super().__init__(c_id, seller, start, c_name, images, tags, end)
+    def __init__(self, c_id, seller, start, items, description ="", c_name = "", images = [], tags = [], end = None):
+        super().__init__(c_id, seller, start, description, c_name, images, tags, end)
         self.items = persistent.list.PersistentList() #Item objects in the collection
         for i in items:
             self.items.append(i)
@@ -179,6 +182,7 @@ class Collection(Product):
         not_sold_out = any(item.get_status() != 'sold out' for item in self.items)
         if not not_sold_out:
             self.status = 'sold out'
+        print(items[0].get_price())
         max_price = max(item.get_price() for item in self.items)
         min_price = min(item.get_price() for item in self.items)
         self.price_range = (min_price, max_price)
@@ -206,8 +210,8 @@ class Collection(Product):
 
 #individual items in a post
 class Item(Product):
-    def __init__(self, i_id, seller, start, price, stock, i_name = "", images = [], tags = [], end = None):
-        super().__init__(i_id, seller, start, i_name, images, tags, end)
+    def __init__(self, i_id, seller, start, price, stock, description="", i_name = "", images = [], tags = [], end = None):
+        super().__init__(i_id, seller, start, description, i_name, images, tags, end)
         self.price = price
         self.stock = stock
         self.update_stock(stock)
@@ -243,7 +247,9 @@ class PostDetails(persistent.Persistent):
     def __init__(self, p_id, p_author, product, p_info = "", p_title = "",
                  type = "cf no cc"): #types can be cf no cc, preorder, or bidding
         self.id = p_id
-        self.author = p_author
+        self.author_id = p_author.get_id()
+        self.author_name = p_author.get_store_name()
+        self.author_pic = p_author.get_store_picture()
         self.product = product
         self.tags = persistent.list.PersistentList()
         for tag in product.get_tags(): # make sure the tags are not repeated
@@ -284,7 +290,7 @@ class PostDetails(persistent.Persistent):
         print(
             f'----Post Info----\n'
             f'post id: {self.id}\n'
-            f'post author: {self.author}\n',
+            f'post author: {self.author_name}\n',
             f'product: {self.product.get_id()}\n'
             f'tags: {[x.get_tag_text() for x in self.tags]}\n'
             f'info: {self.info}\n'
@@ -296,7 +302,9 @@ class PostDetails(persistent.Persistent):
     def serialize(self):
         return {
             'post_id': self.id, #id of the post
-            'post_author': self.author, #username of the author
+            'author_id': self.author_id, #username of the author 
+            'author_name': self.author_name, #username of the author 
+            'author_pic': self.author_pic,
             'product': self.product.serialize(), #one product, either a collection or an item
             'info': self.info, #post info or description
             'title': self.title, #post title, display will be bold
@@ -305,7 +313,7 @@ class PostDetails(persistent.Persistent):
             'product_type': self.product_type, #tells whether the product is item/col
             'tags': [x.serialize() for x in self.tags], #list of tags
             'sales_type': self.sales_type, #cf no cc, bidding
-            'status': self.status
+            'status': self.status,
         }
 
 class Order(persistent.Persistent):
@@ -364,7 +372,7 @@ class Order(persistent.Persistent):
 
 
 class Account(persistent.Persistent):
-    def __init__(self, id, email, password, username = "", sex = ""):
+    def __init__(self, id, email, password, username = "", sex = "", pic = ""):
         self.id = id
         self.email = email
         self.password = password
@@ -378,6 +386,10 @@ class Account(persistent.Persistent):
         self.products = persistent.list.PersistentList()
         self.orders = persistent.list.PersistentList()
         self.wishlist = persistent.list.PersistentList()
+        self.pic = pic
+
+    def get_pic(self):
+        return self.pic
 
     def get_email(self):
         return self.email
@@ -403,13 +415,15 @@ class Account(persistent.Persistent):
     def add_wishlist(self, product):
         self.wishlist.append(product)
 
+    def get_phone_num(self):
+        return self.phone_number
+
     def print_info(self):
         serialized_addresses = [address.serialize() for address in self.addresses]
         print(f'----User Info---\nEmail: {self.email}\n'
               f'Password: {self.password}\n'
               f'Username: {self.username}\n'
               f'Adderres: {serialized_addresses}')
-
 
     def serialize(self):
         serialized_addresses = [address.serialize() for address in self.addresses]
@@ -476,18 +490,31 @@ class Store:
         self.collections = persistent.list.PersistentList()
         self.orders = persistent.list.PersistentList()
         self.reviews = persistent.list.PersistentList()
+
     def get_id(self):
         return self.store_id
-    def add_itme(self, item):
+    
+    def add_item(self, item):
         self.items.append(item)
+    
+    def get_store_name(self):
+        return self.store_name
+    
+    def get_store_picture(self):
+        return self.picture
+    
     def add_collection(self, collection):
         self.collections.append(collection)
+
     def add_order(self, order):
         self.orders.append(order)
+
     def add_review(self, review):
         self.reviews.append(review)
+
     def change_picture(self, picture):
         self.picture = picture
+
     def serialize(self):
         collections = [c.serialize() for c in self.collections]
         items = [i.serialize() for i in self.items]
@@ -518,9 +545,6 @@ class Store:
             # f'items: {serialized_items}\n'
             # f'order: {serialized_orders}\n')
 
-        
-        
-        
 # accounts
 # key value = username
 admin_1 = Admin(generate_id('accounts'), "admin1@gmail.com", "1234")
@@ -534,9 +558,21 @@ root.accounts[admin_1.get_username()] = admin_1
 user_1 = Account(generate_id('accounts'), "user1@gmail.com", "1234", "iammuser1")
 root.accounts[user_1.get_username()] = user_1
 
+store_1_pic = get_webp_data('user1.jpeg')
+store_1 = Store(user_1.get_id() + generate_id('stores'),
+                user_1.get_username(), "User 1's Store",
+                user_1.get_email(), user_1.get_phone_num(),
+                "Secondhand Clothings", store_1_pic)
+
 user_2 = Account(generate_id('accounts'), "user2@gmail.com", "1234")
 user_2.set_username("iammuser2")
 root.accounts[user_2.get_username()] = user_2
+
+store_2_pic = get_webp_data('user2.jpeg')
+store_2 = Store(user_2.get_id() + generate_id('stores'),
+                user_2.get_username(), "User 2's Store",
+                user_2.get_email(), user_2.get_phone_num(),
+                "Handmade Goods and Toys", store_2_pic)
 
 # tags
 # key value = tag text
@@ -569,59 +605,58 @@ item1_pics_data = get_webp_datas(item1_pics)
 # item1_pics_data2 = [get_image_data(x) for x in item1_pics]
 # print(f'pofiasjldfjsd {len(item1_pics_data2[0])}')
 item1_tags = [root.tags['coquette'], root.tags['cute']]
-item1 = Item(generate_id("products"), user_1.get_username(), datetime(2024, 5, 20, 10, 15),
-             50, 5, "item 1", item1_pics_data, item1_tags)
+item1 = Item(generate_id("products"), store_1.get_store_name(), datetime(2024, 5, 20, 10, 15),
+             50, 5,"This is item 1", "item 1", item1_pics_data, item1_tags)
 root.products[item1.get_seller() + item1.get_id()] = item1
 
 item2_pics = ['IMG_7370.jpg']
 item2_pics_data = get_webp_datas(item2_pics)
 item2_tags = [root.tags['coquette'], root.tags['cute']]
-item2 = Item(generate_id("products"), user_1.get_username(), datetime(2024, 5, 20, 10, 15),
-             100, 3, "item 2 laa", item2_pics_data, item2_tags)
+item2 = Item(generate_id("products"), store_1.get_store_name(), datetime(2024, 5, 20, 10, 15),
+             100, 3, "this is i tem 2", "item 2 laa", item2_pics_data, item2_tags)
 root.products[item2.get_seller() + item2.get_id()] = item2
 
 item3_pics = ['IMG_7102.jpg']
 item3_pics_data = get_webp_datas(item3_pics)
 item3_tags = [root.tags['secondhand'], root.tags['fashion'], root.tags['cottagecore']]
-item3 = Item(generate_id('products'), user_2.get_username(),
-             datetime(2024, 5, 21, 15, 20), 150, 10, 'Mona Top',
+item3 = Item(generate_id('products'), store_2.get_store_name(),
+             datetime(2024, 5, 21, 15, 20), 150, 10, "this is item 3", 'Mona Top',
              item3_pics_data, item3_tags)
 root.products[item3.get_seller() + item3.get_id()] = item3
 
 item4_pics = ['IMG_7105.jpg']
 item4_pics_data = get_webp_datas(item4_pics)
 item4_tags = [root.tags['custom'], root.tags['handmade'], root.tags['cottagecore']]
-item4 = Item(generate_id('products'), user_2.get_username(),
-             datetime(2024, 5, 22, 19, 30), 350, 5, "Crocheted Beanies",
+item4 = Item(generate_id('products'), store_2.get_store_name(),
+             datetime(2024, 5, 22, 19, 30), 350, 5, "this is item 4", "Crocheted Beanies",
              item4_pics_data, item4_tags)
 root.products[item4.get_seller() + item4.get_id()] = item4
 
 item5_pics = ['IMG_7106.jpg']
 item5_pics_data = get_webp_datas(item5_pics)
 item5_tags = [root.tags['keychains'], root.tags['handmade'], root.tags['jellyfish']]
-item5 = Item(generate_id('products'), user_1.get_username(),
-             datetime(2024, 5, 24, 19, 30), 75, 4, "Jellyfish Keychains",
+item5 = Item(generate_id('products'), store_1.get_store_name(),
+             datetime(2024, 5, 24, 19, 30), 75, 4, "this is item 5", "Jellyfish Keychains",
              item5_pics_data, item5_tags)
 root.products[item5.get_seller() + item4.get_id()] = item5
 
-col1_pics = ['IMG_7368.jpg']
-col1_pics_data = [get_webp_data(x) for x in col1_pics]
-col1_tags = [root.tags['secondhand'], root.tags['coquette'], root.tags['cute']]
-col1 = Collection(generate_id("products"), user_1.get_username(), datetime(2024, 5, 20, 10, 15),
-                  [item1, item2], "~New Drop OOEE~", col1_pics_data, col1_tags)
-root.products[col1.get_seller() + col1.get_id()] = col1
+# col1_pics = ['IMG_7368.jpg']
+# col1_pics_data = [get_webp_data(x) for x in col1_pics]
+# col1_tags = [root.tags['secondhand'], root.tags['coquette'], root.tags['cute']]
+# col1 = Collection(generate_id("products"), user_1.get_username(), datetime(2024, 5, 20, 10, 15),
+#                   [item1, item2], "This is Collection 1", "~New Drop OOEE~", col1_pics_data, col1_tags)
+# root.products[col1.get_seller() + col1.get_id()] = col1
 
-post1 = PostDetails(generate_id('posts'), user_1.get_username(), col1, "TEST INFO", "TEST TITLE")
-root.posts[post1.get_id()] = post1
+# post1 = PostDetails(generate_id('posts'), user_1.get_username(), col1, "TEST INFO", "TEST TITLE")
+# root.posts[post1.get_id()] = post1
 
-post2 = PostDetails(generate_id('posts'), item3.get_seller(), item3, "haleisfls", "Mona Tops Post")
+post2 = PostDetails(generate_id('posts'), store_2, item3, "haleisfls", "Mona Tops Post")
 root.posts[post2.get_id()] = post2
-post3 = PostDetails(generate_id('posts'), item4.get_seller(), item4, "smata baby smata im smata", "Crocheted Beanies")
+post3 = PostDetails(generate_id('posts'), store_2, item4, "smata baby smata im smata", "Crocheted Beanies")
 root.posts[post3.get_id()] = post3
 
-post4 = PostDetails(generate_id('posts'), item5.get_seller(), item5, "boongboongboong", "Jellyfish Keychains")
+post4 = PostDetails(generate_id('posts'), store_1, item5, "boongboongboong", "Jellyfish Keychains")
 root.posts[post4.get_id()] = post4
-
 
 # order history appear only in admin_1 interface (admin_1 is the buyer)
 order1 = Order(generate_id('orders'), item1, admin_1.get_username(), user_1.get_username())
@@ -646,9 +681,9 @@ if  __name__ == "__main__":
     for key in accounts:
         accounts[key].print_info()
 
-    # products = root.products
-    # for key in products:
-    #     products[key].print_info()
+    products = root.products
+    for key in products:
+        products[key].print_info()
     
     posts = root.posts
     for key in posts:
@@ -670,7 +705,6 @@ if  __name__ == "__main__":
     orders_data = [order.serialize() for order in new_order_details]   
     print(orders_data)
     
-        
     stores = root.stores 
     for key in stores:
         stores[key].print_info()

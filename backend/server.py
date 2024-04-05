@@ -63,11 +63,11 @@ def check_store(data):
         else: return {'success' : True, 'exists' : False}
     return {'success': False, 'exists': False}
         
-        
 def send_large_data(conn, data):
     CHUNK_SIZE = 4096
     serialized_data = pickle.dumps(data)
     total_chunks = (len(serialized_data) + CHUNK_SIZE - 1) // CHUNK_SIZE 
+    print('total chunks', total_chunks)
     conn.sendall(pickle.dumps(total_chunks))
     for i in range(total_chunks):
         start_index = i * CHUNK_SIZE
@@ -98,7 +98,6 @@ def receive_large_data(conn, max_streaming_line=4096):
     except Exception as e:
         print("Error receiving data:", e)
         return None
-
 
 def get_all_posts():
     print("getting all posts server oo ee")
@@ -180,7 +179,32 @@ def handle_new_store_info(data_dict):
             store.picture = new_info.get("picture")
             transaction.commit()
             return{'success': True, 'message': 'New store information saved successfully'}
-        else: return {'success': False, 'message': 'Account not found'}
+        else: 
+            return {'success': False, 'message': 'Account not found'}
+    except Exception as e:
+        return {'success': False, 'message': str(e)}
+    
+def get_store(data_dict):
+    try:
+        store_id = data_dict.get('store_id')
+        store = root.stores[store_id]
+        if store:
+            store_data = store.serialize()
+            return{'success': True, 'store_data': store_data}
+        else:
+            return {'success': False, 'message': 'Store not found'}
+    except Exception as e:
+        return {'success': False, 'message': str(e)}
+    
+def get_store(data_dict):
+    try:
+        store_id = data_dict.get('store_id')
+        store = root.stores[store_id]
+        if store:
+            store_data = store.serialize()
+            return{'success': True, 'store_data': store_data}
+        else:
+            return {'success': False, 'message': 'Store not found'}
     except Exception as e:
         return {'success': False, 'message': str(e)}
     
@@ -193,10 +217,8 @@ def handle_request(conn):
             print("No data received from client.")
             return
         print("Received data from client:", data_dict)
-        
         action = data_dict.get('action')
         print("Received action:", action)
-        
         if action == 'login':
             response = handle_login(data_dict)
             send_large_data(conn, response)
@@ -214,6 +236,7 @@ def handle_request(conn):
             send_large_data(conn, response)
         elif action == 'save_new_address':
             response = handle_new_address(data_dict)
+            send_large_data(conn, response)
         elif action == "get_user_data":
             response = get_user_data(data_dict)
             send_large_data(conn, response)
@@ -224,13 +247,18 @@ def handle_request(conn):
         elif action == "handle_new_store_info":
             response = handle_new_store_info(data_dict)
             send_large_data(conn, response)
+        elif action == "get_store":
+                print("Getting store")
+                response = get_store(data_dict)
+                send_large_data(conn, response)
         else:
             print("Invalid action")
             response = {'success': False, 'message': 'Invalid action'}
         
-        print("Sending response to client:", response['message'])
+        # print("Sending response to client:", response['message'])
         
         # Send response to the client
+        print("Sending response to client")
         conn.sendall(pickle.dumps(response))
         conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
 
