@@ -42,7 +42,7 @@ images_path_k = r'C:\Users\Miki Ajiki\Desktop\Curate\frontend\public\images\post
 
 # getting webP image data
 def get_webp_data(image_name):
-    full_image_path = images_path_ms + image_name
+    full_image_path = images_path_putter + image_name
     try:
         with Image.open(full_image_path) as img:
             webp_data = io.BytesIO()
@@ -113,7 +113,7 @@ class Tag(persistent.Persistent):
 
 #product in the post
 class Product(persistent.Persistent):
-    def __init__(self, pr_id, seller, start, description = "", pr_name = "", images = [], tags = [], end = None):
+    def __init__(self, pr_id, seller, start, description = "", pr_name = "", images = [], tags = [], end = None, mode = ""):
         self.pr_id = pr_id
         self.pr_name = pr_name
         self.seller = seller
@@ -121,6 +121,8 @@ class Product(persistent.Persistent):
             self.status = "available"
         else:
             self.status = "upcoming"
+        self.mode = mode
+        self.description = description
         self.created = datetime.now() #date post created
         self.modified = self.created #default modified date is date created
         self.start_date = start #time to go live
@@ -160,6 +162,8 @@ class Product(persistent.Persistent):
             'product_id': self.pr_id,
             'product_name': self.pr_name,
             'seller': self.seller,
+            "mode": self.mode,
+            "description": self.description,
             'status': self.status,
             'created': self.created,
             'modified': self.modified,
@@ -605,21 +609,21 @@ item1_pics_data = get_webp_datas(item1_pics)
 # item1_pics_data2 = [get_image_data(x) for x in item1_pics]
 # print(f'pofiasjldfjsd {len(item1_pics_data2[0])}')
 item1_tags = [root.tags['coquette'], root.tags['cute']]
-item1 = Item(generate_id("products"), store_1.get_store_name(), datetime(2024, 5, 20, 10, 15),
+item1 = Item(generate_id("products"), user_1.username, datetime(2024, 5, 20, 10, 15),
              50, 5,"This is item 1", "item 1", item1_pics_data, item1_tags)
 root.products[item1.get_seller() + item1.get_id()] = item1
 
 item2_pics = ['IMG_7370.jpg']
 item2_pics_data = get_webp_datas(item2_pics)
 item2_tags = [root.tags['coquette'], root.tags['cute']]
-item2 = Item(generate_id("products"), store_1.get_store_name(), datetime(2024, 5, 20, 10, 15),
+item2 = Item(generate_id("products"), user_1.username, datetime(2024, 5, 20, 10, 15),
              100, 3, "this is i tem 2", "item 2 laa", item2_pics_data, item2_tags)
 root.products[item2.get_seller() + item2.get_id()] = item2
 
 item3_pics = ['IMG_7102.jpg']
 item3_pics_data = get_webp_datas(item3_pics)
 item3_tags = [root.tags['secondhand'], root.tags['fashion'], root.tags['cottagecore']]
-item3 = Item(generate_id('products'), store_2.get_store_name(),
+item3 = Item(generate_id('products'), store_2.store_user_name,
              datetime(2024, 5, 21, 15, 20), 150, 10, "this is item 3", 'Mona Top',
              item3_pics_data, item3_tags)
 root.products[item3.get_seller() + item3.get_id()] = item3
@@ -627,7 +631,7 @@ root.products[item3.get_seller() + item3.get_id()] = item3
 item4_pics = ['IMG_7105.jpg']
 item4_pics_data = get_webp_datas(item4_pics)
 item4_tags = [root.tags['custom'], root.tags['handmade'], root.tags['cottagecore']]
-item4 = Item(generate_id('products'), store_2.get_store_name(),
+item4 = Item(generate_id('products'), store_2.store_user_name,
              datetime(2024, 5, 22, 19, 30), 350, 5, "this is item 4", "Crocheted Beanies",
              item4_pics_data, item4_tags)
 root.products[item4.get_seller() + item4.get_id()] = item4
@@ -635,7 +639,7 @@ root.products[item4.get_seller() + item4.get_id()] = item4
 item5_pics = ['IMG_7106.jpg']
 item5_pics_data = get_webp_datas(item5_pics)
 item5_tags = [root.tags['keychains'], root.tags['handmade'], root.tags['jellyfish']]
-item5 = Item(generate_id('products'), store_1.get_store_name(),
+item5 = Item(generate_id('products'), store_1.store_user_name,
              datetime(2024, 5, 24, 19, 30), 75, 4, "this is item 5", "Jellyfish Keychains",
              item5_pics_data, item5_tags)
 root.products[item5.get_seller() + item4.get_id()] = item5
@@ -665,37 +669,44 @@ root.orders[order1.get_order_id()] = order1
 order2 = Order(generate_id('orders'), item2, admin_1.get_username(), user_1.get_username(), status="shipping")
 root.orders[order2.get_order_id()] = order2
 
+order3 = Order(generate_id('orders'), item1, user_1.get_username(), user_1.get_username())
+root.orders[order3.get_order_id()] = order3
 #wishlist testing admin_1 only
 admin_1.add_wishlist(item1)
 admin_1.add_wishlist(item2)
 admin_1.add_wishlist(item3)
+user_1.add_wishlist(item1)
+user_1.add_wishlist(item2)
+user_1.add_wishlist(item3)
 #self, store_id, user_name, store_name, email, phone_num, description, picture)
 store_admin = Store(generate_id("stores"), "adminnajaa~~", "Admin Kai kong", "kaikongaddmin1@gmail.com", "000000000", "Admin yark kai kong ka", item1_pics_data)
 # store_admin.collections.append(col1)
 store_admin.items.append(item1)
 root.stores[store_admin.get_id()] = store_admin
 
+
+
 transaction.commit()
 if  __name__ == "__main__":
     accounts = root.accounts
-    for key in accounts:
-        accounts[key].print_info()
+    # for key in accounts:
+    #     accounts[key].print_info()
 
     products = root.products
     for key in products:
         products[key].print_info()
     
-    posts = root.posts
-    for key in posts:
-        posts[key].print_info()
+    # posts = root.posts
+    # for key in posts:
+    #     posts[key].print_info()
 
-    tags = root.tags
-    for key in tags:
-        tags[key].print_info()
+    # tags = root.tags
+    # for key in tags:
+    #     tags[key].print_info()
 
-    orders = root.orders
-    for key in orders:
-        orders[key].print_info()
+    # orders = root.orders
+    # for key in orders:
+    #     orders[key].print_info()
 
     order_details = root.orders
     new_order_details = []
@@ -709,11 +720,11 @@ if  __name__ == "__main__":
     for key in stores:
         stores[key].print_info()
         
-    print("Check whether create a store yet")
-    stores = root.stores
-    for key in stores:
-        if stores[key].store_user_name == "adminnajaa~~":
-            print({'success' : True, 'exists' : True})
-        else: print({'success' : True, 'exists' : False})
+    # print("Check whether create a store yet")
+    # stores = root.stores
+    # for key in stores:
+    #     if stores[key].store_user_name == "adminnajaa~~":
+    #         print({'success' : True, 'exists' : True})
+    #     else: print({'success' : True, 'exists' : False})
         
     

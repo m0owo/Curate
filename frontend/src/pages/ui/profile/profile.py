@@ -6,6 +6,7 @@ from PySide6.QtCore import *
 import socket, pickle
 import json, os
 from PySide6.QtGui import *
+import traceback
 
 # Get the directory of the current script (profile.py)
 current_directory = os.path.dirname(os.path.abspath(__file__))

@@ -108,13 +108,44 @@ def get_all_posts():
     except Exception as e:
         print(e)
         return {'success': False, 'message': "Failed to return post details"}
+
+def get_all_items(data):
+    print("getting items")
+    try:
+        username = data.get("user_name")
+        print("\n\n\n\n")
+        print(username)
+        print("\n\n\n\n")
+        product_details = root.products
+        new_product_details = []
+        for product_detail in product_details:
+            if product_details[product_detail].seller == username:
+                # print(product_details[product_detail].seller)
+                new_product_details.append(product_details[product_detail])
+
+        # print(new_product_details)
+        # products_data = [product.serialize() for product in new_product_details]
+        products_data = []
+        for product in new_product_details:
+            product_data = product.serialize()
+            type = ""
+            if isinstance(product, Collection):
+                type = "collection"
+            elif isinstance(product, Item):
+                type = "item"
+            product_data.update({'type': type})
+            products_data.append(product_data)
+
+        # print(f'order data {products_data}\n\n')
+        return {'success': True, 'item_details': products_data}
+    except Exception as e:
+        print(e)
+        return {'success': False, 'message': "Failed to return item details"}
     
 def get_all_orders(data):
     print("getting orders")
     try:
         username = data.get("user_name")
-        order_details = root.orders
-        new_order_details = []
         order_details = root.orders
         new_order_details = []
         for order_detail in order_details:
@@ -220,6 +251,10 @@ def handle_request(conn):
         elif action == 'get_all_orders':
             print("Calling get_all_orders()")
             response = get_all_orders(data_dict)
+            send_large_data(conn, response)
+        elif action == 'get_all_items':
+            print("Calling get_all_items()")
+            response = get_all_items(data_dict)
             send_large_data(conn, response)
         elif action == 'save_new_address':
             response = handle_new_address(data_dict)

@@ -65,7 +65,7 @@ class WishlistUI(QMainWindow):
                 widget.deleteLater()
 
     def populate_wishlist(self):
-        if self.user_data:
+        try:
             self.clear_frame(self.ui.scrollAreaWidgetContents)
             layout = self.ui.scrollAreaWidgetContents.layout()
             products = self.user_data.get('wishlist')
@@ -74,8 +74,8 @@ class WishlistUI(QMainWindow):
                 layout.addWidget(product)
             spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
             layout.addItem(spacer)
-        # else:
-        #     print("Cannot populate wishlist, no user data")
+        except:
+            pass
 
 
     def receive_large_data(self, conn):
