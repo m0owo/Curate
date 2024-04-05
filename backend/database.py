@@ -118,7 +118,7 @@ class Product(persistent.Persistent):
         self.pr_name = pr_name
         self.seller = seller
         if datetime.now() >= start: #upcoming, live, sold out = when stock is zero
-            self.status = "live"
+            self.status = "available"
         else:
             self.status = "upcoming"
         self.created = datetime.now() #date post created
