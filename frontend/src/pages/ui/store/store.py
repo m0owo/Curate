@@ -202,7 +202,7 @@ class StoreUI(QMainWindow):
             for chunk_start in range(0, len(data), 4096):
                 chunk_end = min(chunk_start + 4096, len(data))
                 connection.sendall(data[chunk_start:chunk_end])
-            print("Data sent successfully.")
+            # print("Data sent successfully.")
         except Exception as e:
             print("Error sending data:", e)
 
@@ -211,17 +211,17 @@ class StoreUI(QMainWindow):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             try:
                 print("Checking Store exists")
-                print("Step 1: Establishing connection...")
+                # print("Step 1: Establishing connection...")
                 client_socket.connect((self.server_host, self.server_port))
-                print("Step 2: Sending request...")
+                # print("Step 2: Sending request...")
                 request_data = {'action': 'check_store', 'user_name': user_name["username"]}
                 client_socket.sendall(pickle.dumps(request_data))
-                print("Step 3: Receiving response...")
+                # print("Step 3: Receiving response...")
                 response_data = self.receive_large_data(client_socket)
                 # print("Received response:", response_data)
-                print("Step 4: Unpacking response...")
+                # print("Step 4: Unpacking response...")
                 if response_data['success']:
-                    print("Check store exists")
+                    # print("Check store exists")
                     if response_data['exists']:
                         return self.initial_pages(response_data["store_data"])
                 else:
@@ -281,18 +281,18 @@ class StoreUI(QMainWindow):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             try:
                 print("Checking Store exists")
-                print("Step 1: Establishing connection...")
+                # print("Step 1: Establishing connection...")
                 client_socket.connect((self.server_host, self.server_port))
-                print("Step 2: Sending request...")
+                # print("Step 2: Sending request...")
                 request_data = {'action': 'handle_new_store_info', 'new_store_info': new_info_data}
-                print(f"REQUEST DATA {request_data}")
+                # print(f"REQUEST DATA {request_data}")
                 self.send_large_data(client_socket, pickle.dumps(request_data))
                 #For small data
                 # client_socket.sendall(pickle.dumps(request_data))
-                print("Step 3: Receiving response...")
+                # print("Step 3: Receiving response...")
                 response_data = self.receive_large_data(client_socket)
-                print("Received response:", response_data)
-                print("Step 4: Unpacking response...")
+                # print("Received response:", response_data)
+                # print("Step 4: Unpacking response...")
                 if response_data['success']:
                     print(response_data['success'])
                 else:
@@ -422,15 +422,15 @@ class StoreUI(QMainWindow):
         for attempt in range(retries):
             try:
                 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
-                    print("Step 1: Establishing connection...")
+                    # print("Step 1: Establishing connection...")
                     client_socket.connect((self.server_host, self.server_port))
-                    print("Step 2: Sending request...")
+                    # print("Step 2: Sending request...")
                     request_data = {'action': 'get_all_items', 'user_name' : self.user_data["username"]}
                     client_socket.sendall(pickle.dumps(request_data))
-                    print("Step 3: Receiving response...")
+                    # print("Step 3: Receiving response...")
                     response = self.receive_large_data(client_socket)
                     # print("Received response:", response)
-                    print("Step 4: Unpacking response...")
+                    # print("Step 4: Unpacking response...")
                     if response.get('success'):
                         print('Success getting all items')
                         print(response)

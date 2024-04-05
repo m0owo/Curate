@@ -43,6 +43,44 @@ class HistoryUI(QMainWindow):
         self.server_port = server_port
         self.filter = "all"
 
+        # nav bar
+        shadow = QGraphicsDropShadowEffect(self)
+        shadow.setBlurRadius(10)
+        shadow.setXOffset(1)
+        shadow.setYOffset(1)
+        self.ui.search_frame.setGraphicsEffect(shadow)
+        shadow2 = QGraphicsDropShadowEffect(self)
+        shadow2.setBlurRadius(10)
+        shadow2.setXOffset(1)
+        shadow2.setYOffset(1)
+        self.ui.page_label.setGraphicsEffect(shadow2)
+        button_stylesheet = (
+            "QPushButton {"
+            "   border-radius: 5px;"
+            "   padding: 10px;"
+            "   background-color: #fff;"
+            "}"
+            "QPushButton:hover {"
+            "   background-color: #eee;"
+            "}"
+        )
+        self.ui.home_button.setStyleSheet(button_stylesheet)
+        self.ui.profile_button.setStyleSheet(button_stylesheet)
+        self.ui.wishlist_button.setStyleSheet(button_stylesheet)
+        self.ui.history_button.setStyleSheet(button_stylesheet)
+
+        filter_stylesheet = (
+            "QPushButton {"
+            "   border-radius: 20px;"
+            "   background-color: #fff;"
+            "}"
+            "QPushButton{"
+            "   background-color: transparent;"
+            "}"
+            "QPushButton::icon:hover { color: rgb(255, 231, 204); }"
+        )
+        self.ui.filter_button.setStyleSheet(filter_stylesheet)
+
         self.ui.home_button.clicked.connect(self.to_home_page)
         self.ui.wishlist_button.clicked.connect(self.to_wishlist_page)
         self.ui.profile_button.clicked.connect(self.to_profile_page)
@@ -60,7 +98,6 @@ class HistoryUI(QMainWindow):
         self.user_id = None
         self.user_data = None
         
-
     def to_home_page(self):
         self.stacked_widget.setCurrentIndex(1)
     def to_profile_page(self):
@@ -138,7 +175,6 @@ class HistoryUI(QMainWindow):
         self.user_id = user_id
         self.user_data = user_data
         
-
     def update_history_data(self, filter="all"):
         try:
             username = self.user_data.get("username")

@@ -2,6 +2,7 @@ import sys
 import os
 import pickle
 import socket
+import traceback
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import QPixmap, QImage
@@ -11,7 +12,7 @@ import time
 
 current_directory = os.getcwd()
 sys.path.append(current_directory)
-# sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
+sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
 sys.path.append(r'/Users/Miki Ajiki/desktop/Curate')
 
 from frontend.src.pages.ui.common import *
@@ -205,7 +206,7 @@ class Post():
 
         # price
         self.price_label = QLabel()
-        self.price_label.setStyleSheet("font:500 16pt Manrope;")
+        self.price_label.setStyleSheet("font:500 20pt Manrope;")
         self.price_label.setAlignment(Qt.AlignLeft)
         self.update_price(self.price_str)
         post_details_layout.addWidget(self.price_label)
@@ -218,8 +219,10 @@ class Post():
         # seller profile?
     def get_post(self):
         return self.post
+    
     def get_status(self):
         return self.status
+    
     def update_status(self):
         cur_time = datetime.now()
         if status != 'timeout':
@@ -227,6 +230,7 @@ class Post():
                 status = 'live'
             elif self.start > cur_time:
                 status = 'upcoming'
+
     def countdown_status(self, target_datetime):
         while True:
             current_datetime = datetime.now()
@@ -234,8 +238,6 @@ class Post():
             if remaining_time == timedelta(0):
                 self.update_status()
                 break
-    def on_post_clicked(self):
-        print("Post clicked!")
         
 class HomeUI(QMainWindow):
     post_clicked = Signal(object, list)
@@ -289,6 +291,8 @@ class HomeUI(QMainWindow):
             "QPushButton::icon:hover { color: rgb(255, 231, 204); }"
         )
         self.ui.filter_button.setStyleSheet(filter_stylesheet)
+        self.ui.search_edit.returnPressed.connect(self.search)
+        self.ui.search_edit.textChanged.connect(self.search)
 
         # clearing tags frame
         clear_frame(self.ui.tags_frame)
@@ -297,7 +301,11 @@ class HomeUI(QMainWindow):
         self.get_pop_tags()
         
         # drawing posts
-        self.get_all_posts()
+        self.get_posts()
+    
+    def search(self):
+        input = self.ui.search_edit.text()
+        self.get_posts(input, 'name')
 
     def handle_post_click(self, details):
         # sender information is for the path to product and the stackedwidget and stackedwidget index
@@ -307,64 +315,83 @@ class HomeUI(QMainWindow):
         
         # emits the signal with the product details and the sender info
         self.post_clicked.emit(details, [sender])
+    
+    def clear_widget_children(self, widget):
+        for child in widget.findChildren(QWidget):
+            child.deleteLater()
 
     def populate_posts(self, post_details):
-        #clear the scroll area
-        clear_widget(self.ui.scrollAreaWidgetContents)
-        self.ui.scrollAreaWidgetContents.setMinimumSize(0, 0)
-        self.ui.gridLayout.setSpacing(20)
-        post_widgets = []
-        i = 0
-        spacers_needed = 0 
-        for post_detail in post_details:
-            post = Post(post_detail, self.ui.scrollAreaWidgetContents, self)
-            post_widget = post.get_post()
-            post_widgets.append(post_widget)
+        if post_details:
+            #clear the scroll area
+            self.clear_widget_children(self.ui.scrollAreaWidgetContents)
+            self.ui.gridLayout.setSpacing(20)
+            # self.ui.scrollAreaWidgetContents.setStyleSheet('border: 1px solid black;')
+            self.post_widgets = []
+            i = 0
+            spacers_needed = 0 
 
-            row = i // 4
-            column = i % 4
-            spacers_needed = max(spacers_needed, 4 - column)
-            self.ui.gridLayout.addWidget(post_widget, row, column)
-            self.ui.gridLayout.setAlignment(post_widget, Qt.AlignTop | Qt.AlignLeft)
-            i += 1
-        for _ in range(spacers_needed):
-            spacer = Spacer().get_spacer()
-            self.ui.gridLayout.addWidget(spacer)
-        self.ui.scrollAreaWidgetContents.adjustSize()
-        return post_widgets
+            # for each post
+            for post_detail in post_details:
+                post = Post(post_detail, self.ui.scrollAreaWidgetContents, self)
+                post_widget = post.get_post()
+                self.post_widgets.append(post_widget)
+
+                row = i // 4
+                column = i % 4
+                spacers_needed = max(spacers_needed, 4 - column)
+                self.ui.gridLayout.addWidget(post_widget, row, column)
+                self.ui.gridLayout.setAlignment(post_widget, Qt.AlignTop | Qt.AlignLeft)
+                i += 1
+
+            # remaining spacers
+            for _ in range(spacers_needed):
+                spacer = Spacer().get_spacer()
+                self.ui.gridLayout.addWidget(spacer)
+            self.ui.scrollAreaWidgetContents.adjustSize()
+            return self.post_widgets
         
     def receive_large_data(self, conn):
         total_chunks = pickle.loads(conn.recv(4096))
+        # print(f'total chunks {total_chunks}')
         received_data = b''
         for _ in range(total_chunks):
             chunk = conn.recv(4096)
             received_data += chunk
+            # print(f'chunk ', chunk)
+        result = pickle.loads(received_data)
+        # print('rseult', result.get('post_details'))
         return pickle.loads(received_data)
-    def send_large_data(self, connection, data):
-        try:
-            for chunk_start in range(0, len(data), 4096):
-                chunk_end = min(chunk_start + 4096, len(data))
-                connection.sendall(data[chunk_start:chunk_end])
-                print("Data sent successfully.")
-        except Exception as e:
-            print("Error sending data:", e)
-    def get_all_posts(self):
-        print('Getting all posts from the server')
+    
+    def send_large_data(self, sock, data):
+        serialized_data = pickle.dumps(data)
+        total_size = len(serialized_data)
+        bytes_sent = 0
+
+        while bytes_sent < total_size:
+            chunk = serialized_data[bytes_sent : bytes_sent + 4096]  # Chunk size of 4096 bytes
+            sock.sendall(chunk)
+            bytes_sent += len(chunk)
+
+    def get_posts(self, search_by = None, category = None):
         retries = 100
+        request_data = {}
+        if search_by and category == 'name':
+            print(f"Getting all posts with name related to {search_by}")
+            request_data = {'action': 'get_posts_by_name', 'name': search_by}
+        else:
+            print('Getting all posts from the server')
+            request_data = {'action': 'get_all_posts'}
         for attempt in range(retries):
             try:
                 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
-                    print("Step 1: Establishing connection...")
                     client_socket.connect((self.server_host, self.server_port))
-                    print("Step 2: Sending request...")
-                    request_data = {'action': 'get_all_posts'}
+
                     client_socket.sendall(pickle.dumps(request_data))
-                    print("Step 3: Receiving response...")
+
                     response = self.receive_large_data(client_socket)
-                    print("Step 4: Unpacking response...")
                     if response.get('success'):
-                        print('Success getting all the data')
                         post_details = response.get('post_details')
+                        print(post_details)
                         self.populate_posts(post_details)
                         break 
                     else:
@@ -375,6 +402,7 @@ class HomeUI(QMainWindow):
                 print("Error in pickle operation:", pe)
             except Exception as e:
                 print("An unexpected error occurred:", e)
+                traceback.print_exc()
                 if attempt < retries - 1: 
                     print("Retrying...")
                     time.sleep(1)
@@ -389,7 +417,7 @@ class HomeUI(QMainWindow):
         for pop_tag in pop_tags:
             print("Adding tag:", pop_tag)
             TagButton(pop_tag, self.ui.tags_frame)
-        print("Tags populated successfully.")
+        # print("Tags populated successfully.")
     
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id
@@ -406,7 +434,6 @@ class HomeUI(QMainWindow):
         self.stacked_widget.setCurrentIndex(6)
 
     def to_collection(self):
-        print('Going to COllection')
         self.stacked_widget.setCurrentIndex(7)
     
 if __name__ == "__main__":

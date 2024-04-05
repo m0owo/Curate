@@ -86,9 +86,8 @@ class Post():
             if container.layout() is None:
                 container.setLayout(QVBoxLayout())
             container.layout().insertWidget(0, self.main_widget)
-
-
-
+    def get_name(self):
+        return self.name
     def get_post(self):
         return self.main_widget
 
@@ -102,6 +101,12 @@ class ProfileUI(QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
+        shadow2 = QGraphicsDropShadowEffect(self)
+        shadow2.setBlurRadius(10)
+        shadow2.setXOffset(1)
+        shadow2.setYOffset(1)
+        self.ui.page_label.setGraphicsEffect(shadow2)
+        
         button_stylesheet = (
             "QPushButton {"
             "   border-radius: 5px;"

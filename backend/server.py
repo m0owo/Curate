@@ -3,6 +3,8 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 import socket
 import pickle
+import traceback
+from thefuzz import fuzz, process
 from database import *
 
 def handle_login(data):
@@ -225,6 +227,35 @@ def get_store(data_dict):
             return {'success': False, 'message': 'Store not found'}
     except Exception as e:
         return {'success': False, 'message': str(e)}
+
+def get_posts_by_name(data_dict):
+    try:
+        print("Received data:", data_dict)
+        name = data_dict.get('name')
+        posts = root.posts
+        print("Posts:", posts)
+        
+        search_results = []
+        print("Searching for posts with name related to:", name)
+        
+        if posts:
+            for post in posts:
+                post_details = posts[post]
+                product_name = post_details.get_product().get_name()
+                score = process.extractOne(name, [product_name], scorer=fuzz.token_set_ratio)
+                print(f"Post Name: {product_name}, Search Query: {name}, Score: {score}")
+                if score[1] >= 70:
+                    search_results.append(post_details)
+        else:
+            print("No posts found.")
+        
+        posts_data = [x.serialize() for x in search_results]
+        return {'success': True, 'post_details': posts_data}
+    except Exception as e:
+        traceback.print_exc()
+        print("Error:", e)
+        return {'success': False, 'message': 'Failed search'}
+
     
 def handle_request(conn):
     try:
@@ -240,39 +271,55 @@ def handle_request(conn):
         if action == 'login':
             response = handle_login(data_dict)
             send_large_data(conn, response)
+
         elif action == 'register':
             response = handle_registration(data_dict)
+
         elif action == 'save_new_info':
             response = handle_save_new_info(data_dict)
+            
         elif action == 'get_all_posts':
             print("Calling get_all_posts()")
             response = get_all_posts()
             send_large_data(conn, response)
+
         elif action == 'get_all_orders':
             print("Calling get_all_orders()")
             response = get_all_orders(data_dict)
             send_large_data(conn, response)
+
         elif action == 'get_all_items':
             print("Calling get_all_items()")
             response = get_all_items(data_dict)
             send_large_data(conn, response)
+
         elif action == 'save_new_address':
             response = handle_new_address(data_dict)
             send_large_data(conn, response)
+
         elif action == "get_user_data":
             response = get_user_data(data_dict)
             send_large_data(conn, response)
+
         elif action == "check_store":
             print("Calling check store")
             response = check_store(data_dict)
             send_large_data(conn, response)
+
         elif action == "handle_new_store_info":
             response = handle_new_store_info(data_dict)
             send_large_data(conn, response)
+
         elif action == "get_store":
             print("Getting store")
             response = get_store(data_dict)
             send_large_data(conn, response)
+
+        elif action == "get_posts_by_name":
+            print("searching for posts by name")
+            response = get_posts_by_name(data_dict)
+            send_large_data(conn, response)
+
         else:
             print("Invalid action")
             response = {'success': False, 'message': 'Invalid action'}
@@ -286,8 +333,6 @@ def handle_request(conn):
     finally:
         print("Closing connection.")
         conn.close()
-
-
 
 def start_server(host, port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
