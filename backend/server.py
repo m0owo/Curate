@@ -5,7 +5,6 @@ import socket
 import pickle
 from database import *
 
-
 def handle_login(data):
     email = data.get('email')
     password = data.get('password')
@@ -196,18 +195,6 @@ def get_store(data_dict):
     except Exception as e:
         return {'success': False, 'message': str(e)}
     
-def get_store(data_dict):
-    try:
-        store_id = data_dict.get('store_id')
-        store = root.stores[store_id]
-        if store:
-            store_data = store.serialize()
-            return{'success': True, 'store_data': store_data}
-        else:
-            return {'success': False, 'message': 'Store not found'}
-    except Exception as e:
-        return {'success': False, 'message': str(e)}
-    
 def handle_request(conn):
     try:
         print("Handling request...")
@@ -248,23 +235,19 @@ def handle_request(conn):
             response = handle_new_store_info(data_dict)
             send_large_data(conn, response)
         elif action == "get_store":
-                print("Getting store")
-                response = get_store(data_dict)
-                send_large_data(conn, response)
+            print("Getting store")
+            response = get_store(data_dict)
+            send_large_data(conn, response)
         else:
             print("Invalid action")
             response = {'success': False, 'message': 'Invalid action'}
-        
         # print("Sending response to client:", response['message'])
-        
         # Send response to the client
         print("Sending response to client")
         conn.sendall(pickle.dumps(response))
         conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
-
     except Exception as e:
         print("Error handling request:", e)
-
     finally:
         print("Closing connection.")
         conn.close()
