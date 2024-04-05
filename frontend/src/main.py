@@ -16,6 +16,7 @@ if __name__ == "__main__":
     widget = QStackedWidget()
     
     server_host = 'localhost'
+    # server_host = 'k.tail8a472.ts.net'
     server_port = 8888
 
     login_ui = LoginUI(widget,server_host, server_port)
@@ -38,8 +39,9 @@ if __name__ == "__main__":
     
     home_ui.post_clicked.connect(collection_ui.load_post_data)
     login_ui.login_successful.connect(profileaddress_ui.load_user_data)
-    login_ui.login_successful.connect(profile_ui.load_user_data)
+    login_ui.login_successful.connect(profile_ui.load_user_data)  
     login_ui.login_successful.connect(profile_ui.fetch_check_store_exist)
+    login_ui.login_successful.connect(store_ui.load_user_data)
     login_ui.login_successful.connect(store_ui.fetch_check_store_exist)
 
     widget.insertWidget(0, login_ui)

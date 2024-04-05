@@ -129,7 +129,7 @@ class HistoryUI(QMainWindow):
                 print("Error in pickle operation:", pe)
                 if attempt < retries - 1: 
                     print("Retrying...")
-                    time.sleep(1)
+                    # time.sleep(1)
                     continue
             except Exception as e:
                 print("ERROR:", e)
@@ -140,7 +140,7 @@ class HistoryUI(QMainWindow):
         
 
     def update_history_data(self, filter="all"):
-        if self.user_data != None:
+        try:
             username = self.user_data.get("username")
             if username:
                 user_data = self.get_all_orders()
@@ -148,8 +148,8 @@ class HistoryUI(QMainWindow):
                     self.populate_orders(user_data, filter)
                 else:
                     print("Fail")
-        # else:
-        #     print("History has no attribute user data")
+        except:
+            pass
     
 if __name__ == "__main__":
     app = QApplication(sys.argv)
