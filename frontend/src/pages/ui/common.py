@@ -35,7 +35,7 @@ class CountdownWidget(QWidget):
         hours, remainder = divmod(remainder, 3600)
         minutes, seconds = divmod(remainder, 60)
         if self.remaining_time == 0:
-            self.label.setText("Time's up!")
+            self.label.setText("Live Now")
         elif days > 1:
             self.label.setText(self.target_datetime.strftime("%d/%m/%Y @ %H:%M"))
         else:
