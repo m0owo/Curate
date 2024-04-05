@@ -31,16 +31,16 @@ if __name__ == "__main__":
     
     # Connect the signal to the slot function   
     login_ui.login_successful.connect(home_ui.load_user_data)
-    # login_ui.login_successful.connect(profile_ui.load_user_data)
-    # login_ui.login_successful.connect(history_ui.load_user_data)
-    # login_ui.login_successful.connect(wishlist_ui.load_user_data)
+    login_ui.login_successful.connect(profile_ui.load_user_data)
+    login_ui.login_successful.connect(history_ui.load_user_data)
+    login_ui.login_successful.connect(wishlist_ui.load_user_data)
     login_ui.login_successful.connect(collection_ui.load_user_data)
     
     home_ui.post_clicked.connect(collection_ui.load_post_data)
-    # login_ui.login_successful.connect(profileaddress_ui.load_user_data)
-    # login_ui.login_successful.connect(profile_ui.load_user_data)
-    # login_ui.login_successful.connect(profile_ui.fetch_check_store_exist)
-    # login_ui.login_successful.connect(store_ui.fetch_check_store_exist)
+    login_ui.login_successful.connect(profileaddress_ui.load_user_data)
+    login_ui.login_successful.connect(profile_ui.load_user_data)
+    login_ui.login_successful.connect(profile_ui.fetch_check_store_exist)
+    login_ui.login_successful.connect(store_ui.fetch_check_store_exist)
 
     widget.insertWidget(0, login_ui)
     widget.insertWidget(1, home_ui)
