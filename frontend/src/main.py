@@ -31,29 +31,29 @@ if __name__ == "__main__":
     
     # Connect the signal to the slot function   
     login_ui.login_successful.connect(home_ui.load_user_data)
-    login_ui.login_successful.connect(profile_ui.load_user_data)
-    login_ui.login_successful.connect(history_ui.load_user_data)
-    login_ui.login_successful.connect(wishlist_ui.load_user_data)
+    # login_ui.login_successful.connect(profile_ui.load_user_data)
+    # login_ui.login_successful.connect(history_ui.load_user_data)
+    # login_ui.login_successful.connect(wishlist_ui.load_user_data)
     login_ui.login_successful.connect(collection_ui.load_user_data)
     
     home_ui.post_clicked.connect(collection_ui.load_post_data)
-    login_ui.login_successful.connect(profileaddress_ui.load_user_data)
-    login_ui.login_successful.connect(profile_ui.load_user_data)
-    login_ui.login_successful.connect(profile_ui.fetch_check_store_exist)
-    login_ui.login_successful.connect(store_ui.fetch_check_store_exist)
+    # login_ui.login_successful.connect(profileaddress_ui.load_user_data)
+    # login_ui.login_successful.connect(profile_ui.load_user_data)
+    # login_ui.login_successful.connect(profile_ui.fetch_check_store_exist)
+    # login_ui.login_successful.connect(store_ui.fetch_check_store_exist)
 
     # home_ui.clicked.connect(collection_ui.load_post_data)
 
     
-    widget.addWidget(login_ui)
-    widget.addWidget(home_ui)
-    widget.addWidget(register_ui)
-    widget.addWidget(profile_ui)
-    widget.addWidget(profileaddress_ui)
-    widget.addWidget(history_ui)
-    widget.addWidget(wishlist_ui)
-    widget.addWidget(collection_ui)
-    widget.addWidget(store_ui)
+    widget.insertWidget(0, login_ui)
+    widget.insertWidget(1, home_ui)
+    widget.insertWidget(2, register_ui)
+    widget.insertWidget(3, profile_ui)
+    widget.insertWidget(4, profileaddress_ui)
+    widget.insertWidget(5, history_ui)
+    widget.insertWidget(6, wishlist_ui)
+    widget.insertWidget(7, collection_ui)
+    widget.insertWidget(8, store_ui)
 
     widget.show()
 

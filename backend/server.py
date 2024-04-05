@@ -238,6 +238,7 @@ def handle_request(conn):
                 send_large_data(conn, response)
             elif action == 'save_new_address':
                 response = handle_new_address(data_dict)
+                send_large_data(conn, response)
             elif action == "get_user_data":
                 response = get_user_data(data_dict)
             elif action == "check_store":
@@ -251,7 +252,8 @@ def handle_request(conn):
                 print("Invalid action")
                 response = {'success': False, 'message': 'Invalid action'}
             
-            print("Sending response to client:", response)
+            # print("Sending response to client:", response)
+            print("Sending response to client")
             conn.sendall(pickle.dumps(response))
             conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
             
