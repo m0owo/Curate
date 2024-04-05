@@ -232,6 +232,10 @@ class CollectionUI(QMainWindow):
         # Buttons
         self.ui.horizontalLayout_3.addWidget(self.ui.add_to_wishlist_bt)
         self.ui.add_to_wishlist_bt.setMaximumSize(QSize(200, 50))
+        if self.details.get('status') != 'sold out':
+            self.ui.horizontalLayout_3.addWidget(self.ui.buy_bt)
+            self.ui.buy_bt.setMaximumSize(QSize(200, 50))
+            
 
         if self.p_type.lower() == 'collection':
             self.ui.horizontalLayout_3.addWidget(self.ui.view_products_bt)

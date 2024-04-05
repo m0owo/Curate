@@ -452,6 +452,13 @@ class Ui_MainWindow(object):
         font8.setPointSize(14)
         self.add_to_wishlist_bt.setFont(font8)
 
+        self.buy_bt = QPushButton()
+        sizePolicy2.setHeightForWidth(self.buy_bt.sizePolicy().hasHeightForWidth())
+        self.buy_bt.setSizePolicy(sizePolicy2)
+        self.buy_bt.setMinimumSize(QSize(0, 0))
+        self.buy_bt.setFont(font8)
+        self.buy_bt.setText('Buy')
+        
         # self.horizontalLayout_3.addWidget(self.add_to_wishlist_bt)
 
         self.view_products_bt = QPushButton()
