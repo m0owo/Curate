@@ -144,6 +144,12 @@ class CollectionUI(QMainWindow):
         self.product = details.get('product')
         self.items = []
         self.items.append(self.product)
+        if self.product.get('status') == "available":
+            self.status = 'Available'
+        elif self.product.get('status') == 'upcoming':
+            self.status = 'Upcoming'
+        elif self.product.get('status') == 'sold out':
+            self.status = 'Sold Out'
 
         if self.product.get('items'):
             for item in self.product.get('items'):
@@ -158,6 +164,7 @@ class CollectionUI(QMainWindow):
         self.tags = details.get('tags')
         self.start = self.product.get('start')
         self.info = details.get('info')
+        self.stock = self.product.get('stock')
 
         #convert image binary data to usable image
         self.images = []
@@ -193,8 +200,6 @@ class CollectionUI(QMainWindow):
         # Info Section
         self.ui.label_5.setText("Product Information")
         # self.ui.frame_3.setStyleSheet(f'border:1px solid black;')
-        self.ui.product_type_label_label.setText("Product Type:")
-        self.ui.product_type_label_label.setFont(info_font)
 
         self.ui.mode_label_label.setText("Sales Type:")
         self.ui.mode_label_label.setFont(info_font)
@@ -204,6 +209,12 @@ class CollectionUI(QMainWindow):
 
         self.ui.description_label_label.setText("Description:")
         self.ui.description_label_label.setFont(info_font)
+
+        self.ui.status_label_label.setText("Status:")
+        self.ui.status_label_label.setFont(info_font)
+
+        self.ui.stock_label_label.setText("In Stock:")
+        self.ui.stock_label_label.setFont(info_font)
 
         info_font.setPointSize(12)
         info_font.setBold(False)
@@ -217,17 +228,24 @@ class CollectionUI(QMainWindow):
 
         # self.ui.date_label.setText(self.start.strftime('%B %d, %y @ %I:%M %p'))
         self.ui.date_label.setFont(info_font)
-        self.update_date_label(self.start)
+        self.update_date(self.start)
 
         # self.ui.description_label.setText(self.info)
         self.ui.description_label.setFont(info_font)
         self.update_description_label(self.info)
 
+        self.ui.status_label.setFont(info_font)
+        self.update_status_label(self.status)
+        self.ui.status_label.setStyleSheet('color:rgb(137, 153, 211);')
+
+        self.ui.stock_label.setFont(info_font)
+        self.update_stock_label(str(self.stock))
+
         self.update_store_name_label(self.details.get('author_name'))
         author_pic = self.details.get('author_pic')
         self.author_pic = QImage.fromData(author_pic)
         self.update_store_image(self.author_pic)
-        # self.store_data = self.get_store_data()
+        self.store_data = self.get_store_data()
 
         # Buttons
         self.ui.horizontalLayout_3.addWidget(self.ui.add_to_wishlist_bt)
@@ -236,7 +254,6 @@ class CollectionUI(QMainWindow):
             self.ui.horizontalLayout_3.addWidget(self.ui.buy_bt)
             self.ui.buy_bt.setMaximumSize(QSize(200, 50))
             
-
         if self.p_type.lower() == 'collection':
             self.ui.horizontalLayout_3.addWidget(self.ui.view_products_bt)
 
@@ -244,55 +261,50 @@ class CollectionUI(QMainWindow):
             self.ui.go_to_item.clicked.connect(self.show_item_data(1))
         print("Post data loaded.")
 
-    # def receive_large_data(self, conn):
-    #     total_chunks = pickle.loads(conn.recv(4096))
-    #     received_data = b''
-    #     for _ in range(total_chunks):
-    #         chunk = conn.recv(4096)
-    #         received_data += chunk
-    #         # print(f'chunk {chunk}')
-    #     return pickle.loads(received_data)
-
-    # def send_large_data(self, sock, data_dict):
-    #     try:
-    #         serialized_data = pickle.dumps(data_dict)
-    #         data_size = len(serialized_data).to_bytes(4, byteorder='big')
-            
-    #         # Send the size and serialized data together
-    #         sock.sendall(data_size + serialized_data)
-    #         print("Data sent successfully.")
-    #     except Exception as e:
-    #         print("Error sending data:", e)
+    def update_status_label(self, new_status):
+        new_status[1].upper()
+        self.ui.status_label.setText(new_status)
     
-    # def get_store_data(self):
-    #     print('Getting store data')
-    #     retries = 100
-    #     for attempt in range(retries):
-    #         try:
-    #             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
-    #                 client_socket.connect((self.server_host, self.server_port))
-    #                 request_data = {'action': 'get_store', 'store_id': self.details.get('author_id')}
-    #                 client_socket.sendall(pickle.dumps(request_data))
-    #                 response = self.receive_large_data(client_socket)
-    #                 if response.get('success'):
-    #                     store_data = response.get('store_data')
-    #                     self.update_store_data(store_data)
-    #                     return store_data
-    #                 else:
-    #                     print("Failed to get all the data:", response.get('message'))
-    #         except socket.error as se:
-    #             print("Socket error:", se)
-    #         except pickle.PickleError as pe:
-    #             print("Error in pickle operation:", pe)
-    #         except Exception as e:
-    #             print("An unexpected error occurred:", e)
-    #             traceback.print_exc()
-    #             if attempt < retries - 1: 
-    #                 print("Retrying...")
-    #                 continue
+    def update_stock_label(self, stock):
+        self.ui.stock_label.setText(stock)
+
+    def receive_large_data(self, conn):
+        total_chunks = pickle.loads(conn.recv(4096))
+        received_data = b''
+        for _ in range(total_chunks):
+            chunk = conn.recv(4096)
+            received_data += chunk
+        return pickle.loads(received_data)
+    
+    def get_store_data(self):
+        print('Getting store data')
+        retries = 100
+        for attempt in range(retries):
+            try:
+                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+                    client_socket.connect((self.server_host, self.server_port))
+                    request_data = {'action': 'get_store', 'store_id': self.details.get('author_id')}
+                    client_socket.sendall(pickle.dumps(request_data))
+                    response = self.receive_large_data(client_socket)
+                    if response.get('success'):
+                        store_data = response.get('store_data')
+                        self.update_store_data(store_data)
+                        return store_data
+                    else:
+                        print("Failed to get all the data:", response.get('message'))
+            except socket.error as se:
+                print("Socket error:", se)
+            except pickle.PickleError as pe:
+                print("Error in pickle operation:", pe)
+            except Exception as e:
+                print("An unexpected error occurred:", e)
+                traceback.print_exc()
+                if attempt < retries - 1: 
+                    print("Retrying...")
+                    continue
 
     def update_store_data(self, store_data):
-        print(store_data)
+        print('store data', store_data.get('store_id'))
         author_pic = store_data.get('picture')
         author_pic = QImage.fromData(author_pic)
         self.update_store_image(self, author_pic)
@@ -313,9 +325,30 @@ class CollectionUI(QMainWindow):
         print("Sales type label updated:", new_s_type)
     
     def update_date_label(self, new_start):
-        new_start_str = new_start.strftime('%B %d, %y @ %I:%M %p')
-        self.ui.date_label.setText(new_start_str)
-        print("Date label updated:", new_start_str)
+        if isinstance(new_start, str):
+            self.ui.date_label.setText(new_start)
+        else:
+            new_start_str = new_start.strftime('%B %d, %y @ %I:%M %p')
+            self.ui.date_label.setText(new_start_str)
+            QTimer.singleShot(1000, lambda: self.update_date(new_start))
+
+    def update_date(self, new_start):
+        current_datetime = datetime.now()
+        time_difference = new_start - current_datetime
+        self.remaining_time = max(0, time_difference.total_seconds())
+        days, remainder = divmod(self.remaining_time, 86400)
+        hours, remainder = divmod(remainder, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        if self.remaining_time == 0:
+            self.ui.date_label.setText("Live Now")
+            self.status = "Available"
+            self.update_status_label(self.status)
+        elif days > 1:
+            self.update_date_label(new_start.strftime('%B %d, %y @ %I:%M %p'))
+        else:
+            self.update_date_label("{:02d}:{:02d}".format(int(hours), int(minutes)))
+            QTimer.singleShot(1000, lambda: self.update_date(new_start))
+
 
     def update_description_label(self, new_info):
         self.ui.description_label.setText(new_info)

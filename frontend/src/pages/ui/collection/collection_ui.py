@@ -346,7 +346,7 @@ class Ui_MainWindow(object):
 
         self.product_type_layout = QHBoxLayout(self.product_type_widget)
         self.product_type_layout.setContentsMargins(1, 1, 1, 1)
-        self.product_type_layout.setSpacing(0)
+        self.product_type_layout.setSpacing(2)
         self.product_type_layout.setAlignment(Qt.AlignLeft|Qt.AlignTop)
         self.product_type_widget.setLayout(self.product_type_layout)
         self.product_type_widget.setFont(font7)
@@ -356,14 +356,47 @@ class Ui_MainWindow(object):
 
         self.product_type_layout.addWidget(self.product_type_label_label)
         self.product_type_layout.addWidget(self.product_type_label)
-        self.verticalLayout.addWidget(self.product_type_widget)
+
+        self.status_widget = QWidget(self.frame_3)
+
+        self.status_layout = QHBoxLayout(self.status_widget)
+        self.status_layout.setContentsMargins(1, 1, 1, 1)
+        self.status_layout.setSpacing(2)
+        self.status_layout.setAlignment(Qt.AlignLeft|Qt.AlignTop)
+        self.status_widget.setLayout(self.status_layout)
+        self.status_widget.setFont(font7)
+
+        self.status_label_label = QLabel(self.status_widget)
+        self.status_label = QLabel(self.status_widget)
+
+        self.status_layout.addWidget(self.status_label_label)
+        self.status_layout.addWidget(self.status_label)
+
+        self.verticalLayout.addWidget(self.status_widget)
+
+        self.stock_widget = QWidget(self.frame_3)
+
+        self.stock_layout = QHBoxLayout(self.stock_widget)
+        self.stock_layout.setContentsMargins(1, 1, 1, 1)
+        self.stock_layout.setSpacing(2)
+        self.stock_layout.setAlignment(Qt.AlignLeft|Qt.AlignTop)
+        self.stock_widget.setLayout(self.stock_layout)
+        self.stock_widget.setFont(font7)
+
+        self.stock_label_label = QLabel(self.stock_widget)
+        self.stock_label = QLabel(self.stock_widget)
+
+        self.stock_layout.addWidget(self.stock_label_label)
+        self.stock_layout.addWidget(self.stock_label)
+
+        self.verticalLayout.addWidget(self.stock_widget)
 
         self.mode_widget = QWidget(self.frame_3)
 
         self.mode_layout = QHBoxLayout(self.mode_widget)
         self.mode_layout.setAlignment(Qt.AlignLeft|Qt.AlignTop)
         self.mode_layout.setContentsMargins(1, 1, 1, 1)
-        self.mode_layout.setSpacing(0)
+        self.mode_layout.setSpacing(2)
         self.mode_widget.setLayout(self.mode_layout)
 
         self.mode_label = QLabel(self.mode_widget)
@@ -378,7 +411,7 @@ class Ui_MainWindow(object):
         self.live_date_widget = QWidget(self.frame_3)
         self.live_date_layout = QHBoxLayout(self.live_date_widget)
         self.live_date_layout.setContentsMargins(1, 1, 1, 1)
-        self.live_date_layout.setSpacing(0)
+        self.live_date_layout.setSpacing(2)
         self.live_date_layout.setAlignment(Qt.AlignLeft|Qt.AlignTop)
         self.live_date_widget.setLayout(self.live_date_layout)
 
@@ -391,6 +424,7 @@ class Ui_MainWindow(object):
         self.date_label.setMaximumSize(QSize(16777215, 16777215))
         self.live_date_layout.addWidget(self.date_label_label)
         self.live_date_layout.addWidget(self.date_label)
+        self.live_date_layout.setSpacing(2)
         self.verticalLayout.addWidget(self.live_date_widget)
 
         self.description_area = QScrollArea(self.frame_3)
