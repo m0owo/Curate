@@ -248,7 +248,7 @@ class ProfileUI(QDialog):
                 else:
                     print("Failed to save new information:", response_data['message'])
             except Exception as e:
-                print("Error saving new information:", e)
+                print("Error save_new_info:", e)
          
 
 class ProfileAddressUI(QDialog):
@@ -317,33 +317,34 @@ class ProfileAddressUI(QDialog):
     def add_address(self):
         add_address_dialog = AddAddressUI(self.server_host, self.server_port, self.user_data)
         add_address_dialog.exec_()
-
     def receive_large_data(self, conn):
-        total_chunks = pickle.loads(conn.recv(4096))
-        received_data = b''
-        for _ in range(total_chunks):
-            chunk = conn.recv(4096)
-            received_data += chunk
+            total_chunks = pickle.loads(conn.recv(4096))
+            received_data = b''
+            for _ in range(total_chunks):
+                chunk = conn.recv(4096)
+                received_data += chunk
             # print(f'chunk {chunk}')
-        return pickle.loads(received_data)
-        
+            return pickle.loads(received_data)   
     def fetch_user_data(self, username):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             try:
+                print("Fetch_user_data") 
+                print("Step 1: Establishing connection...")
                 client_socket.connect((self.server_host, self.server_port))
+                print("Step 2: Sending request...")
                 request_data = {'action': 'get_user_data', 'username': username}
                 client_socket.sendall(pickle.dumps(request_data))
                 # response = client_socket.recv(4096)
                 response_data = self.receive_large_data(client_socket)
                 # response_data = pickle.loads(response)
                 if response_data['success']:
-                    # print("Get new user data done!")
+                    print("Get new user data done!")
                     return response_data['user_data']
                 else:
                     print("Failed to save new information:", response_data['message'])
             except Exception as e:
-                print("Error saving new information:", e)
-                
+                print("Error fetch_user_data:", e)
+                            
     def update_address_data(self):
         # Dummy method for updating address data periodically
         print("Updating address data...")
@@ -420,7 +421,7 @@ class AddAddressUI(QDialog):
                 else:
                     print("Failed to save new information:", response_data['message'])
             except Exception as e:
-                print("Error saving new information:", e)
+                print("save_address_db", e)
                 
     def handle_province_changed(self, index):
         # Clear existing items in district_combobox

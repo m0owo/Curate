@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
     login_ui = LoginUI(widget,server_host, server_port)
     home_ui = HomeUI(widget, server_host, server_port)
-    register_ui = RegisterUI(server_host, server_port)
+    register_ui = RegisterUI(widget, server_host, server_port)
     profile_ui = ProfileUI(widget,server_host, server_port)
     history_ui = HistoryUI(widget, server_host, server_port)
     profileaddress_ui = ProfileAddressUI(widget, server_host, server_port)

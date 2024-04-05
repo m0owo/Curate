@@ -344,7 +344,14 @@ class HomeUI(QMainWindow):
             received_data += chunk
             # print(f'chunk {chunk}')
         return pickle.loads(received_data)
-    
+    def send_large_data(self, connection, data):
+        try:
+            for chunk_start in range(0, len(data), 4096):
+                chunk_end = min(chunk_start + 4096, len(data))
+                connection.sendall(data[chunk_start:chunk_end])
+                print("Data sent successfully.")
+        except Exception as e:
+            print("Error sending data:", e)
     def get_all_posts(self):
         print('Getting all posts from the server')
         retries = 100
