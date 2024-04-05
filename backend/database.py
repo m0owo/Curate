@@ -605,15 +605,15 @@ item5 = Item(generate_id('products'), user_1.get_username(),
              item5_pics_data, item5_tags)
 root.products[item5.get_seller() + item4.get_id()] = item5
 
-col1_pics = ['IMG_7368.jpg']
-col1_pics_data = [get_webp_data(x) for x in col1_pics]
-col1_tags = [root.tags['secondhand'], root.tags['coquette'], root.tags['cute']]
-col1 = Collection(generate_id("products"), user_1.get_username(), datetime(2024, 5, 20, 10, 15),
-                  [item1, item2], "This is Collection 1", "~New Drop OOEE~", col1_pics_data, col1_tags)
-root.products[col1.get_seller() + col1.get_id()] = col1
+# col1_pics = ['IMG_7368.jpg']
+# col1_pics_data = [get_webp_data(x) for x in col1_pics]
+# col1_tags = [root.tags['secondhand'], root.tags['coquette'], root.tags['cute']]
+# col1 = Collection(generate_id("products"), user_1.get_username(), datetime(2024, 5, 20, 10, 15),
+#                   [item1, item2], "This is Collection 1", "~New Drop OOEE~", col1_pics_data, col1_tags)
+# root.products[col1.get_seller() + col1.get_id()] = col1
 
-post1 = PostDetails(generate_id('posts'), user_1.get_username(), col1, "TEST INFO", "TEST TITLE")
-root.posts[post1.get_id()] = post1
+# post1 = PostDetails(generate_id('posts'), user_1.get_username(), col1, "TEST INFO", "TEST TITLE")
+# root.posts[post1.get_id()] = post1
 
 post2 = PostDetails(generate_id('posts'), item3.get_seller(), item3, "haleisfls", "Mona Tops Post")
 root.posts[post2.get_id()] = post2
@@ -635,8 +635,8 @@ admin_1.add_wishlist(item1)
 admin_1.add_wishlist(item2)
 admin_1.add_wishlist(item3)
 #self, store_id, user_name, store_name, email, phone_num, description, picture)
-store_admin = Store(generate_id("products"), "adminnajaa~~", "Admin Kai kong", "kaikongaddmin1@gmail.com", "000000000", "Admin yark kai kong ka", col1_pics_data)
-store_admin.collections.append(col1)
+store_admin = Store(generate_id("products"), "adminnajaa~~", "Admin Kai kong", "kaikongaddmin1@gmail.com", "000000000", "Admin yark kai kong ka", item1_pics_data)
+# store_admin.collections.append(col1)
 store_admin.items.append(item1)
 root.stores[store_admin.get_id()] = store_admin
 

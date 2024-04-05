@@ -42,9 +42,6 @@ if __name__ == "__main__":
     # login_ui.login_successful.connect(profile_ui.fetch_check_store_exist)
     # login_ui.login_successful.connect(store_ui.fetch_check_store_exist)
 
-    # home_ui.clicked.connect(collection_ui.load_post_data)
-
-    
     widget.insertWidget(0, login_ui)
     widget.insertWidget(1, home_ui)
     widget.insertWidget(2, register_ui)

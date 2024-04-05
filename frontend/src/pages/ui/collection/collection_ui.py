@@ -186,7 +186,7 @@ class Ui_MainWindow(object):
         self.path_widget = QWidget(self.centralwidget)
         self.path_widget.setGeometry(QRect(60, 110, 591, 61))
         self.path_widget.setFont(font4)
-        self.path_widget.setStyleSheet("color: #8C237C;\n border: 1px solid black;")
+        # self.path_widget.setStyleSheet("color: #8C237C;\n border: 1px solid black;")
         self.path_widget_layout = QHBoxLayout(self.path_widget)
         self.product_frame = QFrame(self.centralwidget)
         self.product_frame.setObjectName(u"product_frame")

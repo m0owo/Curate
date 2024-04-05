@@ -188,7 +188,7 @@ class CollectionUI(QMainWindow):
         
         # Info Section
         self.ui.label_5.setText("Product Information")
-        self.ui.frame_3.setStyleSheet(f'border:1px solid black;')
+        # self.ui.frame_3.setStyleSheet(f'border:1px solid black;')
         self.ui.product_type_label_label.setText("Product Type:")
         self.ui.product_type_label_label.setFont(info_font)
 
