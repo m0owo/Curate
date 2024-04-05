@@ -635,7 +635,7 @@ admin_1.add_wishlist(item1)
 admin_1.add_wishlist(item2)
 admin_1.add_wishlist(item3)
 #self, store_id, user_name, store_name, email, phone_num, description, picture)
-store_admin = Store(generate_id("products"), "adminnajaa~~", "Admin Kai kong", "kaikongaddmin1@gmail.com", "000000000", "Admin yark kai kong ka", col1_pics_data)
+store_admin = Store(generate_id("stores"), "adminnajaa~~", "Admin Kai kong", "kaikongaddmin1@gmail.com", "000000000", "Admin yark kai kong ka", col1_pics_data)
 store_admin.collections.append(col1)
 store_admin.items.append(item1)
 root.stores[store_admin.get_id()] = store_admin

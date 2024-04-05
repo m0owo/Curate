@@ -71,15 +71,19 @@ class StoreUI(QMainWindow):
             # print(f'chunk {chunk}')
         return pickle.loads(received_data)
 
-    # Client-side serialization
-    def send_large_data(self, sock, data_dict):
+            
+    def send_large_data(self, connection, data):
         try:
-            serialized_data = pickle.dumps(data_dict)
-            data_size = len(serialized_data).to_bytes(4, byteorder='big')
+            # Calculate the total number of chunks
+            total_chunks = (len(data) + 4095) // 4096
             
-            # Send the size and serialized data together
-            sock.sendall(data_size + serialized_data)
+            # Send the total number of chunks as the initial message
+            connection.sendall(pickle.dumps(total_chunks))
             
+            # Send actual data chunks
+            for chunk_start in range(0, len(data), 4096):
+                chunk_end = min(chunk_start + 4096, len(data))
+                connection.sendall(data[chunk_start:chunk_end])
             print("Data sent successfully.")
         except Exception as e:
             print("Error sending data:", e)
@@ -149,8 +153,8 @@ class StoreUI(QMainWindow):
             "store_name" : self.ui.info_page_name_edit.toPlainText(),
             "email" : self.ui.info_page_email_edit.toPlainText(),
             "phone_number" : self.ui.info_page_phone_number_edit.toPlainText(), 
-            "description" : self.ui.info_page_description_edit.toPlainText()
-            # "picture" : binary_bytes
+            "description" : self.ui.info_page_description_edit.toPlainText(),
+            "picture" : binary_data
         }
         
         # print(new_info_data)
@@ -164,7 +168,9 @@ class StoreUI(QMainWindow):
                 print("Step 2: Sending request...")
                 request_data = {'action': 'handle_new_store_info', 'new_store_info': new_info_data}
                 print(f"REQUEST DATA {request_data}")
-                client_socket.sendall(pickle.dumps(request_data))
+                self.send_large_data(client_socket, pickle.dumps(request_data))
+                #For small data
+                # client_socket.sendall(pickle.dumps(request_data))
                 print("Step 3: Receiving response...")
                 response_data = self.receive_large_data(client_socket)
                 print("Received response:", response_data)
