@@ -1,5 +1,8 @@
 import sys
 import os
+import socket
+import pickle
+import traceback
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from .collection_ui import *
@@ -118,10 +121,11 @@ class CollectionUI(QMainWindow):
                 set_preferred_size(path_source)
 
                 # the > between paths
-                divider = PathDivider().get_divider()
-                set_preferred_size(divider)
-                divider.setFont(path_font)
-                path_layout.addWidget(divider)
+                if node != new_path[-1]:
+                    divider = PathDivider().get_divider()
+                    set_preferred_size(divider)
+                    divider.setFont(path_font)
+                    path_layout.addWidget(divider)
                 # self.ui.path_label.setStyleSheet('border: 1px solid black;') #to check box
         # path to current page
         # path_source = PathSource(self.product_name, self.stacked_widget, 1, self).get_path_source()
@@ -219,8 +223,15 @@ class CollectionUI(QMainWindow):
         self.ui.description_label.setFont(info_font)
         self.update_description_label(self.info)
 
+        self.update_store_name_label(self.details.get('author_name'))
+        author_pic = self.details.get('author_pic')
+        self.author_pic = QImage.fromData(author_pic)
+        self.update_store_image(self.author_pic)
+        # self.store_data = self.get_store_data()
+
         # Buttons
         self.ui.horizontalLayout_3.addWidget(self.ui.add_to_wishlist_bt)
+        self.ui.add_to_wishlist_bt.setMaximumSize(QSize(200, 50))
 
         if self.p_type.lower() == 'collection':
             self.ui.horizontalLayout_3.addWidget(self.ui.view_products_bt)
@@ -228,6 +239,70 @@ class CollectionUI(QMainWindow):
             self.ui.horizontalLayout_3.addWidget(self.ui.go_to_item)
             self.ui.go_to_item.clicked.connect(self.show_item_data(1))
         print("Post data loaded.")
+
+    # def receive_large_data(self, conn):
+    #     total_chunks = pickle.loads(conn.recv(4096))
+    #     received_data = b''
+    #     for _ in range(total_chunks):
+    #         chunk = conn.recv(4096)
+    #         received_data += chunk
+    #         # print(f'chunk {chunk}')
+    #     return pickle.loads(received_data)
+
+    # def send_large_data(self, sock, data_dict):
+    #     try:
+    #         serialized_data = pickle.dumps(data_dict)
+    #         data_size = len(serialized_data).to_bytes(4, byteorder='big')
+            
+    #         # Send the size and serialized data together
+    #         sock.sendall(data_size + serialized_data)
+    #         print("Data sent successfully.")
+    #     except Exception as e:
+    #         print("Error sending data:", e)
+    
+    # def get_store_data(self):
+    #     print('Getting store data')
+    #     retries = 100
+    #     for attempt in range(retries):
+    #         try:
+    #             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+    #                 client_socket.connect((self.server_host, self.server_port))
+    #                 request_data = {'action': 'get_store', 'store_id': self.details.get('author_id')}
+    #                 client_socket.sendall(pickle.dumps(request_data))
+    #                 response = self.receive_large_data(client_socket)
+    #                 if response.get('success'):
+    #                     store_data = response.get('store_data')
+    #                     self.update_store_data(store_data)
+    #                     return store_data
+    #                 else:
+    #                     print("Failed to get all the data:", response.get('message'))
+    #         except socket.error as se:
+    #             print("Socket error:", se)
+    #         except pickle.PickleError as pe:
+    #             print("Error in pickle operation:", pe)
+    #         except Exception as e:
+    #             print("An unexpected error occurred:", e)
+    #             traceback.print_exc()
+    #             if attempt < retries - 1: 
+    #                 print("Retrying...")
+    #                 continue
+
+    def update_store_data(self, store_data):
+        print(store_data)
+        author_pic = store_data.get('picture')
+        author_pic = QImage.fromData(author_pic)
+        self.update_store_image(self, author_pic)
+        self.update_store_name_label(store_data.get('store_name'))
+        self.update_store_description_label(store_data.get('description'))
+
+    def update_store_description(self, store_description):
+        self.ui.store_description_label.setText(store_description)
+
+    def update_store_image(self, store_image):
+        self.ui.label_9.setPixmap(QPixmap(store_image))
+
+    def update_store_name_label(self, store_name):
+        self.ui.store_name_label.setText(store_name)
 
     def update_sales_type(self, new_s_type):
         self.ui.mode_label.setText(new_s_type)

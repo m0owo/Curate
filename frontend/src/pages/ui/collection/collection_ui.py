@@ -585,23 +585,23 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.setSpacing(15)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
-        self.contact_button = QPushButton(self.frame_9)
+        self.contact_button = QPushButton()
         self.contact_button.setObjectName(u"contact_button")
         sizePolicy2.setHeightForWidth(self.contact_button.sizePolicy().hasHeightForWidth())
         self.contact_button.setSizePolicy(sizePolicy2)
         self.contact_button.setMinimumSize(QSize(0, 0))
         self.contact_button.setFont(font8)
 
-        self.horizontalLayout_6.addWidget(self.contact_button)
+        # self.horizontalLayout_6.addWidget(self.contact_button)
 
-        self.visit_shop_button = QPushButton(self.frame_9)
+        self.visit_shop_button = QPushButton()
         self.visit_shop_button.setObjectName(u"visit_shop_button")
         sizePolicy2.setHeightForWidth(self.visit_shop_button.sizePolicy().hasHeightForWidth())
         self.visit_shop_button.setSizePolicy(sizePolicy2)
         self.visit_shop_button.setMinimumSize(QSize(0, 0))
         self.visit_shop_button.setFont(font8)
 
-        self.horizontalLayout_6.addWidget(self.visit_shop_button)
+        # self.horizontalLayout_6.addWidget(self.visit_shop_button)
 
         self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
 
@@ -633,7 +633,7 @@ class Ui_MainWindow(object):
         self.frame_7.setFrameShadow(QFrame.Raised)
         self.gridLayout_2 = QGridLayout(self.frame_7)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.join_date_label = QLabel(self.frame_7)
+        self.join_date_label = QLabel()
         self.join_date_label.setObjectName(u"join_date_label")
         sizePolicy1.setHeightForWidth(self.join_date_label.sizePolicy().hasHeightForWidth())
         self.join_date_label.setSizePolicy(sizePolicy1)
@@ -644,7 +644,7 @@ class Ui_MainWindow(object):
         font11.setBold(False)
         self.join_date_label.setFont(font11)
 
-        self.gridLayout_2.addWidget(self.join_date_label, 2, 0, 1, 1)
+        # self.gridLayout_2.addWidget(self.join_date_label, 2, 0, 1, 1
 
         self.follower_label = QLabel(self.frame_7)
         self.follower_label.setObjectName(u"follower_label")
@@ -653,16 +653,24 @@ class Ui_MainWindow(object):
         self.follower_label.setMaximumSize(QSize(16777215, 16777215))
         self.follower_label.setFont(font11)
 
-        self.gridLayout_2.addWidget(self.follower_label, 0, 0, 1, 1)
+        self.store_description_label = QLabel(self.frame)
+        self.store_description_label.setFont(font11)
+        self.store_description_label.setSizePolicy(sizePolicy1)
 
-        self.col_count_label = QLabel(self.frame_7)
+        self.verticalLayout_3.addWidget(self.store_description_label)
+        self.verticalLayout_3.addWidget(self.follower_label)
+        self.verticalLayout_3.setSpacing(0)
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_3.setAlignment(Qt.AlignTop)
+        
+        self.col_count_label = QLabel()
         self.col_count_label.setObjectName(u"col_count_label")
         sizePolicy1.setHeightForWidth(self.col_count_label.sizePolicy().hasHeightForWidth())
         self.col_count_label.setSizePolicy(sizePolicy1)
         self.col_count_label.setMaximumSize(QSize(16777215, 16777215))
         self.col_count_label.setFont(font11)
 
-        self.gridLayout_2.addWidget(self.col_count_label, 1, 0, 1, 1)
+        # self.gridLayout_2.addWidget(self.col_count_label, 1, 0, 1, 1)
 
 
         self.horizontalLayout_4.addWidget(self.frame_7)
