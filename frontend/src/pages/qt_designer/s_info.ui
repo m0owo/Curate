@@ -227,6 +227,7 @@ QLabel#page_label{
       <property name="font">
        <font>
         <family>Manrope</family>
+        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -325,6 +326,7 @@ QLabel#page_label{
       <property name="font">
        <font>
         <family>Manrope</family>
+        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -480,6 +482,7 @@ Line {
            <font>
             <family>Manrope</family>
             <pointsize>26</pointsize>
+            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -489,7 +492,7 @@ Line {
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="info_button">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -500,6 +503,7 @@ Line {
            <font>
             <family>Manrope</family>
             <pointsize>14</pointsize>
+            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -509,7 +513,7 @@ Line {
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="products_button">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -520,6 +524,7 @@ Line {
            <font>
             <family>Manrope</family>
             <pointsize>14</pointsize>
+            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -529,7 +534,7 @@ Line {
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="collections_button">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -540,6 +545,7 @@ Line {
            <font>
             <family>Manrope</family>
             <pointsize>14</pointsize>
+            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -549,7 +555,7 @@ Line {
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_4">
+         <widget class="QPushButton" name="orders_button">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -560,6 +566,7 @@ Line {
            <font>
             <family>Manrope</family>
             <pointsize>14</pointsize>
+            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -569,7 +576,7 @@ Line {
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_5">
+         <widget class="QPushButton" name="reviews_button">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -580,6 +587,7 @@ Line {
            <font>
             <family>Manrope</family>
             <pointsize>14</pointsize>
+            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -653,7 +661,7 @@ Line {
            </size>
           </property>
           <property name="currentIndex">
-           <number>3</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="information">
            <property name="minimumSize">
@@ -696,6 +704,7 @@ Line {
                <font>
                 <family>Manrope</family>
                 <pointsize>26</pointsize>
+                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -750,6 +759,7 @@ Line {
                      <font>
                       <family>Manrope</family>
                       <pointsize>16</pointsize>
+                      <weight>75</weight>
                       <bold>true</bold>
                      </font>
                     </property>
@@ -770,11 +780,12 @@ Line {
                      <font>
                       <family>Manrope</family>
                       <pointsize>16</pointsize>
+                      <weight>75</weight>
                       <bold>true</bold>
                      </font>
                     </property>
                     <property name="text">
-                     <string>Gmail</string>
+                     <string>Email</string>
                     </property>
                    </widget>
                   </item>
@@ -790,6 +801,7 @@ Line {
                      <font>
                       <family>Manrope</family>
                       <pointsize>16</pointsize>
+                      <weight>75</weight>
                       <bold>true</bold>
                      </font>
                     </property>
@@ -810,6 +822,7 @@ Line {
                      <font>
                       <family>Manrope</family>
                       <pointsize>16</pointsize>
+                      <weight>75</weight>
                       <bold>true</bold>
                      </font>
                     </property>
@@ -852,7 +865,7 @@ Line {
                    <number>10</number>
                   </property>
                   <item>
-                   <widget class="QTextEdit" name="name_edit">
+                   <widget class="QTextEdit" name="info_page_name_edit">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                       <horstretch>0</horstretch>
@@ -876,18 +889,15 @@ Line {
                     </property>
                     <property name="html">
                      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;sample_name&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTextEdit" name="mail_edit">
+                   <widget class="QTextEdit" name="info_page_email_edit">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                       <horstretch>0</horstretch>
@@ -910,18 +920,15 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     </property>
                     <property name="html">
                      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;sample_gmail&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;sample_email&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTextEdit" name="phonenum_edit">
+                   <widget class="QTextEdit" name="info_page_phone_number_edit">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                       <horstretch>0</horstretch>
@@ -937,6 +944,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     <property name="font">
                      <font>
                       <family>Manrope</family>
+                      <weight>50</weight>
                       <bold>false</bold>
                      </font>
                     </property>
@@ -945,18 +953,15 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     </property>
                     <property name="html">
                      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;sample_phonenumber&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTextEdit" name="description_edit">
+                   <widget class="QTextEdit" name="info_page_description_edit">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Maximum" vsizetype="MinimumExpanding">
                       <horstretch>0</horstretch>
@@ -966,6 +971,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     <property name="font">
                      <font>
                       <family>Manrope</family>
+                      <weight>50</weight>
                       <bold>false</bold>
                      </font>
                     </property>
@@ -974,12 +980,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     </property>
                     <property name="html">
                      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;sample_description&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
@@ -1063,6 +1066,7 @@ QPushButton::hover {
                         <font>
                          <family>Manrope</family>
                          <pointsize>16</pointsize>
+                         <weight>75</weight>
                          <bold>true</bold>
                         </font>
                        </property>
@@ -1072,7 +1076,7 @@ QPushButton::hover {
                       </widget>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="edit_button">
+                      <widget class="QPushButton" name="info_page_edit_button">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
                          <horstretch>0</horstretch>
@@ -1095,6 +1099,7 @@ QPushButton::hover {
                         <font>
                          <family>Manrope</family>
                          <pointsize>15</pointsize>
+                         <weight>75</weight>
                          <bold>true</bold>
                         </font>
                        </property>
@@ -1120,7 +1125,7 @@ QPushButton::hover {
                    </widget>
                   </item>
                   <item>
-                   <widget class="QLabel" name="label_10">
+                   <widget class="QLabel" name="info_page_picture">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                       <horstretch>0</horstretch>
@@ -1229,7 +1234,7 @@ QPushButton::hover {
                       </spacer>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="save_button">
+                      <widget class="QPushButton" name="info_page_save_button">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
                          <horstretch>0</horstretch>
@@ -1252,6 +1257,7 @@ QPushButton::hover {
                         <font>
                          <family>Manrope</family>
                          <pointsize>15</pointsize>
+                         <weight>75</weight>
                          <bold>true</bold>
                         </font>
                        </property>
@@ -1289,7 +1295,7 @@ QPushButton::hover {
              <number>0</number>
             </property>
             <item>
-             <widget class="QFrame" name="frame_5">
+             <widget class="QFrame" name="product_label_frame">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -1331,7 +1337,7 @@ QPushButton::hover {
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_3">
+                <widget class="QLabel" name="products_label">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                    <horstretch>0</horstretch>
@@ -1342,6 +1348,7 @@ QPushButton::hover {
                   <font>
                    <family>Manrope</family>
                    <pointsize>26</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -1351,7 +1358,7 @@ QPushButton::hover {
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="view_product_button_9">
+                <widget class="QPushButton" name="product_page_add_product_button">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -1374,6 +1381,7 @@ QPushButton::hover {
                   <font>
                    <family>Manrope</family>
                    <pointsize>15</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -1399,7 +1407,7 @@ QPushButton::hover {
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="history_tabs_2" native="true">
+             <widget class="QWidget" name="product_tab" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -1440,7 +1448,7 @@ QPushButton::hover{
                 <number>0</number>
                </property>
                <item>
-                <widget class="QPushButton" name="all_2">
+                <widget class="QPushButton" name="product_page_all_button">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -1451,6 +1459,7 @@ QPushButton::hover{
                   <font>
                    <family>Manrope</family>
                    <pointsize>13</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -1460,7 +1469,7 @@ QPushButton::hover{
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="to_pay_2">
+                <widget class="QPushButton" name="product_page_live_button">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -1471,6 +1480,7 @@ QPushButton::hover{
                   <font>
                    <family>Manrope</family>
                    <pointsize>13</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -1480,7 +1490,7 @@ QPushButton::hover{
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="to_be_delivered_2">
+                <widget class="QPushButton" name="product_page_starting_button">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -1491,6 +1501,7 @@ QPushButton::hover{
                   <font>
                    <family>Manrope</family>
                    <pointsize>13</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -1500,7 +1511,7 @@ QPushButton::hover{
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="completed_2">
+                <widget class="QPushButton" name="product_page_completed_button">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -1511,6 +1522,7 @@ QPushButton::hover{
                   <font>
                    <family>Manrope</family>
                    <pointsize>13</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -1523,7 +1535,7 @@ QPushButton::hover{
              </widget>
             </item>
             <item>
-             <widget class="QScrollArea" name="product_scrollArea">
+             <widget class="QScrollArea" name="products_scrollArea">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -1551,12 +1563,12 @@ QPushButton::hover{
               <property name="widgetResizable">
                <bool>true</bool>
               </property>
-              <widget class="QWidget" name="scrollAreaWidgetContents">
+              <widget class="QWidget" name="products_crollAreaWidgetContents">
                <property name="geometry">
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>887</width>
+                 <width>851</width>
                  <height>680</height>
                 </rect>
                </property>
@@ -1764,6 +1776,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>16</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -1791,6 +1804,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>13</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -1861,6 +1875,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -1875,6 +1890,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -1889,6 +1905,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -1936,6 +1953,7 @@ QPushButton::hover {
                             <font>
                              <family>Manrope</family>
                              <pointsize>13</pointsize>
+                             <weight>75</weight>
                              <bold>true</bold>
                             </font>
                            </property>
@@ -2100,6 +2118,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>16</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -2127,6 +2146,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>13</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -2197,6 +2217,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -2211,6 +2232,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -2225,6 +2247,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -2272,6 +2295,7 @@ QPushButton::hover {
                             <font>
                              <family>Manrope</family>
                              <pointsize>13</pointsize>
+                             <weight>75</weight>
                              <bold>true</bold>
                             </font>
                            </property>
@@ -2436,6 +2460,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>16</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -2463,6 +2488,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>13</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -2533,6 +2559,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -2547,6 +2574,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -2561,6 +2589,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -2608,6 +2637,7 @@ QPushButton::hover {
                             <font>
                              <family>Manrope</family>
                              <pointsize>13</pointsize>
+                             <weight>75</weight>
                              <bold>true</bold>
                             </font>
                            </property>
@@ -2772,6 +2802,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>16</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -2799,6 +2830,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>13</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -2869,6 +2901,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -2883,6 +2916,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -2897,6 +2931,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -2944,6 +2979,7 @@ QPushButton::hover {
                             <font>
                              <family>Manrope</family>
                              <pointsize>13</pointsize>
+                             <weight>75</weight>
                              <bold>true</bold>
                             </font>
                            </property>
@@ -3040,7 +3076,7 @@ QPushButton::hover {
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_4">
+                <widget class="QLabel" name="collection_label">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                    <horstretch>0</horstretch>
@@ -3051,6 +3087,7 @@ QPushButton::hover {
                   <font>
                    <family>Manrope</family>
                    <pointsize>26</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -3060,7 +3097,7 @@ QPushButton::hover {
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="view_product_button_14">
+                <widget class="QPushButton" name="collection_page_add_collection_button">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -3083,6 +3120,7 @@ QPushButton::hover {
                   <font>
                    <family>Manrope</family>
                    <pointsize>15</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -3149,7 +3187,7 @@ QPushButton::hover{
                 <number>0</number>
                </property>
                <item>
-                <widget class="QPushButton" name="all_3">
+                <widget class="QPushButton" name="collection_page_all_button">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -3160,6 +3198,7 @@ QPushButton::hover{
                   <font>
                    <family>Manrope</family>
                    <pointsize>13</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -3169,7 +3208,7 @@ QPushButton::hover{
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="to_pay_3">
+                <widget class="QPushButton" name="collection_page_live_button">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -3180,6 +3219,7 @@ QPushButton::hover{
                   <font>
                    <family>Manrope</family>
                    <pointsize>13</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -3189,7 +3229,7 @@ QPushButton::hover{
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="to_be_delivered_3">
+                <widget class="QPushButton" name="collection_page_starting_button">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -3200,6 +3240,7 @@ QPushButton::hover{
                   <font>
                    <family>Manrope</family>
                    <pointsize>13</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -3209,7 +3250,7 @@ QPushButton::hover{
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="completed_3">
+                <widget class="QPushButton" name="collection_page_completed_button">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -3220,6 +3261,7 @@ QPushButton::hover{
                   <font>
                    <family>Manrope</family>
                    <pointsize>13</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -3232,7 +3274,7 @@ QPushButton::hover{
              </widget>
             </item>
             <item>
-             <widget class="QScrollArea" name="product_scrollArea_2">
+             <widget class="QScrollArea" name="collections_scrollArea">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -3260,13 +3302,13 @@ QPushButton::hover{
               <property name="widgetResizable">
                <bool>true</bool>
               </property>
-              <widget class="QWidget" name="scrollAreaWidgetContents_2">
+              <widget class="QWidget" name="collections_scrollAreaWidgetContents">
                <property name="geometry">
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>887</width>
-                 <height>512</height>
+                 <width>851</width>
+                 <height>510</height>
                 </rect>
                </property>
                <property name="sizePolicy">
@@ -3473,6 +3515,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>16</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -3553,6 +3596,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -3567,6 +3611,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -3581,6 +3626,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -3628,6 +3674,7 @@ QPushButton::hover {
                             <font>
                              <family>Manrope</family>
                              <pointsize>13</pointsize>
+                             <weight>75</weight>
                              <bold>true</bold>
                             </font>
                            </property>
@@ -3792,6 +3839,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>16</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -3872,6 +3920,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -3886,6 +3935,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -3900,6 +3950,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -3947,6 +3998,7 @@ QPushButton::hover {
                             <font>
                              <family>Manrope</family>
                              <pointsize>13</pointsize>
+                             <weight>75</weight>
                              <bold>true</bold>
                             </font>
                            </property>
@@ -4111,6 +4163,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>16</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -4191,6 +4244,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -4205,6 +4259,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -4219,6 +4274,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -4266,6 +4322,7 @@ QPushButton::hover {
                             <font>
                              <family>Manrope</family>
                              <pointsize>13</pointsize>
+                             <weight>75</weight>
                              <bold>true</bold>
                             </font>
                            </property>
@@ -4362,7 +4419,7 @@ QPushButton::hover {
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_5">
+                <widget class="QLabel" name="order_label">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                    <horstretch>0</horstretch>
@@ -4373,6 +4430,7 @@ QPushButton::hover {
                   <font>
                    <family>Manrope</family>
                    <pointsize>26</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -4439,7 +4497,7 @@ QPushButton::hover{
                 <number>0</number>
                </property>
                <item>
-                <widget class="QPushButton" name="order_all_button">
+                <widget class="QPushButton" name="order_page_all_button">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -4450,6 +4508,7 @@ QPushButton::hover{
                   <font>
                    <family>Manrope</family>
                    <pointsize>13</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -4459,7 +4518,7 @@ QPushButton::hover{
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="unpaid_button">
+                <widget class="QPushButton" name="orders_page_unpaid_button">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -4470,6 +4529,7 @@ QPushButton::hover{
                   <font>
                    <family>Manrope</family>
                    <pointsize>13</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -4479,7 +4539,7 @@ QPushButton::hover{
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="shipping_button">
+                <widget class="QPushButton" name="orders_page_shipping_button">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -4490,6 +4550,7 @@ QPushButton::hover{
                   <font>
                    <family>Manrope</family>
                    <pointsize>13</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -4499,7 +4560,7 @@ QPushButton::hover{
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="completed_button">
+                <widget class="QPushButton" name="orders_page_completed_button">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -4510,6 +4571,7 @@ QPushButton::hover{
                   <font>
                    <family>Manrope</family>
                    <pointsize>13</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -4519,7 +4581,7 @@ QPushButton::hover{
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="cancelled_button">
+                <widget class="QPushButton" name="oders_page_cancelled_button">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -4530,6 +4592,7 @@ QPushButton::hover{
                   <font>
                    <family>Manrope</family>
                    <pointsize>13</pointsize>
+                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -4542,7 +4605,7 @@ QPushButton::hover{
              </widget>
             </item>
             <item>
-             <widget class="QScrollArea" name="product_scrollArea_3">
+             <widget class="QScrollArea" name="orders_scrollArea">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -4570,13 +4633,13 @@ QPushButton::hover{
               <property name="widgetResizable">
                <bool>true</bool>
               </property>
-              <widget class="QWidget" name="scrollAreaWidgetContents_3">
+              <widget class="QWidget" name="orders_scrollAreaWidgetContents">
                <property name="geometry">
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>887</width>
-                 <height>512</height>
+                 <width>851</width>
+                 <height>510</height>
                 </rect>
                </property>
                <property name="sizePolicy">
@@ -4783,6 +4846,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>16</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -4803,6 +4867,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>14</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -4830,6 +4895,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>13</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -4900,6 +4966,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -4914,6 +4981,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -4928,6 +4996,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -4942,6 +5011,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -5107,6 +5177,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>16</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -5127,6 +5198,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>14</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -5154,6 +5226,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>13</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -5224,6 +5297,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -5238,6 +5312,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -5252,6 +5327,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -5266,6 +5342,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -5431,6 +5508,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>16</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -5451,6 +5529,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>14</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -5478,6 +5557,7 @@ QPushButton::hover {
                               <font>
                                <family>Manrope</family>
                                <pointsize>13</pointsize>
+                               <weight>75</weight>
                                <bold>true</bold>
                               </font>
                              </property>
@@ -5548,6 +5628,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -5562,6 +5643,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -5576,6 +5658,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -5590,6 +5673,7 @@ QPushButton::hover {
                              <font>
                               <family>Manrope</family>
                               <pointsize>13</pointsize>
+                              <weight>75</weight>
                               <bold>true</bold>
                              </font>
                             </property>
@@ -5656,6 +5740,7 @@ QPushButton::hover {
                <font>
                 <family>Manrope</family>
                 <pointsize>26</pointsize>
+                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -5710,6 +5795,7 @@ QPushButton::hover {
                      <font>
                       <family>Manrope</family>
                       <pointsize>16</pointsize>
+                      <weight>75</weight>
                       <bold>true</bold>
                      </font>
                     </property>
@@ -5730,6 +5816,7 @@ QPushButton::hover {
                      <font>
                       <family>Manrope</family>
                       <pointsize>16</pointsize>
+                      <weight>75</weight>
                       <bold>true</bold>
                      </font>
                     </property>
@@ -5750,6 +5837,7 @@ QPushButton::hover {
                      <font>
                       <family>Manrope</family>
                       <pointsize>16</pointsize>
+                      <weight>75</weight>
                       <bold>true</bold>
                      </font>
                     </property>
@@ -5770,6 +5858,7 @@ QPushButton::hover {
                      <font>
                       <family>Manrope</family>
                       <pointsize>16</pointsize>
+                      <weight>75</weight>
                       <bold>true</bold>
                      </font>
                     </property>
@@ -5790,6 +5879,7 @@ QPushButton::hover {
                      <font>
                       <family>Manrope</family>
                       <pointsize>16</pointsize>
+                      <weight>75</weight>
                       <bold>true</bold>
                      </font>
                     </property>
@@ -5810,6 +5900,7 @@ QPushButton::hover {
                      <font>
                       <family>Manrope</family>
                       <pointsize>16</pointsize>
+                      <weight>75</weight>
                       <bold>true</bold>
                      </font>
                     </property>
@@ -5852,7 +5943,7 @@ QPushButton::hover {
                    <number>10</number>
                   </property>
                   <item>
-                   <widget class="QTextEdit" name="name_edit_2">
+                   <widget class="QTextEdit" name="edit_product_page_name_Edit">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                       <horstretch>0</horstretch>
@@ -5876,18 +5967,15 @@ QPushButton::hover {
                     </property>
                     <property name="html">
                      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;sample_name&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTextEdit" name="price_edit">
+                   <widget class="QTextEdit" name="edit_product_page_price_edit">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                       <horstretch>0</horstretch>
@@ -5910,18 +5998,15 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     </property>
                     <property name="html">
                      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;sample_price&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTextEdit" name="tags_edit">
+                   <widget class="QTextEdit" name="edit_product__page_tags_edit">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                       <horstretch>0</horstretch>
@@ -5944,87 +6029,47 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     </property>
                     <property name="html">
                      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;sample_tags&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTextEdit" name="mode_edit">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>16777215</width>
-                      <height>30</height>
-                     </size>
-                    </property>
+                   <widget class="QComboBox" name="edit_product_page_mode_combobox">
                     <property name="font">
                      <font>
                       <family>Manrope</family>
+                      <pointsize>12</pointsize>
+                      <weight>50</weight>
                       <bold>false</bold>
                      </font>
                     </property>
-                    <property name="styleSheet">
-                     <string notr="true">background-color: white</string>
-                    </property>
-                    <property name="html">
-                     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;sample_mode&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                    </property>
+                    <item>
+                     <property name="text">
+                      <string>cf no cc</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>bidding</string>
+                     </property>
+                    </item>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTextEdit" name="date_edit">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>16777215</width>
-                      <height>30</height>
-                     </size>
-                    </property>
+                   <widget class="QDateEdit" name="edit_product_page_date_edit">
                     <property name="font">
                      <font>
                       <family>Manrope</family>
+                      <pointsize>12</pointsize>
                      </font>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">background-color: white</string>
-                    </property>
-                    <property name="html">
-                     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;XX/XX/XX&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTextEdit" name="description_edit_2">
+                   <widget class="QTextEdit" name="edit_product_page_des_edit">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Maximum" vsizetype="MinimumExpanding">
                       <horstretch>0</horstretch>
@@ -6034,6 +6079,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     <property name="font">
                      <font>
                       <family>Manrope</family>
+                      <weight>50</weight>
                       <bold>false</bold>
                      </font>
                     </property>
@@ -6042,12 +6088,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     </property>
                     <property name="html">
                      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;sample_description&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
@@ -6059,8 +6102,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     </property>
                     <property name="sizeHint" stdset="0">
                      <size>
-                      <width>20</width>
-                      <height>40</height>
+                      <width>253</width>
+                      <height>78</height>
                      </size>
                     </property>
                    </spacer>
@@ -6131,6 +6174,7 @@ QPushButton::hover {
                         <font>
                          <family>Manrope</family>
                          <pointsize>16</pointsize>
+                         <weight>75</weight>
                          <bold>true</bold>
                         </font>
                        </property>
@@ -6140,7 +6184,7 @@ QPushButton::hover {
                       </widget>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="edit_button_2">
+                      <widget class="QPushButton" name="edit_prodcut_page_add_image_button">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
                          <horstretch>0</horstretch>
@@ -6163,6 +6207,7 @@ QPushButton::hover {
                         <font>
                          <family>Manrope</family>
                          <pointsize>15</pointsize>
+                         <weight>75</weight>
                          <bold>true</bold>
                         </font>
                        </property>
@@ -6213,7 +6258,7 @@ QPushButton::hover {
                     <widget class="QWidget" name="page_3">
                      <layout class="QVBoxLayout" name="verticalLayout_12">
                       <item>
-                       <widget class="QLabel" name="image_label">
+                       <widget class="QLabel" name="edit_product_page_image_label">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                           <horstretch>0</horstretch>
@@ -6244,11 +6289,12 @@ QPushButton::hover {
                        </widget>
                       </item>
                       <item>
-                       <widget class="QPushButton" name="delete_button_2">
+                       <widget class="QPushButton" name="edit_product_page_delete_button">
                         <property name="font">
                          <font>
                           <family>Manrope</family>
                           <pointsize>12</pointsize>
+                          <weight>75</weight>
                           <bold>true</bold>
                          </font>
                         </property>
@@ -6301,6 +6347,7 @@ QPushButton::hover {
                          <font>
                           <family>Manrope</family>
                           <pointsize>12</pointsize>
+                          <weight>75</weight>
                           <bold>true</bold>
                          </font>
                         </property>
@@ -6395,7 +6442,7 @@ QPushButton::hover {
                       </spacer>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="save_button_2">
+                      <widget class="QPushButton" name="edit_product_page_save_button">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
                          <horstretch>0</horstretch>
@@ -6418,6 +6465,7 @@ QPushButton::hover {
                         <font>
                          <family>Manrope</family>
                          <pointsize>15</pointsize>
+                         <weight>75</weight>
                          <bold>true</bold>
                         </font>
                        </property>
@@ -6455,7 +6503,7 @@ QPushButton::hover {
              <number>0</number>
             </property>
             <item>
-             <widget class="QLabel" name="label_21">
+             <widget class="QLabel" name="collection_label_2">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -6466,6 +6514,7 @@ QPushButton::hover {
                <font>
                 <family>Manrope</family>
                 <pointsize>26</pointsize>
+                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -6520,6 +6569,7 @@ QPushButton::hover {
                      <font>
                       <family>Manrope</family>
                       <pointsize>16</pointsize>
+                      <weight>75</weight>
                       <bold>true</bold>
                      </font>
                     </property>
@@ -6540,6 +6590,7 @@ QPushButton::hover {
                      <font>
                       <family>Manrope</family>
                       <pointsize>16</pointsize>
+                      <weight>75</weight>
                       <bold>true</bold>
                      </font>
                     </property>
@@ -6560,6 +6611,7 @@ QPushButton::hover {
                      <font>
                       <family>Manrope</family>
                       <pointsize>16</pointsize>
+                      <weight>75</weight>
                       <bold>true</bold>
                      </font>
                     </property>
@@ -6580,6 +6632,7 @@ QPushButton::hover {
                      <font>
                       <family>Manrope</family>
                       <pointsize>16</pointsize>
+                      <weight>75</weight>
                       <bold>true</bold>
                      </font>
                     </property>
@@ -6613,6 +6666,7 @@ QPushButton::hover {
                      <font>
                       <family>Manrope</family>
                       <pointsize>16</pointsize>
+                      <weight>75</weight>
                       <bold>true</bold>
                      </font>
                     </property>
@@ -6653,7 +6707,7 @@ QPushButton::hover {
                    <number>10</number>
                   </property>
                   <item>
-                   <widget class="QTextEdit" name="name_edit_3">
+                   <widget class="QTextEdit" name="edit_collection_name_edit">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                       <horstretch>0</horstretch>
@@ -6677,18 +6731,15 @@ QPushButton::hover {
                     </property>
                     <property name="html">
                      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;sample_name&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTextEdit" name="tags_edit_2">
+                   <widget class="QTextEdit" name="edit_collection_tag_edit">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                       <horstretch>0</horstretch>
@@ -6711,52 +6762,25 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     </property>
                     <property name="html">
                      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;sample_tags&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTextEdit" name="date_edit_2">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>16777215</width>
-                      <height>30</height>
-                     </size>
-                    </property>
+                   <widget class="QDateEdit" name="edit_collection_page_date_edit">
                     <property name="font">
                      <font>
                       <family>Manrope</family>
+                      <pointsize>12</pointsize>
                      </font>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">background-color: white</string>
-                    </property>
-                    <property name="html">
-                     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;XX/XX/XX&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTextEdit" name="description_edit_3">
+                   <widget class="QTextEdit" name="edit_collection_des_edit">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Maximum" vsizetype="MinimumExpanding">
                       <horstretch>0</horstretch>
@@ -6766,6 +6790,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     <property name="font">
                      <font>
                       <family>Manrope</family>
+                      <weight>50</weight>
                       <bold>false</bold>
                      </font>
                     </property>
@@ -6774,18 +6799,15 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     </property>
                     <property name="html">
                      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;sample_description&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <spacer name="verticalSpacer_10">
+                   <spacer name="spacer">
                     <property name="orientation">
                      <enum>Qt::Vertical</enum>
                     </property>
@@ -6798,7 +6820,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                    </spacer>
                   </item>
                   <item>
-                   <widget class="QPushButton" name="add_product_button">
+                   <widget class="QPushButton" name="edit_collection_page_add_product">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                       <horstretch>0</horstretch>
@@ -6821,6 +6843,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                      <font>
                       <family>Manrope</family>
                       <pointsize>15</pointsize>
+                      <weight>75</weight>
                       <bold>true</bold>
                      </font>
                     </property>
@@ -6895,6 +6918,7 @@ QPushButton::hover {
                         <font>
                          <family>Manrope</family>
                          <pointsize>16</pointsize>
+                         <weight>75</weight>
                          <bold>true</bold>
                         </font>
                        </property>
@@ -6904,7 +6928,7 @@ QPushButton::hover {
                       </widget>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="edit_button_3">
+                      <widget class="QPushButton" name="edit_collection_add_img_button">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
                          <horstretch>0</horstretch>
@@ -6927,6 +6951,7 @@ QPushButton::hover {
                         <font>
                          <family>Manrope</family>
                          <pointsize>15</pointsize>
+                         <weight>75</weight>
                          <bold>true</bold>
                         </font>
                        </property>
@@ -6977,7 +7002,7 @@ QPushButton::hover {
                     <widget class="QWidget" name="page_5">
                      <layout class="QVBoxLayout" name="verticalLayout_21">
                       <item>
-                       <widget class="QLabel" name="image_label_3">
+                       <widget class="QLabel" name="edit_collection_page_pic_label">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                           <horstretch>0</horstretch>
@@ -7008,11 +7033,12 @@ QPushButton::hover {
                        </widget>
                       </item>
                       <item>
-                       <widget class="QPushButton" name="delete_button_3">
+                       <widget class="QPushButton" name="edit_collection_page_del_button">
                         <property name="font">
                          <font>
                           <family>Manrope</family>
                           <pointsize>12</pointsize>
+                          <weight>75</weight>
                           <bold>true</bold>
                          </font>
                         </property>
@@ -7065,6 +7091,7 @@ QPushButton::hover {
                          <font>
                           <family>Manrope</family>
                           <pointsize>12</pointsize>
+                          <weight>75</weight>
                           <bold>true</bold>
                          </font>
                         </property>
@@ -7159,7 +7186,7 @@ QPushButton::hover {
                       </spacer>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="save_button_3">
+                      <widget class="QPushButton" name="edit_collection_page_save_button">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
                          <horstretch>0</horstretch>
@@ -7182,6 +7209,7 @@ QPushButton::hover {
                         <font>
                          <family>Manrope</family>
                          <pointsize>15</pointsize>
+                         <weight>75</weight>
                          <bold>true</bold>
                         </font>
                        </property>

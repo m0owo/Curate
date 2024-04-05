@@ -63,7 +63,18 @@ def get_user_data(data):
         return {'success': True, 'user_data': user_data}
     else:
         return {'success': False, 'message': 'User not found'}
-
+    
+def check_store(data):
+    user_name = data.get("user_name")
+    print("Check whether create a store yet")
+    stores = root.stores
+    for key in stores:
+        if stores[key].store_user_name == user_name:
+            return {'success' : True, 'exists' : True, "store_data" : stores[key].serialize()}
+        else: return {'success' : True, 'exists' : False}
+    return {'success': False, 'exists': False}
+        
+        
 def send_large_data(conn, data):
     CHUNK_SIZE = 4096
     serialized_data = pickle.dumps(data)
@@ -74,6 +85,37 @@ def send_large_data(conn, data):
         end_index = min((i + 1) * CHUNK_SIZE, len(serialized_data))
         chunk = serialized_data[start_index:end_index]
         conn.sendall(chunk)
+
+def receive_large_data(conn):
+    try:
+        print("Receiving data...")
+        # Receive the total size of the data
+        total_size = int.from_bytes(conn.recv(4), byteorder='big')
+        received_data = b''
+        # Loop until all data is received
+        while len(received_data) < total_size:
+            remaining_size = total_size - len(received_data)
+            # Receive a chunk of data
+            chunk = conn.recv(min(4096, remaining_size))
+            # If the received chunk is empty, break the loop
+            if not chunk:
+                break
+            # Append the received chunk to the data
+            received_data += chunk
+        print("Received chunk of size:", len(chunk))
+        print("Total size of received data:", len(received_data))
+        # Deserialize the received data
+        data_dict = pickle.loads(received_data)
+        print("Received data from client:", data_dict)
+        # Process received data here
+
+        return data_dict
+
+    except Exception as e:
+        print("Error receiving data:", e)
+        return None
+
+
 
 def get_all_posts():
     print("getting all posts server oo ee")
@@ -120,9 +162,8 @@ def handle_save_new_info(data_dict):
 
             transaction.commit()
             
-            return {'success': True, 'message': 'New information saved successfully'}
-        else:
-            return {'success': False, 'message': 'Account not found'}
+            return{'success': True, 'message': 'New information saved successfully'}
+        else:   return{'success': False, 'message': 'Account not found'}
     except Exception as e:
         return {'success': False, 'message': str(e)}
 
@@ -143,7 +184,23 @@ def handle_new_address(data_dict):
             return {'success': False, 'message': 'Account not found'}
     except Exception as e:
         return {'success': False, 'message': str(e)}
-        
+    
+def handle_new_store_info(data_dict):
+    try:
+        new_info = data_dict.get('new_store_info')  
+        store = root.stores[new_info.get("store_id")]
+        if store:
+            store.store_name = new_info.get("store_name")
+            store.email = new_info.get("email")
+            store.phone_number = new_info.get("phone_number")
+            store.description = new_info.get("description")
+            # store.picture = new_info.get("picture")
+            transaction.commit()
+            return{'success': True, 'message': 'New store information saved successfully'}
+        else:return {'success': False, 'message': 'Account not found'}
+    except Exception as e:
+        return {'success': False, 'message': str(e)}
+    
 def handle_request(conn):
     try:
         print("Handling request...")
@@ -153,8 +210,13 @@ def handle_request(conn):
                 print("No data received from client.")
                 break
             print("Received data from client:", data)
-
-            data_dict = pickle.loads(data)
+            
+            try:
+                data_dict = pickle.loads(data)
+            except Exception as e:
+                print("Error loading data dictionary:", e)
+                continue  # Skip processing this data
+            
             print("Received dictionary:", data_dict)
             action = data_dict.get('action')
             print("Received action:", action)
@@ -178,6 +240,13 @@ def handle_request(conn):
                 response = handle_new_address(data_dict)
             elif action == "get_user_data":
                 response = get_user_data(data_dict)
+            elif action == "check_store":
+                print("Calling check store")
+                response = check_store(data_dict)
+                send_large_data(conn, response)
+            elif action == "handle_new_store_info":
+                response = handle_new_store_info(data_dict)
+                send_large_data(conn, response)
             else:
                 print("Invalid action")
                 response = {'success': False, 'message': 'Invalid action'}
@@ -185,6 +254,13 @@ def handle_request(conn):
             print("Sending response to client:", response)
             conn.sendall(pickle.dumps(response))
             conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+            
+            # Close the connection after sending the response
+            conn.close()
+            print("Connection closed.")
+            # Exit the loop to wait for the next connection
+            break
+        
     except Exception as e:
         print("Error handling request:", e)
 

@@ -15,10 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QLineEdit, QMainWindow, QPushButton, QScrollArea,
-    QSizePolicy, QSpacerItem, QStackedWidget, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QDateEdit, QFrame,
+    QHBoxLayout, QLabel, QLineEdit, QMainWindow,
+    QPushButton, QScrollArea, QSizePolicy, QSpacerItem,
+    QStackedWidget, QTextEdit, QVBoxLayout, QWidget)
 import icons_rc
 import delivery_icons_rc
 import logo_rc
@@ -181,6 +181,7 @@ class Ui_MainWindow(object):
         self.frame_3.setObjectName(u"frame_3")
         self.frame_3.setGeometry(QRect(60, 110, 1080, 630))
         self.frame_3.setMinimumSize(QSize(1080, 630))
+        self.frame_3.setMaximumSize(QSize(1080, 630))
         self.frame_3.setAutoFillBackground(False)
         self.frame_3.setStyleSheet(u"QPushButton {\n"
 "    background-color:#F5F9F9;\n"
@@ -222,52 +223,52 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.label)
 
-        self.pushButton = QPushButton(self.frame_4)
-        self.pushButton.setObjectName(u"pushButton")
+        self.info_button = QPushButton(self.frame_4)
+        self.info_button.setObjectName(u"info_button")
         sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
-        self.pushButton.setSizePolicy(sizePolicy1)
+        sizePolicy1.setHeightForWidth(self.info_button.sizePolicy().hasHeightForWidth())
+        self.info_button.setSizePolicy(sizePolicy1)
         font5 = QFont()
         font5.setFamilies([u"Manrope"])
         font5.setPointSize(14)
         font5.setBold(True)
-        self.pushButton.setFont(font5)
+        self.info_button.setFont(font5)
 
-        self.verticalLayout.addWidget(self.pushButton)
+        self.verticalLayout.addWidget(self.info_button)
 
-        self.pushButton_2 = QPushButton(self.frame_4)
-        self.pushButton_2.setObjectName(u"pushButton_2")
-        sizePolicy1.setHeightForWidth(self.pushButton_2.sizePolicy().hasHeightForWidth())
-        self.pushButton_2.setSizePolicy(sizePolicy1)
-        self.pushButton_2.setFont(font5)
+        self.products_button = QPushButton(self.frame_4)
+        self.products_button.setObjectName(u"products_button")
+        sizePolicy1.setHeightForWidth(self.products_button.sizePolicy().hasHeightForWidth())
+        self.products_button.setSizePolicy(sizePolicy1)
+        self.products_button.setFont(font5)
 
-        self.verticalLayout.addWidget(self.pushButton_2)
+        self.verticalLayout.addWidget(self.products_button)
 
-        self.pushButton_3 = QPushButton(self.frame_4)
-        self.pushButton_3.setObjectName(u"pushButton_3")
-        sizePolicy1.setHeightForWidth(self.pushButton_3.sizePolicy().hasHeightForWidth())
-        self.pushButton_3.setSizePolicy(sizePolicy1)
-        self.pushButton_3.setFont(font5)
+        self.collections_button = QPushButton(self.frame_4)
+        self.collections_button.setObjectName(u"collections_button")
+        sizePolicy1.setHeightForWidth(self.collections_button.sizePolicy().hasHeightForWidth())
+        self.collections_button.setSizePolicy(sizePolicy1)
+        self.collections_button.setFont(font5)
 
-        self.verticalLayout.addWidget(self.pushButton_3)
+        self.verticalLayout.addWidget(self.collections_button)
 
-        self.pushButton_4 = QPushButton(self.frame_4)
-        self.pushButton_4.setObjectName(u"pushButton_4")
-        sizePolicy1.setHeightForWidth(self.pushButton_4.sizePolicy().hasHeightForWidth())
-        self.pushButton_4.setSizePolicy(sizePolicy1)
-        self.pushButton_4.setFont(font5)
+        self.orders_button = QPushButton(self.frame_4)
+        self.orders_button.setObjectName(u"orders_button")
+        sizePolicy1.setHeightForWidth(self.orders_button.sizePolicy().hasHeightForWidth())
+        self.orders_button.setSizePolicy(sizePolicy1)
+        self.orders_button.setFont(font5)
 
-        self.verticalLayout.addWidget(self.pushButton_4)
+        self.verticalLayout.addWidget(self.orders_button)
 
-        self.pushButton_5 = QPushButton(self.frame_4)
-        self.pushButton_5.setObjectName(u"pushButton_5")
-        sizePolicy1.setHeightForWidth(self.pushButton_5.sizePolicy().hasHeightForWidth())
-        self.pushButton_5.setSizePolicy(sizePolicy1)
-        self.pushButton_5.setFont(font5)
+        self.reviews_button = QPushButton(self.frame_4)
+        self.reviews_button.setObjectName(u"reviews_button")
+        sizePolicy1.setHeightForWidth(self.reviews_button.sizePolicy().hasHeightForWidth())
+        self.reviews_button.setSizePolicy(sizePolicy1)
+        self.reviews_button.setFont(font5)
 
-        self.verticalLayout.addWidget(self.pushButton_5)
+        self.verticalLayout.addWidget(self.reviews_button)
 
         self.verticalSpacer = QSpacerItem(20, 260, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
@@ -316,8 +317,254 @@ class Ui_MainWindow(object):
 
         self.frame_19 = QFrame(self.information)
         self.frame_19.setObjectName(u"frame_19")
+        self.frame_19.setStyleSheet(u"QFrame {\n"
+"    background-color:#DFF1EE;\n"
+"	border: none;\n"
+"	border-radius: 25px;\n"
+"}")
         self.frame_19.setFrameShape(QFrame.StyledPanel)
         self.frame_19.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_9 = QHBoxLayout(self.frame_19)
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.frame_7 = QFrame(self.frame_19)
+        self.frame_7.setObjectName(u"frame_7")
+        self.frame_7.setMaximumSize(QSize(180, 16777215))
+        self.frame_7.setFrameShape(QFrame.StyledPanel)
+        self.frame_7.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_5 = QVBoxLayout(self.frame_7)
+        self.verticalLayout_5.setSpacing(10)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.label_6 = QLabel(self.frame_7)
+        self.label_6.setObjectName(u"label_6")
+        sizePolicy2.setHeightForWidth(self.label_6.sizePolicy().hasHeightForWidth())
+        self.label_6.setSizePolicy(sizePolicy2)
+        font6 = QFont()
+        font6.setFamilies([u"Manrope"])
+        font6.setPointSize(16)
+        font6.setBold(True)
+        self.label_6.setFont(font6)
+
+        self.verticalLayout_5.addWidget(self.label_6)
+
+        self.label_7 = QLabel(self.frame_7)
+        self.label_7.setObjectName(u"label_7")
+        sizePolicy2.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
+        self.label_7.setSizePolicy(sizePolicy2)
+        self.label_7.setFont(font6)
+
+        self.verticalLayout_5.addWidget(self.label_7)
+
+        self.label_8 = QLabel(self.frame_7)
+        self.label_8.setObjectName(u"label_8")
+        sizePolicy2.setHeightForWidth(self.label_8.sizePolicy().hasHeightForWidth())
+        self.label_8.setSizePolicy(sizePolicy2)
+        self.label_8.setFont(font6)
+
+        self.verticalLayout_5.addWidget(self.label_8)
+
+        self.label_9 = QLabel(self.frame_7)
+        self.label_9.setObjectName(u"label_9")
+        sizePolicy2.setHeightForWidth(self.label_9.sizePolicy().hasHeightForWidth())
+        self.label_9.setSizePolicy(sizePolicy2)
+        self.label_9.setFont(font6)
+
+        self.verticalLayout_5.addWidget(self.label_9)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_5.addItem(self.verticalSpacer_2)
+
+
+        self.horizontalLayout_9.addWidget(self.frame_7)
+
+        self.frame_9 = QFrame(self.frame_19)
+        self.frame_9.setObjectName(u"frame_9")
+        self.frame_9.setStyleSheet(u"* {\n"
+"	border-radius: 10px;\n"
+"}")
+        self.frame_9.setFrameShape(QFrame.StyledPanel)
+        self.frame_9.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_6 = QVBoxLayout(self.frame_9)
+        self.verticalLayout_6.setSpacing(10)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.info_page_name_edit = QTextEdit(self.frame_9)
+        self.info_page_name_edit.setObjectName(u"info_page_name_edit")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.info_page_name_edit.sizePolicy().hasHeightForWidth())
+        self.info_page_name_edit.setSizePolicy(sizePolicy3)
+        self.info_page_name_edit.setMaximumSize(QSize(16777215, 30))
+        font7 = QFont()
+        font7.setFamilies([u"Manrope"])
+        font7.setPointSize(12)
+        self.info_page_name_edit.setFont(font7)
+        self.info_page_name_edit.setStyleSheet(u"background-color: white")
+
+        self.verticalLayout_6.addWidget(self.info_page_name_edit)
+
+        self.info_page_email_edit = QTextEdit(self.frame_9)
+        self.info_page_email_edit.setObjectName(u"info_page_email_edit")
+        sizePolicy3.setHeightForWidth(self.info_page_email_edit.sizePolicy().hasHeightForWidth())
+        self.info_page_email_edit.setSizePolicy(sizePolicy3)
+        self.info_page_email_edit.setMaximumSize(QSize(16777215, 30))
+        self.info_page_email_edit.setFont(font1)
+        self.info_page_email_edit.setStyleSheet(u"background-color: white")
+
+        self.verticalLayout_6.addWidget(self.info_page_email_edit)
+
+        self.info_page_phone_number_edit = QTextEdit(self.frame_9)
+        self.info_page_phone_number_edit.setObjectName(u"info_page_phone_number_edit")
+        sizePolicy3.setHeightForWidth(self.info_page_phone_number_edit.sizePolicy().hasHeightForWidth())
+        self.info_page_phone_number_edit.setSizePolicy(sizePolicy3)
+        self.info_page_phone_number_edit.setMaximumSize(QSize(16777215, 30))
+        font8 = QFont()
+        font8.setFamilies([u"Manrope"])
+        font8.setBold(False)
+        self.info_page_phone_number_edit.setFont(font8)
+        self.info_page_phone_number_edit.setStyleSheet(u"background-color: white")
+
+        self.verticalLayout_6.addWidget(self.info_page_phone_number_edit)
+
+        self.info_page_description_edit = QTextEdit(self.frame_9)
+        self.info_page_description_edit.setObjectName(u"info_page_description_edit")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.MinimumExpanding)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.info_page_description_edit.sizePolicy().hasHeightForWidth())
+        self.info_page_description_edit.setSizePolicy(sizePolicy4)
+        self.info_page_description_edit.setFont(font8)
+        self.info_page_description_edit.setStyleSheet(u"background-color: white")
+
+        self.verticalLayout_6.addWidget(self.info_page_description_edit)
+
+        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_6.addItem(self.verticalSpacer_3)
+
+
+        self.horizontalLayout_9.addWidget(self.frame_9)
+
+        self.frame_8 = QFrame(self.frame_19)
+        self.frame_8.setObjectName(u"frame_8")
+        self.frame_8.setFrameShape(QFrame.StyledPanel)
+        self.frame_8.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_7 = QVBoxLayout(self.frame_8)
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.frame_10 = QFrame(self.frame_8)
+        self.frame_10.setObjectName(u"frame_10")
+        sizePolicy2.setHeightForWidth(self.frame_10.sizePolicy().hasHeightForWidth())
+        self.frame_10.setSizePolicy(sizePolicy2)
+        self.frame_10.setStyleSheet(u"QPushButton {\n"
+"    background-color:#58827E;\n"
+"	color: white;\n"
+"	border-radius: 8px;\n"
+"	border: none;\n"
+"}\n"
+"\n"
+"QPushButton::hover {\n"
+"	background-color: #4D7672;\n"
+"}")
+        self.frame_10.setFrameShape(QFrame.StyledPanel)
+        self.frame_10.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_10 = QHBoxLayout(self.frame_10)
+        self.horizontalLayout_10.setSpacing(20)
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.horizontalLayout_10.setContentsMargins(0, 0, 0, 0)
+        self.label_12 = QLabel(self.frame_10)
+        self.label_12.setObjectName(u"label_12")
+        sizePolicy5 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.label_12.sizePolicy().hasHeightForWidth())
+        self.label_12.setSizePolicy(sizePolicy5)
+        self.label_12.setFont(font6)
+
+        self.horizontalLayout_10.addWidget(self.label_12)
+
+        self.info_page_edit_button = QPushButton(self.frame_10)
+        self.info_page_edit_button.setObjectName(u"info_page_edit_button")
+        sizePolicy6 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Minimum)
+        sizePolicy6.setHorizontalStretch(0)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(self.info_page_edit_button.sizePolicy().hasHeightForWidth())
+        self.info_page_edit_button.setSizePolicy(sizePolicy6)
+        self.info_page_edit_button.setMinimumSize(QSize(0, 30))
+        self.info_page_edit_button.setMaximumSize(QSize(16777215, 30))
+        font9 = QFont()
+        font9.setFamilies([u"Manrope"])
+        font9.setPointSize(15)
+        font9.setBold(True)
+        self.info_page_edit_button.setFont(font9)
+
+        self.horizontalLayout_10.addWidget(self.info_page_edit_button)
+
+        self.horizontalSpacer_13 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_10.addItem(self.horizontalSpacer_13)
+
+
+        self.verticalLayout_7.addWidget(self.frame_10)
+
+        self.info_page_picture = QLabel(self.frame_8)
+        self.info_page_picture.setObjectName(u"info_page_picture")
+        sizePolicy3.setHeightForWidth(self.info_page_picture.sizePolicy().hasHeightForWidth())
+        self.info_page_picture.setSizePolicy(sizePolicy3)
+        self.info_page_picture.setMaximumSize(QSize(250, 250))
+        self.info_page_picture.setPixmap(QPixmap(u":/post_images/IMG_7109.jpg"))
+        self.info_page_picture.setScaledContents(True)
+        self.info_page_picture.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_7.addWidget(self.info_page_picture)
+
+        self.verticalSpacer_4 = QSpacerItem(20, 205, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_7.addItem(self.verticalSpacer_4)
+
+        self.frame_17 = QFrame(self.frame_8)
+        self.frame_17.setObjectName(u"frame_17")
+        sizePolicy2.setHeightForWidth(self.frame_17.sizePolicy().hasHeightForWidth())
+        self.frame_17.setSizePolicy(sizePolicy2)
+        self.frame_17.setStyleSheet(u"QPushButton {\n"
+"    background-color:#58827E;\n"
+"	color: white;\n"
+"	border-radius: 8px;\n"
+"	border: none;\n"
+"}\n"
+"\n"
+"QPushButton::hover {\n"
+"	background-color: #4D7672;\n"
+"}")
+        self.frame_17.setFrameShape(QFrame.StyledPanel)
+        self.frame_17.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_11 = QHBoxLayout(self.frame_17)
+        self.horizontalLayout_11.setSpacing(20)
+        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
+        self.horizontalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.horizontalSpacer_15 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_11.addItem(self.horizontalSpacer_15)
+
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_11.addItem(self.horizontalSpacer_2)
+
+        self.info_page_save_button = QPushButton(self.frame_17)
+        self.info_page_save_button.setObjectName(u"info_page_save_button")
+        sizePolicy6.setHeightForWidth(self.info_page_save_button.sizePolicy().hasHeightForWidth())
+        self.info_page_save_button.setSizePolicy(sizePolicy6)
+        self.info_page_save_button.setMinimumSize(QSize(0, 30))
+        self.info_page_save_button.setMaximumSize(QSize(16777215, 30))
+        self.info_page_save_button.setFont(font9)
+
+        self.horizontalLayout_11.addWidget(self.info_page_save_button)
+
+
+        self.verticalLayout_7.addWidget(self.frame_17)
+
+
+        self.horizontalLayout_9.addWidget(self.frame_8)
+
 
         self.verticalLayout_2.addWidget(self.frame_19)
 
@@ -328,11 +575,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_23.setSpacing(10)
         self.verticalLayout_23.setObjectName(u"verticalLayout_23")
         self.verticalLayout_23.setContentsMargins(0, 0, 0, 0)
-        self.frame_5 = QFrame(self.product)
-        self.frame_5.setObjectName(u"frame_5")
-        sizePolicy2.setHeightForWidth(self.frame_5.sizePolicy().hasHeightForWidth())
-        self.frame_5.setSizePolicy(sizePolicy2)
-        self.frame_5.setStyleSheet(u"QPushButton {\n"
+        self.product_label_frame = QFrame(self.product)
+        self.product_label_frame.setObjectName(u"product_label_frame")
+        sizePolicy2.setHeightForWidth(self.product_label_frame.sizePolicy().hasHeightForWidth())
+        self.product_label_frame.setSizePolicy(sizePolicy2)
+        self.product_label_frame.setStyleSheet(u"QPushButton {\n"
 "    background-color:#58827E;\n"
 "	color: white;\n"
 "	border-radius: 8px;\n"
@@ -342,53 +589,43 @@ class Ui_MainWindow(object):
 "QPushButton::hover {\n"
 "	background-color: #4D7672;\n"
 "}")
-        self.frame_5.setFrameShape(QFrame.StyledPanel)
-        self.frame_5.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_4 = QHBoxLayout(self.frame_5)
+        self.product_label_frame.setFrameShape(QFrame.StyledPanel)
+        self.product_label_frame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_4 = QHBoxLayout(self.product_label_frame)
         self.horizontalLayout_4.setSpacing(20)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
-        self.label_3 = QLabel(self.frame_5)
-        self.label_3.setObjectName(u"label_3")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy3)
-        self.label_3.setFont(font4)
+        self.products_label = QLabel(self.product_label_frame)
+        self.products_label.setObjectName(u"products_label")
+        sizePolicy5.setHeightForWidth(self.products_label.sizePolicy().hasHeightForWidth())
+        self.products_label.setSizePolicy(sizePolicy5)
+        self.products_label.setFont(font4)
 
-        self.horizontalLayout_4.addWidget(self.label_3)
+        self.horizontalLayout_4.addWidget(self.products_label)
 
-        self.view_product_button_9 = QPushButton(self.frame_5)
-        self.view_product_button_9.setObjectName(u"view_product_button_9")
-        sizePolicy4 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Minimum)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.view_product_button_9.sizePolicy().hasHeightForWidth())
-        self.view_product_button_9.setSizePolicy(sizePolicy4)
-        self.view_product_button_9.setMinimumSize(QSize(0, 30))
-        self.view_product_button_9.setMaximumSize(QSize(30, 30))
-        font6 = QFont()
-        font6.setFamilies([u"Manrope"])
-        font6.setPointSize(15)
-        font6.setBold(True)
-        self.view_product_button_9.setFont(font6)
+        self.product_page_add_product_button = QPushButton(self.product_label_frame)
+        self.product_page_add_product_button.setObjectName(u"product_page_add_product_button")
+        sizePolicy6.setHeightForWidth(self.product_page_add_product_button.sizePolicy().hasHeightForWidth())
+        self.product_page_add_product_button.setSizePolicy(sizePolicy6)
+        self.product_page_add_product_button.setMinimumSize(QSize(0, 30))
+        self.product_page_add_product_button.setMaximumSize(QSize(30, 30))
+        self.product_page_add_product_button.setFont(font9)
 
-        self.horizontalLayout_4.addWidget(self.view_product_button_9)
+        self.horizontalLayout_4.addWidget(self.product_page_add_product_button)
 
         self.horizontalSpacer_9 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_4.addItem(self.horizontalSpacer_9)
 
 
-        self.verticalLayout_23.addWidget(self.frame_5)
+        self.verticalLayout_23.addWidget(self.product_label_frame)
 
-        self.history_tabs_2 = QWidget(self.product)
-        self.history_tabs_2.setObjectName(u"history_tabs_2")
-        sizePolicy3.setHeightForWidth(self.history_tabs_2.sizePolicy().hasHeightForWidth())
-        self.history_tabs_2.setSizePolicy(sizePolicy3)
-        self.history_tabs_2.setMaximumSize(QSize(16777215, 50))
-        self.history_tabs_2.setStyleSheet(u"QPushButton {\n"
+        self.product_tab = QWidget(self.product)
+        self.product_tab.setObjectName(u"product_tab")
+        sizePolicy5.setHeightForWidth(self.product_tab.sizePolicy().hasHeightForWidth())
+        self.product_tab.setSizePolicy(sizePolicy5)
+        self.product_tab.setMaximumSize(QSize(16777215, 50))
+        self.product_tab.setStyleSheet(u"QPushButton {\n"
 "    background-color:#F5F9F9;\n"
 "	border-radius: 20px;\n"
 "	border: none;\n"
@@ -397,70 +634,70 @@ class Ui_MainWindow(object):
 "QPushButton::hover{\n"
 "    background-color: #E8F3F2;\n"
 "}")
-        self.horizontalLayout_3 = QHBoxLayout(self.history_tabs_2)
+        self.horizontalLayout_3 = QHBoxLayout(self.product_tab)
         self.horizontalLayout_3.setSpacing(20)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.all_2 = QPushButton(self.history_tabs_2)
-        self.all_2.setObjectName(u"all_2")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        sizePolicy5.setHorizontalStretch(0)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.all_2.sizePolicy().hasHeightForWidth())
-        self.all_2.setSizePolicy(sizePolicy5)
-        font7 = QFont()
-        font7.setFamilies([u"Manrope"])
-        font7.setPointSize(13)
-        font7.setBold(True)
-        self.all_2.setFont(font7)
+        self.product_page_all_button = QPushButton(self.product_tab)
+        self.product_page_all_button.setObjectName(u"product_page_all_button")
+        sizePolicy7 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        sizePolicy7.setHorizontalStretch(0)
+        sizePolicy7.setVerticalStretch(0)
+        sizePolicy7.setHeightForWidth(self.product_page_all_button.sizePolicy().hasHeightForWidth())
+        self.product_page_all_button.setSizePolicy(sizePolicy7)
+        font10 = QFont()
+        font10.setFamilies([u"Manrope"])
+        font10.setPointSize(13)
+        font10.setBold(True)
+        self.product_page_all_button.setFont(font10)
 
-        self.horizontalLayout_3.addWidget(self.all_2)
+        self.horizontalLayout_3.addWidget(self.product_page_all_button)
 
-        self.to_pay_2 = QPushButton(self.history_tabs_2)
-        self.to_pay_2.setObjectName(u"to_pay_2")
-        sizePolicy5.setHeightForWidth(self.to_pay_2.sizePolicy().hasHeightForWidth())
-        self.to_pay_2.setSizePolicy(sizePolicy5)
-        self.to_pay_2.setFont(font7)
+        self.product_page_live_button = QPushButton(self.product_tab)
+        self.product_page_live_button.setObjectName(u"product_page_live_button")
+        sizePolicy7.setHeightForWidth(self.product_page_live_button.sizePolicy().hasHeightForWidth())
+        self.product_page_live_button.setSizePolicy(sizePolicy7)
+        self.product_page_live_button.setFont(font10)
 
-        self.horizontalLayout_3.addWidget(self.to_pay_2)
+        self.horizontalLayout_3.addWidget(self.product_page_live_button)
 
-        self.to_be_delivered_2 = QPushButton(self.history_tabs_2)
-        self.to_be_delivered_2.setObjectName(u"to_be_delivered_2")
-        sizePolicy5.setHeightForWidth(self.to_be_delivered_2.sizePolicy().hasHeightForWidth())
-        self.to_be_delivered_2.setSizePolicy(sizePolicy5)
-        self.to_be_delivered_2.setFont(font7)
+        self.product_page_starting_button = QPushButton(self.product_tab)
+        self.product_page_starting_button.setObjectName(u"product_page_starting_button")
+        sizePolicy7.setHeightForWidth(self.product_page_starting_button.sizePolicy().hasHeightForWidth())
+        self.product_page_starting_button.setSizePolicy(sizePolicy7)
+        self.product_page_starting_button.setFont(font10)
 
-        self.horizontalLayout_3.addWidget(self.to_be_delivered_2)
+        self.horizontalLayout_3.addWidget(self.product_page_starting_button)
 
-        self.completed_2 = QPushButton(self.history_tabs_2)
-        self.completed_2.setObjectName(u"completed_2")
-        sizePolicy5.setHeightForWidth(self.completed_2.sizePolicy().hasHeightForWidth())
-        self.completed_2.setSizePolicy(sizePolicy5)
-        self.completed_2.setFont(font7)
+        self.product_page_completed_button = QPushButton(self.product_tab)
+        self.product_page_completed_button.setObjectName(u"product_page_completed_button")
+        sizePolicy7.setHeightForWidth(self.product_page_completed_button.sizePolicy().hasHeightForWidth())
+        self.product_page_completed_button.setSizePolicy(sizePolicy7)
+        self.product_page_completed_button.setFont(font10)
 
-        self.horizontalLayout_3.addWidget(self.completed_2)
+        self.horizontalLayout_3.addWidget(self.product_page_completed_button)
 
 
-        self.verticalLayout_23.addWidget(self.history_tabs_2)
+        self.verticalLayout_23.addWidget(self.product_tab)
 
-        self.product_scrollArea = QScrollArea(self.product)
-        self.product_scrollArea.setObjectName(u"product_scrollArea")
-        sizePolicy3.setHeightForWidth(self.product_scrollArea.sizePolicy().hasHeightForWidth())
-        self.product_scrollArea.setSizePolicy(sizePolicy3)
-        self.product_scrollArea.setMinimumSize(QSize(0, 0))
-        self.product_scrollArea.setMaximumSize(QSize(16777215, 16777215))
-        self.product_scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.product_scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.product_scrollArea.setWidgetResizable(True)
-        self.scrollAreaWidgetContents = QWidget()
-        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 887, 680))
-        sizePolicy3.setHeightForWidth(self.scrollAreaWidgetContents.sizePolicy().hasHeightForWidth())
-        self.scrollAreaWidgetContents.setSizePolicy(sizePolicy3)
-        self.scrollAreaWidgetContents.setMinimumSize(QSize(0, 0))
-        self.scrollAreaWidgetContents.setMaximumSize(QSize(16777215, 16777215))
-        self.scrollAreaWidgetContents.setAutoFillBackground(False)
-        self.scrollAreaWidgetContents.setStyleSheet(u"QWidget {\n"
+        self.products_scrollArea = QScrollArea(self.product)
+        self.products_scrollArea.setObjectName(u"products_scrollArea")
+        sizePolicy5.setHeightForWidth(self.products_scrollArea.sizePolicy().hasHeightForWidth())
+        self.products_scrollArea.setSizePolicy(sizePolicy5)
+        self.products_scrollArea.setMinimumSize(QSize(0, 0))
+        self.products_scrollArea.setMaximumSize(QSize(16777215, 16777215))
+        self.products_scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.products_scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.products_scrollArea.setWidgetResizable(True)
+        self.products_crollAreaWidgetContents = QWidget()
+        self.products_crollAreaWidgetContents.setObjectName(u"products_crollAreaWidgetContents")
+        self.products_crollAreaWidgetContents.setGeometry(QRect(0, 0, 851, 680))
+        sizePolicy5.setHeightForWidth(self.products_crollAreaWidgetContents.sizePolicy().hasHeightForWidth())
+        self.products_crollAreaWidgetContents.setSizePolicy(sizePolicy5)
+        self.products_crollAreaWidgetContents.setMinimumSize(QSize(0, 0))
+        self.products_crollAreaWidgetContents.setMaximumSize(QSize(16777215, 16777215))
+        self.products_crollAreaWidgetContents.setAutoFillBackground(False)
+        self.products_crollAreaWidgetContents.setStyleSheet(u"QWidget {\n"
 "	background-color: white;\n"
 "}\n"
 "\n"
@@ -478,17 +715,17 @@ class Ui_MainWindow(object):
 "QPushButton::hover {\n"
 "	background-color: #4D7672;\n"
 "}")
-        self.verticalLayout_13 = QVBoxLayout(self.scrollAreaWidgetContents)
+        self.verticalLayout_13 = QVBoxLayout(self.products_crollAreaWidgetContents)
         self.verticalLayout_13.setSpacing(20)
         self.verticalLayout_13.setObjectName(u"verticalLayout_13")
         self.verticalLayout_13.setContentsMargins(0, 0, 0, 0)
-        self.product_box_1 = QFrame(self.scrollAreaWidgetContents)
+        self.product_box_1 = QFrame(self.products_crollAreaWidgetContents)
         self.product_box_1.setObjectName(u"product_box_1")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        sizePolicy6.setHorizontalStretch(0)
-        sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(self.product_box_1.sizePolicy().hasHeightForWidth())
-        self.product_box_1.setSizePolicy(sizePolicy6)
+        sizePolicy8 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy8.setHorizontalStretch(0)
+        sizePolicy8.setVerticalStretch(0)
+        sizePolicy8.setHeightForWidth(self.product_box_1.sizePolicy().hasHeightForWidth())
+        self.product_box_1.setSizePolicy(sizePolicy8)
         self.product_box_1.setMinimumSize(QSize(0, 150))
         self.product_box_1.setMaximumSize(QSize(16777215, 150))
         self.product_box_1.setAutoFillBackground(False)
@@ -535,11 +772,7 @@ class Ui_MainWindow(object):
         self.product_name_label.setObjectName(u"product_name_label")
         sizePolicy2.setHeightForWidth(self.product_name_label.sizePolicy().hasHeightForWidth())
         self.product_name_label.setSizePolicy(sizePolicy2)
-        font8 = QFont()
-        font8.setFamilies([u"Manrope"])
-        font8.setPointSize(16)
-        font8.setBold(True)
-        self.product_name_label.setFont(font8)
+        self.product_name_label.setFont(font6)
 
         self.verticalLayout_14.addWidget(self.product_name_label)
 
@@ -549,7 +782,7 @@ class Ui_MainWindow(object):
 
         self.price_label = QLabel(self.frame_6)
         self.price_label.setObjectName(u"price_label")
-        self.price_label.setFont(font7)
+        self.price_label.setFont(font10)
         self.price_label.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.verticalLayout_14.addWidget(self.price_label)
@@ -579,19 +812,19 @@ class Ui_MainWindow(object):
         self.verticalLayout_16.setContentsMargins(20, 12, 20, 12)
         self.sale_date_label = QLabel(self.info_frame)
         self.sale_date_label.setObjectName(u"sale_date_label")
-        self.sale_date_label.setFont(font7)
+        self.sale_date_label.setFont(font10)
 
         self.verticalLayout_16.addWidget(self.sale_date_label)
 
         self.mode_label = QLabel(self.info_frame)
         self.mode_label.setObjectName(u"mode_label")
-        self.mode_label.setFont(font7)
+        self.mode_label.setFont(font10)
 
         self.verticalLayout_16.addWidget(self.mode_label)
 
         self.status_label = QLabel(self.info_frame)
         self.status_label.setObjectName(u"status_label")
-        self.status_label.setFont(font7)
+        self.status_label.setFont(font10)
 
         self.verticalLayout_16.addWidget(self.status_label)
 
@@ -607,10 +840,10 @@ class Ui_MainWindow(object):
 
         self.view_product_button = QPushButton(self.product_box_1)
         self.view_product_button.setObjectName(u"view_product_button")
-        sizePolicy4.setHeightForWidth(self.view_product_button.sizePolicy().hasHeightForWidth())
-        self.view_product_button.setSizePolicy(sizePolicy4)
+        sizePolicy6.setHeightForWidth(self.view_product_button.sizePolicy().hasHeightForWidth())
+        self.view_product_button.setSizePolicy(sizePolicy6)
         self.view_product_button.setMinimumSize(QSize(0, 30))
-        self.view_product_button.setFont(font7)
+        self.view_product_button.setFont(font10)
 
         self.horizontalLayout_19.addWidget(self.view_product_button)
 
@@ -626,10 +859,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_13.addWidget(self.product_box_1)
 
-        self.product_box_2 = QFrame(self.scrollAreaWidgetContents)
+        self.product_box_2 = QFrame(self.products_crollAreaWidgetContents)
         self.product_box_2.setObjectName(u"product_box_2")
-        sizePolicy6.setHeightForWidth(self.product_box_2.sizePolicy().hasHeightForWidth())
-        self.product_box_2.setSizePolicy(sizePolicy6)
+        sizePolicy8.setHeightForWidth(self.product_box_2.sizePolicy().hasHeightForWidth())
+        self.product_box_2.setSizePolicy(sizePolicy8)
         self.product_box_2.setMinimumSize(QSize(0, 150))
         self.product_box_2.setMaximumSize(QSize(16777215, 150))
         self.product_box_2.setAutoFillBackground(False)
@@ -676,7 +909,7 @@ class Ui_MainWindow(object):
         self.product_name_label_6.setObjectName(u"product_name_label_6")
         sizePolicy2.setHeightForWidth(self.product_name_label_6.sizePolicy().hasHeightForWidth())
         self.product_name_label_6.setSizePolicy(sizePolicy2)
-        self.product_name_label_6.setFont(font8)
+        self.product_name_label_6.setFont(font6)
 
         self.verticalLayout_30.addWidget(self.product_name_label_6)
 
@@ -686,7 +919,7 @@ class Ui_MainWindow(object):
 
         self.price_label_6 = QLabel(self.frame_11)
         self.price_label_6.setObjectName(u"price_label_6")
-        self.price_label_6.setFont(font7)
+        self.price_label_6.setFont(font10)
         self.price_label_6.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.verticalLayout_30.addWidget(self.price_label_6)
@@ -716,19 +949,19 @@ class Ui_MainWindow(object):
         self.verticalLayout_32.setContentsMargins(20, 12, 20, 12)
         self.sale_date_label_6 = QLabel(self.info_frame_6)
         self.sale_date_label_6.setObjectName(u"sale_date_label_6")
-        self.sale_date_label_6.setFont(font7)
+        self.sale_date_label_6.setFont(font10)
 
         self.verticalLayout_32.addWidget(self.sale_date_label_6)
 
         self.mode_label_6 = QLabel(self.info_frame_6)
         self.mode_label_6.setObjectName(u"mode_label_6")
-        self.mode_label_6.setFont(font7)
+        self.mode_label_6.setFont(font10)
 
         self.verticalLayout_32.addWidget(self.mode_label_6)
 
         self.status_label_6 = QLabel(self.info_frame_6)
         self.status_label_6.setObjectName(u"status_label_6")
-        self.status_label_6.setFont(font7)
+        self.status_label_6.setFont(font10)
 
         self.verticalLayout_32.addWidget(self.status_label_6)
 
@@ -744,10 +977,10 @@ class Ui_MainWindow(object):
 
         self.view_product_button_6 = QPushButton(self.product_box_2)
         self.view_product_button_6.setObjectName(u"view_product_button_6")
-        sizePolicy4.setHeightForWidth(self.view_product_button_6.sizePolicy().hasHeightForWidth())
-        self.view_product_button_6.setSizePolicy(sizePolicy4)
+        sizePolicy6.setHeightForWidth(self.view_product_button_6.sizePolicy().hasHeightForWidth())
+        self.view_product_button_6.setSizePolicy(sizePolicy6)
         self.view_product_button_6.setMinimumSize(QSize(0, 30))
-        self.view_product_button_6.setFont(font7)
+        self.view_product_button_6.setFont(font10)
 
         self.horizontalLayout_35.addWidget(self.view_product_button_6)
 
@@ -763,10 +996,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_13.addWidget(self.product_box_2)
 
-        self.product_box_3 = QFrame(self.scrollAreaWidgetContents)
+        self.product_box_3 = QFrame(self.products_crollAreaWidgetContents)
         self.product_box_3.setObjectName(u"product_box_3")
-        sizePolicy6.setHeightForWidth(self.product_box_3.sizePolicy().hasHeightForWidth())
-        self.product_box_3.setSizePolicy(sizePolicy6)
+        sizePolicy8.setHeightForWidth(self.product_box_3.sizePolicy().hasHeightForWidth())
+        self.product_box_3.setSizePolicy(sizePolicy8)
         self.product_box_3.setMinimumSize(QSize(0, 150))
         self.product_box_3.setMaximumSize(QSize(16777215, 150))
         self.product_box_3.setAutoFillBackground(False)
@@ -813,7 +1046,7 @@ class Ui_MainWindow(object):
         self.product_name_label_7.setObjectName(u"product_name_label_7")
         sizePolicy2.setHeightForWidth(self.product_name_label_7.sizePolicy().hasHeightForWidth())
         self.product_name_label_7.setSizePolicy(sizePolicy2)
-        self.product_name_label_7.setFont(font8)
+        self.product_name_label_7.setFont(font6)
 
         self.verticalLayout_33.addWidget(self.product_name_label_7)
 
@@ -823,7 +1056,7 @@ class Ui_MainWindow(object):
 
         self.price_label_7 = QLabel(self.frame_12)
         self.price_label_7.setObjectName(u"price_label_7")
-        self.price_label_7.setFont(font7)
+        self.price_label_7.setFont(font10)
         self.price_label_7.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.verticalLayout_33.addWidget(self.price_label_7)
@@ -853,19 +1086,19 @@ class Ui_MainWindow(object):
         self.verticalLayout_35.setContentsMargins(20, 12, 20, 12)
         self.sale_date_label_7 = QLabel(self.info_frame_7)
         self.sale_date_label_7.setObjectName(u"sale_date_label_7")
-        self.sale_date_label_7.setFont(font7)
+        self.sale_date_label_7.setFont(font10)
 
         self.verticalLayout_35.addWidget(self.sale_date_label_7)
 
         self.mode_label_7 = QLabel(self.info_frame_7)
         self.mode_label_7.setObjectName(u"mode_label_7")
-        self.mode_label_7.setFont(font7)
+        self.mode_label_7.setFont(font10)
 
         self.verticalLayout_35.addWidget(self.mode_label_7)
 
         self.status_label_7 = QLabel(self.info_frame_7)
         self.status_label_7.setObjectName(u"status_label_7")
-        self.status_label_7.setFont(font7)
+        self.status_label_7.setFont(font10)
 
         self.verticalLayout_35.addWidget(self.status_label_7)
 
@@ -881,10 +1114,10 @@ class Ui_MainWindow(object):
 
         self.view_product_button_7 = QPushButton(self.product_box_3)
         self.view_product_button_7.setObjectName(u"view_product_button_7")
-        sizePolicy4.setHeightForWidth(self.view_product_button_7.sizePolicy().hasHeightForWidth())
-        self.view_product_button_7.setSizePolicy(sizePolicy4)
+        sizePolicy6.setHeightForWidth(self.view_product_button_7.sizePolicy().hasHeightForWidth())
+        self.view_product_button_7.setSizePolicy(sizePolicy6)
         self.view_product_button_7.setMinimumSize(QSize(0, 30))
-        self.view_product_button_7.setFont(font7)
+        self.view_product_button_7.setFont(font10)
 
         self.horizontalLayout_39.addWidget(self.view_product_button_7)
 
@@ -900,10 +1133,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_13.addWidget(self.product_box_3)
 
-        self.product_box_4 = QFrame(self.scrollAreaWidgetContents)
+        self.product_box_4 = QFrame(self.products_crollAreaWidgetContents)
         self.product_box_4.setObjectName(u"product_box_4")
-        sizePolicy6.setHeightForWidth(self.product_box_4.sizePolicy().hasHeightForWidth())
-        self.product_box_4.setSizePolicy(sizePolicy6)
+        sizePolicy8.setHeightForWidth(self.product_box_4.sizePolicy().hasHeightForWidth())
+        self.product_box_4.setSizePolicy(sizePolicy8)
         self.product_box_4.setMinimumSize(QSize(0, 150))
         self.product_box_4.setMaximumSize(QSize(16777215, 150))
         self.product_box_4.setAutoFillBackground(False)
@@ -950,7 +1183,7 @@ class Ui_MainWindow(object):
         self.product_name_label_8.setObjectName(u"product_name_label_8")
         sizePolicy2.setHeightForWidth(self.product_name_label_8.sizePolicy().hasHeightForWidth())
         self.product_name_label_8.setSizePolicy(sizePolicy2)
-        self.product_name_label_8.setFont(font8)
+        self.product_name_label_8.setFont(font6)
 
         self.verticalLayout_36.addWidget(self.product_name_label_8)
 
@@ -960,7 +1193,7 @@ class Ui_MainWindow(object):
 
         self.price_label_8 = QLabel(self.frame_13)
         self.price_label_8.setObjectName(u"price_label_8")
-        self.price_label_8.setFont(font7)
+        self.price_label_8.setFont(font10)
         self.price_label_8.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.verticalLayout_36.addWidget(self.price_label_8)
@@ -990,19 +1223,19 @@ class Ui_MainWindow(object):
         self.verticalLayout_38.setContentsMargins(20, 12, 20, 12)
         self.sale_date_label_8 = QLabel(self.info_frame_8)
         self.sale_date_label_8.setObjectName(u"sale_date_label_8")
-        self.sale_date_label_8.setFont(font7)
+        self.sale_date_label_8.setFont(font10)
 
         self.verticalLayout_38.addWidget(self.sale_date_label_8)
 
         self.mode_label_8 = QLabel(self.info_frame_8)
         self.mode_label_8.setObjectName(u"mode_label_8")
-        self.mode_label_8.setFont(font7)
+        self.mode_label_8.setFont(font10)
 
         self.verticalLayout_38.addWidget(self.mode_label_8)
 
         self.status_label_8 = QLabel(self.info_frame_8)
         self.status_label_8.setObjectName(u"status_label_8")
-        self.status_label_8.setFont(font7)
+        self.status_label_8.setFont(font10)
 
         self.verticalLayout_38.addWidget(self.status_label_8)
 
@@ -1018,10 +1251,10 @@ class Ui_MainWindow(object):
 
         self.view_product_button_8 = QPushButton(self.product_box_4)
         self.view_product_button_8.setObjectName(u"view_product_button_8")
-        sizePolicy4.setHeightForWidth(self.view_product_button_8.sizePolicy().hasHeightForWidth())
-        self.view_product_button_8.setSizePolicy(sizePolicy4)
+        sizePolicy6.setHeightForWidth(self.view_product_button_8.sizePolicy().hasHeightForWidth())
+        self.view_product_button_8.setSizePolicy(sizePolicy6)
         self.view_product_button_8.setMinimumSize(QSize(0, 30))
-        self.view_product_button_8.setFont(font7)
+        self.view_product_button_8.setFont(font10)
 
         self.horizontalLayout_43.addWidget(self.view_product_button_8)
 
@@ -1041,9 +1274,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_13.addItem(self.verticalSpacer_15)
 
-        self.product_scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.products_scrollArea.setWidget(self.products_crollAreaWidgetContents)
 
-        self.verticalLayout_23.addWidget(self.product_scrollArea)
+        self.verticalLayout_23.addWidget(self.products_scrollArea)
 
         self.stackedWidget.addWidget(self.product)
         self.collection = QWidget()
@@ -1072,23 +1305,23 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.setSpacing(20)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.label_4 = QLabel(self.frame_18)
-        self.label_4.setObjectName(u"label_4")
-        sizePolicy3.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
-        self.label_4.setSizePolicy(sizePolicy3)
-        self.label_4.setFont(font4)
+        self.collection_label = QLabel(self.frame_18)
+        self.collection_label.setObjectName(u"collection_label")
+        sizePolicy5.setHeightForWidth(self.collection_label.sizePolicy().hasHeightForWidth())
+        self.collection_label.setSizePolicy(sizePolicy5)
+        self.collection_label.setFont(font4)
 
-        self.horizontalLayout_5.addWidget(self.label_4)
+        self.horizontalLayout_5.addWidget(self.collection_label)
 
-        self.view_product_button_14 = QPushButton(self.frame_18)
-        self.view_product_button_14.setObjectName(u"view_product_button_14")
-        sizePolicy4.setHeightForWidth(self.view_product_button_14.sizePolicy().hasHeightForWidth())
-        self.view_product_button_14.setSizePolicy(sizePolicy4)
-        self.view_product_button_14.setMinimumSize(QSize(0, 30))
-        self.view_product_button_14.setMaximumSize(QSize(30, 30))
-        self.view_product_button_14.setFont(font6)
+        self.collection_page_add_collection_button = QPushButton(self.frame_18)
+        self.collection_page_add_collection_button.setObjectName(u"collection_page_add_collection_button")
+        sizePolicy6.setHeightForWidth(self.collection_page_add_collection_button.sizePolicy().hasHeightForWidth())
+        self.collection_page_add_collection_button.setSizePolicy(sizePolicy6)
+        self.collection_page_add_collection_button.setMinimumSize(QSize(0, 30))
+        self.collection_page_add_collection_button.setMaximumSize(QSize(30, 30))
+        self.collection_page_add_collection_button.setFont(font9)
 
-        self.horizontalLayout_5.addWidget(self.view_product_button_14)
+        self.horizontalLayout_5.addWidget(self.collection_page_add_collection_button)
 
         self.horizontalSpacer_14 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -1099,8 +1332,8 @@ class Ui_MainWindow(object):
 
         self.history_tabs_3 = QWidget(self.collection)
         self.history_tabs_3.setObjectName(u"history_tabs_3")
-        sizePolicy3.setHeightForWidth(self.history_tabs_3.sizePolicy().hasHeightForWidth())
-        self.history_tabs_3.setSizePolicy(sizePolicy3)
+        sizePolicy5.setHeightForWidth(self.history_tabs_3.sizePolicy().hasHeightForWidth())
+        self.history_tabs_3.setSizePolicy(sizePolicy5)
         self.history_tabs_3.setMaximumSize(QSize(16777215, 50))
         self.history_tabs_3.setStyleSheet(u"QPushButton {\n"
 "    background-color:#F5F9F9;\n"
@@ -1115,59 +1348,59 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.setSpacing(20)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
-        self.all_3 = QPushButton(self.history_tabs_3)
-        self.all_3.setObjectName(u"all_3")
-        sizePolicy5.setHeightForWidth(self.all_3.sizePolicy().hasHeightForWidth())
-        self.all_3.setSizePolicy(sizePolicy5)
-        self.all_3.setFont(font7)
+        self.collection_page_all_button = QPushButton(self.history_tabs_3)
+        self.collection_page_all_button.setObjectName(u"collection_page_all_button")
+        sizePolicy7.setHeightForWidth(self.collection_page_all_button.sizePolicy().hasHeightForWidth())
+        self.collection_page_all_button.setSizePolicy(sizePolicy7)
+        self.collection_page_all_button.setFont(font10)
 
-        self.horizontalLayout_6.addWidget(self.all_3)
+        self.horizontalLayout_6.addWidget(self.collection_page_all_button)
 
-        self.to_pay_3 = QPushButton(self.history_tabs_3)
-        self.to_pay_3.setObjectName(u"to_pay_3")
-        sizePolicy5.setHeightForWidth(self.to_pay_3.sizePolicy().hasHeightForWidth())
-        self.to_pay_3.setSizePolicy(sizePolicy5)
-        self.to_pay_3.setFont(font7)
+        self.collection_page_live_button = QPushButton(self.history_tabs_3)
+        self.collection_page_live_button.setObjectName(u"collection_page_live_button")
+        sizePolicy7.setHeightForWidth(self.collection_page_live_button.sizePolicy().hasHeightForWidth())
+        self.collection_page_live_button.setSizePolicy(sizePolicy7)
+        self.collection_page_live_button.setFont(font10)
 
-        self.horizontalLayout_6.addWidget(self.to_pay_3)
+        self.horizontalLayout_6.addWidget(self.collection_page_live_button)
 
-        self.to_be_delivered_3 = QPushButton(self.history_tabs_3)
-        self.to_be_delivered_3.setObjectName(u"to_be_delivered_3")
-        sizePolicy5.setHeightForWidth(self.to_be_delivered_3.sizePolicy().hasHeightForWidth())
-        self.to_be_delivered_3.setSizePolicy(sizePolicy5)
-        self.to_be_delivered_3.setFont(font7)
+        self.collection_page_starting_button = QPushButton(self.history_tabs_3)
+        self.collection_page_starting_button.setObjectName(u"collection_page_starting_button")
+        sizePolicy7.setHeightForWidth(self.collection_page_starting_button.sizePolicy().hasHeightForWidth())
+        self.collection_page_starting_button.setSizePolicy(sizePolicy7)
+        self.collection_page_starting_button.setFont(font10)
 
-        self.horizontalLayout_6.addWidget(self.to_be_delivered_3)
+        self.horizontalLayout_6.addWidget(self.collection_page_starting_button)
 
-        self.completed_3 = QPushButton(self.history_tabs_3)
-        self.completed_3.setObjectName(u"completed_3")
-        sizePolicy5.setHeightForWidth(self.completed_3.sizePolicy().hasHeightForWidth())
-        self.completed_3.setSizePolicy(sizePolicy5)
-        self.completed_3.setFont(font7)
+        self.collection_page_completed_button = QPushButton(self.history_tabs_3)
+        self.collection_page_completed_button.setObjectName(u"collection_page_completed_button")
+        sizePolicy7.setHeightForWidth(self.collection_page_completed_button.sizePolicy().hasHeightForWidth())
+        self.collection_page_completed_button.setSizePolicy(sizePolicy7)
+        self.collection_page_completed_button.setFont(font10)
 
-        self.horizontalLayout_6.addWidget(self.completed_3)
+        self.horizontalLayout_6.addWidget(self.collection_page_completed_button)
 
 
         self.verticalLayout_3.addWidget(self.history_tabs_3)
 
-        self.product_scrollArea_2 = QScrollArea(self.collection)
-        self.product_scrollArea_2.setObjectName(u"product_scrollArea_2")
-        sizePolicy3.setHeightForWidth(self.product_scrollArea_2.sizePolicy().hasHeightForWidth())
-        self.product_scrollArea_2.setSizePolicy(sizePolicy3)
-        self.product_scrollArea_2.setMinimumSize(QSize(0, 0))
-        self.product_scrollArea_2.setMaximumSize(QSize(16777215, 16777215))
-        self.product_scrollArea_2.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.product_scrollArea_2.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.product_scrollArea_2.setWidgetResizable(True)
-        self.scrollAreaWidgetContents_2 = QWidget()
-        self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 887, 512))
-        sizePolicy3.setHeightForWidth(self.scrollAreaWidgetContents_2.sizePolicy().hasHeightForWidth())
-        self.scrollAreaWidgetContents_2.setSizePolicy(sizePolicy3)
-        self.scrollAreaWidgetContents_2.setMinimumSize(QSize(0, 0))
-        self.scrollAreaWidgetContents_2.setMaximumSize(QSize(16777215, 16777215))
-        self.scrollAreaWidgetContents_2.setAutoFillBackground(False)
-        self.scrollAreaWidgetContents_2.setStyleSheet(u"QWidget {\n"
+        self.collections_scrollArea = QScrollArea(self.collection)
+        self.collections_scrollArea.setObjectName(u"collections_scrollArea")
+        sizePolicy5.setHeightForWidth(self.collections_scrollArea.sizePolicy().hasHeightForWidth())
+        self.collections_scrollArea.setSizePolicy(sizePolicy5)
+        self.collections_scrollArea.setMinimumSize(QSize(0, 0))
+        self.collections_scrollArea.setMaximumSize(QSize(16777215, 16777215))
+        self.collections_scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.collections_scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.collections_scrollArea.setWidgetResizable(True)
+        self.collections_scrollAreaWidgetContents = QWidget()
+        self.collections_scrollAreaWidgetContents.setObjectName(u"collections_scrollAreaWidgetContents")
+        self.collections_scrollAreaWidgetContents.setGeometry(QRect(0, 0, 851, 510))
+        sizePolicy5.setHeightForWidth(self.collections_scrollAreaWidgetContents.sizePolicy().hasHeightForWidth())
+        self.collections_scrollAreaWidgetContents.setSizePolicy(sizePolicy5)
+        self.collections_scrollAreaWidgetContents.setMinimumSize(QSize(0, 0))
+        self.collections_scrollAreaWidgetContents.setMaximumSize(QSize(16777215, 16777215))
+        self.collections_scrollAreaWidgetContents.setAutoFillBackground(False)
+        self.collections_scrollAreaWidgetContents.setStyleSheet(u"QWidget {\n"
 "	background-color: white;\n"
 "}\n"
 "\n"
@@ -1185,14 +1418,14 @@ class Ui_MainWindow(object):
 "QPushButton::hover {\n"
 "	background-color: #4D7672;\n"
 "}")
-        self.verticalLayout_39 = QVBoxLayout(self.scrollAreaWidgetContents_2)
+        self.verticalLayout_39 = QVBoxLayout(self.collections_scrollAreaWidgetContents)
         self.verticalLayout_39.setSpacing(20)
         self.verticalLayout_39.setObjectName(u"verticalLayout_39")
         self.verticalLayout_39.setContentsMargins(0, 0, 0, 0)
-        self.collection_box = QFrame(self.scrollAreaWidgetContents_2)
+        self.collection_box = QFrame(self.collections_scrollAreaWidgetContents)
         self.collection_box.setObjectName(u"collection_box")
-        sizePolicy6.setHeightForWidth(self.collection_box.sizePolicy().hasHeightForWidth())
-        self.collection_box.setSizePolicy(sizePolicy6)
+        sizePolicy8.setHeightForWidth(self.collection_box.sizePolicy().hasHeightForWidth())
+        self.collection_box.setSizePolicy(sizePolicy8)
         self.collection_box.setMinimumSize(QSize(0, 150))
         self.collection_box.setMaximumSize(QSize(16777215, 150))
         self.collection_box.setAutoFillBackground(False)
@@ -1239,7 +1472,7 @@ class Ui_MainWindow(object):
         self.collection_name_label.setObjectName(u"collection_name_label")
         sizePolicy2.setHeightForWidth(self.collection_name_label.sizePolicy().hasHeightForWidth())
         self.collection_name_label.setSizePolicy(sizePolicy2)
-        self.collection_name_label.setFont(font8)
+        self.collection_name_label.setFont(font6)
 
         self.verticalLayout_40.addWidget(self.collection_name_label)
 
@@ -1272,19 +1505,19 @@ class Ui_MainWindow(object):
         self.verticalLayout_42.setContentsMargins(20, 12, 20, 12)
         self.sale_date_label_9 = QLabel(self.info_frame_9)
         self.sale_date_label_9.setObjectName(u"sale_date_label_9")
-        self.sale_date_label_9.setFont(font7)
+        self.sale_date_label_9.setFont(font10)
 
         self.verticalLayout_42.addWidget(self.sale_date_label_9)
 
         self.mode_label_9 = QLabel(self.info_frame_9)
         self.mode_label_9.setObjectName(u"mode_label_9")
-        self.mode_label_9.setFont(font7)
+        self.mode_label_9.setFont(font10)
 
         self.verticalLayout_42.addWidget(self.mode_label_9)
 
         self.status_label_9 = QLabel(self.info_frame_9)
         self.status_label_9.setObjectName(u"status_label_9")
-        self.status_label_9.setFont(font7)
+        self.status_label_9.setFont(font10)
 
         self.verticalLayout_42.addWidget(self.status_label_9)
 
@@ -1300,10 +1533,10 @@ class Ui_MainWindow(object):
 
         self.view_product_button_10 = QPushButton(self.collection_box)
         self.view_product_button_10.setObjectName(u"view_product_button_10")
-        sizePolicy4.setHeightForWidth(self.view_product_button_10.sizePolicy().hasHeightForWidth())
-        self.view_product_button_10.setSizePolicy(sizePolicy4)
+        sizePolicy6.setHeightForWidth(self.view_product_button_10.sizePolicy().hasHeightForWidth())
+        self.view_product_button_10.setSizePolicy(sizePolicy6)
         self.view_product_button_10.setMinimumSize(QSize(0, 30))
-        self.view_product_button_10.setFont(font7)
+        self.view_product_button_10.setFont(font10)
 
         self.horizontalLayout_47.addWidget(self.view_product_button_10)
 
@@ -1319,10 +1552,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_39.addWidget(self.collection_box)
 
-        self.collection_box_2 = QFrame(self.scrollAreaWidgetContents_2)
+        self.collection_box_2 = QFrame(self.collections_scrollAreaWidgetContents)
         self.collection_box_2.setObjectName(u"collection_box_2")
-        sizePolicy6.setHeightForWidth(self.collection_box_2.sizePolicy().hasHeightForWidth())
-        self.collection_box_2.setSizePolicy(sizePolicy6)
+        sizePolicy8.setHeightForWidth(self.collection_box_2.sizePolicy().hasHeightForWidth())
+        self.collection_box_2.setSizePolicy(sizePolicy8)
         self.collection_box_2.setMinimumSize(QSize(0, 150))
         self.collection_box_2.setMaximumSize(QSize(16777215, 150))
         self.collection_box_2.setAutoFillBackground(False)
@@ -1369,7 +1602,7 @@ class Ui_MainWindow(object):
         self.collection_name_label_2.setObjectName(u"collection_name_label_2")
         sizePolicy2.setHeightForWidth(self.collection_name_label_2.sizePolicy().hasHeightForWidth())
         self.collection_name_label_2.setSizePolicy(sizePolicy2)
-        self.collection_name_label_2.setFont(font8)
+        self.collection_name_label_2.setFont(font6)
 
         self.verticalLayout_43.addWidget(self.collection_name_label_2)
 
@@ -1402,19 +1635,19 @@ class Ui_MainWindow(object):
         self.verticalLayout_45.setContentsMargins(20, 12, 20, 12)
         self.sale_date_label_10 = QLabel(self.info_frame_10)
         self.sale_date_label_10.setObjectName(u"sale_date_label_10")
-        self.sale_date_label_10.setFont(font7)
+        self.sale_date_label_10.setFont(font10)
 
         self.verticalLayout_45.addWidget(self.sale_date_label_10)
 
         self.mode_label_10 = QLabel(self.info_frame_10)
         self.mode_label_10.setObjectName(u"mode_label_10")
-        self.mode_label_10.setFont(font7)
+        self.mode_label_10.setFont(font10)
 
         self.verticalLayout_45.addWidget(self.mode_label_10)
 
         self.status_label_10 = QLabel(self.info_frame_10)
         self.status_label_10.setObjectName(u"status_label_10")
-        self.status_label_10.setFont(font7)
+        self.status_label_10.setFont(font10)
 
         self.verticalLayout_45.addWidget(self.status_label_10)
 
@@ -1430,10 +1663,10 @@ class Ui_MainWindow(object):
 
         self.view_product_button_11 = QPushButton(self.collection_box_2)
         self.view_product_button_11.setObjectName(u"view_product_button_11")
-        sizePolicy4.setHeightForWidth(self.view_product_button_11.sizePolicy().hasHeightForWidth())
-        self.view_product_button_11.setSizePolicy(sizePolicy4)
+        sizePolicy6.setHeightForWidth(self.view_product_button_11.sizePolicy().hasHeightForWidth())
+        self.view_product_button_11.setSizePolicy(sizePolicy6)
         self.view_product_button_11.setMinimumSize(QSize(0, 30))
-        self.view_product_button_11.setFont(font7)
+        self.view_product_button_11.setFont(font10)
 
         self.horizontalLayout_51.addWidget(self.view_product_button_11)
 
@@ -1449,10 +1682,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_39.addWidget(self.collection_box_2)
 
-        self.collection_box_3 = QFrame(self.scrollAreaWidgetContents_2)
+        self.collection_box_3 = QFrame(self.collections_scrollAreaWidgetContents)
         self.collection_box_3.setObjectName(u"collection_box_3")
-        sizePolicy6.setHeightForWidth(self.collection_box_3.sizePolicy().hasHeightForWidth())
-        self.collection_box_3.setSizePolicy(sizePolicy6)
+        sizePolicy8.setHeightForWidth(self.collection_box_3.sizePolicy().hasHeightForWidth())
+        self.collection_box_3.setSizePolicy(sizePolicy8)
         self.collection_box_3.setMinimumSize(QSize(0, 150))
         self.collection_box_3.setMaximumSize(QSize(16777215, 150))
         self.collection_box_3.setAutoFillBackground(False)
@@ -1499,7 +1732,7 @@ class Ui_MainWindow(object):
         self.collection_name_label_3.setObjectName(u"collection_name_label_3")
         sizePolicy2.setHeightForWidth(self.collection_name_label_3.sizePolicy().hasHeightForWidth())
         self.collection_name_label_3.setSizePolicy(sizePolicy2)
-        self.collection_name_label_3.setFont(font8)
+        self.collection_name_label_3.setFont(font6)
 
         self.verticalLayout_46.addWidget(self.collection_name_label_3)
 
@@ -1532,19 +1765,19 @@ class Ui_MainWindow(object):
         self.verticalLayout_48.setContentsMargins(20, 12, 20, 12)
         self.sale_date_label_11 = QLabel(self.info_frame_11)
         self.sale_date_label_11.setObjectName(u"sale_date_label_11")
-        self.sale_date_label_11.setFont(font7)
+        self.sale_date_label_11.setFont(font10)
 
         self.verticalLayout_48.addWidget(self.sale_date_label_11)
 
         self.mode_label_11 = QLabel(self.info_frame_11)
         self.mode_label_11.setObjectName(u"mode_label_11")
-        self.mode_label_11.setFont(font7)
+        self.mode_label_11.setFont(font10)
 
         self.verticalLayout_48.addWidget(self.mode_label_11)
 
         self.status_label_11 = QLabel(self.info_frame_11)
         self.status_label_11.setObjectName(u"status_label_11")
-        self.status_label_11.setFont(font7)
+        self.status_label_11.setFont(font10)
 
         self.verticalLayout_48.addWidget(self.status_label_11)
 
@@ -1560,10 +1793,10 @@ class Ui_MainWindow(object):
 
         self.view_product_button_12 = QPushButton(self.collection_box_3)
         self.view_product_button_12.setObjectName(u"view_product_button_12")
-        sizePolicy4.setHeightForWidth(self.view_product_button_12.sizePolicy().hasHeightForWidth())
-        self.view_product_button_12.setSizePolicy(sizePolicy4)
+        sizePolicy6.setHeightForWidth(self.view_product_button_12.sizePolicy().hasHeightForWidth())
+        self.view_product_button_12.setSizePolicy(sizePolicy6)
         self.view_product_button_12.setMinimumSize(QSize(0, 30))
-        self.view_product_button_12.setFont(font7)
+        self.view_product_button_12.setFont(font10)
 
         self.horizontalLayout_55.addWidget(self.view_product_button_12)
 
@@ -1583,9 +1816,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_39.addItem(self.verticalSpacer_22)
 
-        self.product_scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
+        self.collections_scrollArea.setWidget(self.collections_scrollAreaWidgetContents)
 
-        self.verticalLayout_3.addWidget(self.product_scrollArea_2)
+        self.verticalLayout_3.addWidget(self.collections_scrollArea)
 
         self.stackedWidget.addWidget(self.collection)
         self.order = QWidget()
@@ -1614,13 +1847,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout_7.setSpacing(20)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.label_5 = QLabel(self.frame_24)
-        self.label_5.setObjectName(u"label_5")
-        sizePolicy3.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
-        self.label_5.setSizePolicy(sizePolicy3)
-        self.label_5.setFont(font4)
+        self.order_label = QLabel(self.frame_24)
+        self.order_label.setObjectName(u"order_label")
+        sizePolicy5.setHeightForWidth(self.order_label.sizePolicy().hasHeightForWidth())
+        self.order_label.setSizePolicy(sizePolicy5)
+        self.order_label.setFont(font4)
 
-        self.horizontalLayout_7.addWidget(self.label_5)
+        self.horizontalLayout_7.addWidget(self.order_label)
 
         self.horizontalSpacer_19 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -1631,8 +1864,8 @@ class Ui_MainWindow(object):
 
         self.history_tabs_4 = QWidget(self.order)
         self.history_tabs_4.setObjectName(u"history_tabs_4")
-        sizePolicy3.setHeightForWidth(self.history_tabs_4.sizePolicy().hasHeightForWidth())
-        self.history_tabs_4.setSizePolicy(sizePolicy3)
+        sizePolicy5.setHeightForWidth(self.history_tabs_4.sizePolicy().hasHeightForWidth())
+        self.history_tabs_4.setSizePolicy(sizePolicy5)
         self.history_tabs_4.setMaximumSize(QSize(16777215, 50))
         self.history_tabs_4.setStyleSheet(u"QPushButton {\n"
 "    background-color:#F5F9F9;\n"
@@ -1647,67 +1880,67 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.setSpacing(20)
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
-        self.order_all_button = QPushButton(self.history_tabs_4)
-        self.order_all_button.setObjectName(u"order_all_button")
-        sizePolicy5.setHeightForWidth(self.order_all_button.sizePolicy().hasHeightForWidth())
-        self.order_all_button.setSizePolicy(sizePolicy5)
-        self.order_all_button.setFont(font7)
+        self.order_page_all_button = QPushButton(self.history_tabs_4)
+        self.order_page_all_button.setObjectName(u"order_page_all_button")
+        sizePolicy7.setHeightForWidth(self.order_page_all_button.sizePolicy().hasHeightForWidth())
+        self.order_page_all_button.setSizePolicy(sizePolicy7)
+        self.order_page_all_button.setFont(font10)
 
-        self.horizontalLayout_8.addWidget(self.order_all_button)
+        self.horizontalLayout_8.addWidget(self.order_page_all_button)
 
-        self.unpaid_button = QPushButton(self.history_tabs_4)
-        self.unpaid_button.setObjectName(u"unpaid_button")
-        sizePolicy5.setHeightForWidth(self.unpaid_button.sizePolicy().hasHeightForWidth())
-        self.unpaid_button.setSizePolicy(sizePolicy5)
-        self.unpaid_button.setFont(font7)
+        self.orders_page_unpaid_button = QPushButton(self.history_tabs_4)
+        self.orders_page_unpaid_button.setObjectName(u"orders_page_unpaid_button")
+        sizePolicy7.setHeightForWidth(self.orders_page_unpaid_button.sizePolicy().hasHeightForWidth())
+        self.orders_page_unpaid_button.setSizePolicy(sizePolicy7)
+        self.orders_page_unpaid_button.setFont(font10)
 
-        self.horizontalLayout_8.addWidget(self.unpaid_button)
+        self.horizontalLayout_8.addWidget(self.orders_page_unpaid_button)
 
-        self.shipping_button = QPushButton(self.history_tabs_4)
-        self.shipping_button.setObjectName(u"shipping_button")
-        sizePolicy5.setHeightForWidth(self.shipping_button.sizePolicy().hasHeightForWidth())
-        self.shipping_button.setSizePolicy(sizePolicy5)
-        self.shipping_button.setFont(font7)
+        self.orders_page_shipping_button = QPushButton(self.history_tabs_4)
+        self.orders_page_shipping_button.setObjectName(u"orders_page_shipping_button")
+        sizePolicy7.setHeightForWidth(self.orders_page_shipping_button.sizePolicy().hasHeightForWidth())
+        self.orders_page_shipping_button.setSizePolicy(sizePolicy7)
+        self.orders_page_shipping_button.setFont(font10)
 
-        self.horizontalLayout_8.addWidget(self.shipping_button)
+        self.horizontalLayout_8.addWidget(self.orders_page_shipping_button)
 
-        self.completed_button = QPushButton(self.history_tabs_4)
-        self.completed_button.setObjectName(u"completed_button")
-        sizePolicy5.setHeightForWidth(self.completed_button.sizePolicy().hasHeightForWidth())
-        self.completed_button.setSizePolicy(sizePolicy5)
-        self.completed_button.setFont(font7)
+        self.orders_page_completed_button = QPushButton(self.history_tabs_4)
+        self.orders_page_completed_button.setObjectName(u"orders_page_completed_button")
+        sizePolicy7.setHeightForWidth(self.orders_page_completed_button.sizePolicy().hasHeightForWidth())
+        self.orders_page_completed_button.setSizePolicy(sizePolicy7)
+        self.orders_page_completed_button.setFont(font10)
 
-        self.horizontalLayout_8.addWidget(self.completed_button)
+        self.horizontalLayout_8.addWidget(self.orders_page_completed_button)
 
-        self.cancelled_button = QPushButton(self.history_tabs_4)
-        self.cancelled_button.setObjectName(u"cancelled_button")
-        sizePolicy5.setHeightForWidth(self.cancelled_button.sizePolicy().hasHeightForWidth())
-        self.cancelled_button.setSizePolicy(sizePolicy5)
-        self.cancelled_button.setFont(font7)
+        self.oders_page_cancelled_button = QPushButton(self.history_tabs_4)
+        self.oders_page_cancelled_button.setObjectName(u"oders_page_cancelled_button")
+        sizePolicy7.setHeightForWidth(self.oders_page_cancelled_button.sizePolicy().hasHeightForWidth())
+        self.oders_page_cancelled_button.setSizePolicy(sizePolicy7)
+        self.oders_page_cancelled_button.setFont(font10)
 
-        self.horizontalLayout_8.addWidget(self.cancelled_button)
+        self.horizontalLayout_8.addWidget(self.oders_page_cancelled_button)
 
 
         self.verticalLayout_4.addWidget(self.history_tabs_4)
 
-        self.product_scrollArea_3 = QScrollArea(self.order)
-        self.product_scrollArea_3.setObjectName(u"product_scrollArea_3")
-        sizePolicy3.setHeightForWidth(self.product_scrollArea_3.sizePolicy().hasHeightForWidth())
-        self.product_scrollArea_3.setSizePolicy(sizePolicy3)
-        self.product_scrollArea_3.setMinimumSize(QSize(0, 0))
-        self.product_scrollArea_3.setMaximumSize(QSize(16777215, 16777215))
-        self.product_scrollArea_3.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.product_scrollArea_3.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.product_scrollArea_3.setWidgetResizable(True)
-        self.scrollAreaWidgetContents_3 = QWidget()
-        self.scrollAreaWidgetContents_3.setObjectName(u"scrollAreaWidgetContents_3")
-        self.scrollAreaWidgetContents_3.setGeometry(QRect(0, 0, 887, 512))
-        sizePolicy3.setHeightForWidth(self.scrollAreaWidgetContents_3.sizePolicy().hasHeightForWidth())
-        self.scrollAreaWidgetContents_3.setSizePolicy(sizePolicy3)
-        self.scrollAreaWidgetContents_3.setMinimumSize(QSize(0, 0))
-        self.scrollAreaWidgetContents_3.setMaximumSize(QSize(16777215, 16777215))
-        self.scrollAreaWidgetContents_3.setAutoFillBackground(False)
-        self.scrollAreaWidgetContents_3.setStyleSheet(u"QWidget {\n"
+        self.orders_scrollArea = QScrollArea(self.order)
+        self.orders_scrollArea.setObjectName(u"orders_scrollArea")
+        sizePolicy5.setHeightForWidth(self.orders_scrollArea.sizePolicy().hasHeightForWidth())
+        self.orders_scrollArea.setSizePolicy(sizePolicy5)
+        self.orders_scrollArea.setMinimumSize(QSize(0, 0))
+        self.orders_scrollArea.setMaximumSize(QSize(16777215, 16777215))
+        self.orders_scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.orders_scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.orders_scrollArea.setWidgetResizable(True)
+        self.orders_scrollAreaWidgetContents = QWidget()
+        self.orders_scrollAreaWidgetContents.setObjectName(u"orders_scrollAreaWidgetContents")
+        self.orders_scrollAreaWidgetContents.setGeometry(QRect(0, 0, 851, 510))
+        sizePolicy5.setHeightForWidth(self.orders_scrollAreaWidgetContents.sizePolicy().hasHeightForWidth())
+        self.orders_scrollAreaWidgetContents.setSizePolicy(sizePolicy5)
+        self.orders_scrollAreaWidgetContents.setMinimumSize(QSize(0, 0))
+        self.orders_scrollAreaWidgetContents.setMaximumSize(QSize(16777215, 16777215))
+        self.orders_scrollAreaWidgetContents.setAutoFillBackground(False)
+        self.orders_scrollAreaWidgetContents.setStyleSheet(u"QWidget {\n"
 "	background-color: white;\n"
 "}\n"
 "\n"
@@ -1725,14 +1958,14 @@ class Ui_MainWindow(object):
 "QPushButton::hover {\n"
 "	background-color: #4D7672;\n"
 "}")
-        self.verticalLayout_52 = QVBoxLayout(self.scrollAreaWidgetContents_3)
+        self.verticalLayout_52 = QVBoxLayout(self.orders_scrollAreaWidgetContents)
         self.verticalLayout_52.setSpacing(20)
         self.verticalLayout_52.setObjectName(u"verticalLayout_52")
         self.verticalLayout_52.setContentsMargins(0, 0, 0, 0)
-        self.order_box = QFrame(self.scrollAreaWidgetContents_3)
+        self.order_box = QFrame(self.orders_scrollAreaWidgetContents)
         self.order_box.setObjectName(u"order_box")
-        sizePolicy6.setHeightForWidth(self.order_box.sizePolicy().hasHeightForWidth())
-        self.order_box.setSizePolicy(sizePolicy6)
+        sizePolicy8.setHeightForWidth(self.order_box.sizePolicy().hasHeightForWidth())
+        self.order_box.setSizePolicy(sizePolicy8)
         self.order_box.setMinimumSize(QSize(0, 150))
         self.order_box.setMaximumSize(QSize(16777215, 150))
         self.order_box.setAutoFillBackground(False)
@@ -1779,7 +2012,7 @@ class Ui_MainWindow(object):
         self.product_name_label_9.setObjectName(u"product_name_label_9")
         sizePolicy2.setHeightForWidth(self.product_name_label_9.sizePolicy().hasHeightForWidth())
         self.product_name_label_9.setSizePolicy(sizePolicy2)
-        self.product_name_label_9.setFont(font8)
+        self.product_name_label_9.setFont(font6)
 
         self.verticalLayout_53.addWidget(self.product_name_label_9)
 
@@ -1797,7 +2030,7 @@ class Ui_MainWindow(object):
 
         self.id_label = QLabel(self.frame_20)
         self.id_label.setObjectName(u"id_label")
-        self.id_label.setFont(font7)
+        self.id_label.setFont(font10)
         self.id_label.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.verticalLayout_53.addWidget(self.id_label)
@@ -1827,25 +2060,25 @@ class Ui_MainWindow(object):
         self.verticalLayout_55.setContentsMargins(20, 12, 20, 12)
         self.order_date_label = QLabel(self.info_frame_13)
         self.order_date_label.setObjectName(u"order_date_label")
-        self.order_date_label.setFont(font7)
+        self.order_date_label.setFont(font10)
 
         self.verticalLayout_55.addWidget(self.order_date_label)
 
         self.mode_label_13 = QLabel(self.info_frame_13)
         self.mode_label_13.setObjectName(u"mode_label_13")
-        self.mode_label_13.setFont(font7)
+        self.mode_label_13.setFont(font10)
 
         self.verticalLayout_55.addWidget(self.mode_label_13)
 
         self.status_label_13 = QLabel(self.info_frame_13)
         self.status_label_13.setObjectName(u"status_label_13")
-        self.status_label_13.setFont(font7)
+        self.status_label_13.setFont(font10)
 
         self.verticalLayout_55.addWidget(self.status_label_13)
 
         self.price_label_9 = QLabel(self.info_frame_13)
         self.price_label_9.setObjectName(u"price_label_9")
-        self.price_label_9.setFont(font7)
+        self.price_label_9.setFont(font10)
 
         self.verticalLayout_55.addWidget(self.price_label_9)
 
@@ -1861,10 +2094,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_52.addWidget(self.order_box)
 
-        self.order_box_2 = QFrame(self.scrollAreaWidgetContents_3)
+        self.order_box_2 = QFrame(self.orders_scrollAreaWidgetContents)
         self.order_box_2.setObjectName(u"order_box_2")
-        sizePolicy6.setHeightForWidth(self.order_box_2.sizePolicy().hasHeightForWidth())
-        self.order_box_2.setSizePolicy(sizePolicy6)
+        sizePolicy8.setHeightForWidth(self.order_box_2.sizePolicy().hasHeightForWidth())
+        self.order_box_2.setSizePolicy(sizePolicy8)
         self.order_box_2.setMinimumSize(QSize(0, 150))
         self.order_box_2.setMaximumSize(QSize(16777215, 150))
         self.order_box_2.setAutoFillBackground(False)
@@ -1911,7 +2144,7 @@ class Ui_MainWindow(object):
         self.product_name_label_10.setObjectName(u"product_name_label_10")
         sizePolicy2.setHeightForWidth(self.product_name_label_10.sizePolicy().hasHeightForWidth())
         self.product_name_label_10.setSizePolicy(sizePolicy2)
-        self.product_name_label_10.setFont(font8)
+        self.product_name_label_10.setFont(font6)
 
         self.verticalLayout_56.addWidget(self.product_name_label_10)
 
@@ -1929,7 +2162,7 @@ class Ui_MainWindow(object):
 
         self.id_label_2 = QLabel(self.frame_21)
         self.id_label_2.setObjectName(u"id_label_2")
-        self.id_label_2.setFont(font7)
+        self.id_label_2.setFont(font10)
         self.id_label_2.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.verticalLayout_56.addWidget(self.id_label_2)
@@ -1959,25 +2192,25 @@ class Ui_MainWindow(object):
         self.verticalLayout_58.setContentsMargins(20, 12, 20, 12)
         self.order_date_label_2 = QLabel(self.info_frame_14)
         self.order_date_label_2.setObjectName(u"order_date_label_2")
-        self.order_date_label_2.setFont(font7)
+        self.order_date_label_2.setFont(font10)
 
         self.verticalLayout_58.addWidget(self.order_date_label_2)
 
         self.mode_label_14 = QLabel(self.info_frame_14)
         self.mode_label_14.setObjectName(u"mode_label_14")
-        self.mode_label_14.setFont(font7)
+        self.mode_label_14.setFont(font10)
 
         self.verticalLayout_58.addWidget(self.mode_label_14)
 
         self.status_label_14 = QLabel(self.info_frame_14)
         self.status_label_14.setObjectName(u"status_label_14")
-        self.status_label_14.setFont(font7)
+        self.status_label_14.setFont(font10)
 
         self.verticalLayout_58.addWidget(self.status_label_14)
 
         self.price_label_10 = QLabel(self.info_frame_14)
         self.price_label_10.setObjectName(u"price_label_10")
-        self.price_label_10.setFont(font7)
+        self.price_label_10.setFont(font10)
 
         self.verticalLayout_58.addWidget(self.price_label_10)
 
@@ -1993,10 +2226,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_52.addWidget(self.order_box_2)
 
-        self.order_box_3 = QFrame(self.scrollAreaWidgetContents_3)
+        self.order_box_3 = QFrame(self.orders_scrollAreaWidgetContents)
         self.order_box_3.setObjectName(u"order_box_3")
-        sizePolicy6.setHeightForWidth(self.order_box_3.sizePolicy().hasHeightForWidth())
-        self.order_box_3.setSizePolicy(sizePolicy6)
+        sizePolicy8.setHeightForWidth(self.order_box_3.sizePolicy().hasHeightForWidth())
+        self.order_box_3.setSizePolicy(sizePolicy8)
         self.order_box_3.setMinimumSize(QSize(0, 150))
         self.order_box_3.setMaximumSize(QSize(16777215, 150))
         self.order_box_3.setAutoFillBackground(False)
@@ -2043,7 +2276,7 @@ class Ui_MainWindow(object):
         self.product_name_label_11.setObjectName(u"product_name_label_11")
         sizePolicy2.setHeightForWidth(self.product_name_label_11.sizePolicy().hasHeightForWidth())
         self.product_name_label_11.setSizePolicy(sizePolicy2)
-        self.product_name_label_11.setFont(font8)
+        self.product_name_label_11.setFont(font6)
 
         self.verticalLayout_59.addWidget(self.product_name_label_11)
 
@@ -2061,7 +2294,7 @@ class Ui_MainWindow(object):
 
         self.id_label_3 = QLabel(self.frame_22)
         self.id_label_3.setObjectName(u"id_label_3")
-        self.id_label_3.setFont(font7)
+        self.id_label_3.setFont(font10)
         self.id_label_3.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.verticalLayout_59.addWidget(self.id_label_3)
@@ -2091,25 +2324,25 @@ class Ui_MainWindow(object):
         self.verticalLayout_61.setContentsMargins(20, 12, 20, 12)
         self.order_date_label_3 = QLabel(self.info_frame_15)
         self.order_date_label_3.setObjectName(u"order_date_label_3")
-        self.order_date_label_3.setFont(font7)
+        self.order_date_label_3.setFont(font10)
 
         self.verticalLayout_61.addWidget(self.order_date_label_3)
 
         self.mode_label_15 = QLabel(self.info_frame_15)
         self.mode_label_15.setObjectName(u"mode_label_15")
-        self.mode_label_15.setFont(font7)
+        self.mode_label_15.setFont(font10)
 
         self.verticalLayout_61.addWidget(self.mode_label_15)
 
         self.status_label_15 = QLabel(self.info_frame_15)
         self.status_label_15.setObjectName(u"status_label_15")
-        self.status_label_15.setFont(font7)
+        self.status_label_15.setFont(font10)
 
         self.verticalLayout_61.addWidget(self.status_label_15)
 
         self.price_label_11 = QLabel(self.info_frame_15)
         self.price_label_11.setObjectName(u"price_label_11")
-        self.price_label_11.setFont(font7)
+        self.price_label_11.setFont(font10)
 
         self.verticalLayout_61.addWidget(self.price_label_11)
 
@@ -2129,11 +2362,661 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_52.addItem(self.verticalSpacer_27)
 
-        self.product_scrollArea_3.setWidget(self.scrollAreaWidgetContents_3)
+        self.orders_scrollArea.setWidget(self.orders_scrollAreaWidgetContents)
 
-        self.verticalLayout_4.addWidget(self.product_scrollArea_3)
+        self.verticalLayout_4.addWidget(self.orders_scrollArea)
 
         self.stackedWidget.addWidget(self.order)
+        self.edit_product = QWidget()
+        self.edit_product.setObjectName(u"edit_product")
+        self.verticalLayout_11 = QVBoxLayout(self.edit_product)
+        self.verticalLayout_11.setSpacing(10)
+        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
+        self.verticalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.label_18 = QLabel(self.edit_product)
+        self.label_18.setObjectName(u"label_18")
+        sizePolicy2.setHeightForWidth(self.label_18.sizePolicy().hasHeightForWidth())
+        self.label_18.setSizePolicy(sizePolicy2)
+        self.label_18.setFont(font4)
+
+        self.verticalLayout_11.addWidget(self.label_18)
+
+        self.frame_23 = QFrame(self.edit_product)
+        self.frame_23.setObjectName(u"frame_23")
+        self.frame_23.setStyleSheet(u"QFrame {\n"
+"    background-color:#DFF1EE;\n"
+"	border: none;\n"
+"	border-radius: 25px;\n"
+"}")
+        self.frame_23.setFrameShape(QFrame.StyledPanel)
+        self.frame_23.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_12 = QHBoxLayout(self.frame_23)
+        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
+        self.frame_25 = QFrame(self.frame_23)
+        self.frame_25.setObjectName(u"frame_25")
+        self.frame_25.setMaximumSize(QSize(180, 16777215))
+        self.frame_25.setFrameShape(QFrame.StyledPanel)
+        self.frame_25.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_8 = QVBoxLayout(self.frame_25)
+        self.verticalLayout_8.setSpacing(10)
+        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.label_11 = QLabel(self.frame_25)
+        self.label_11.setObjectName(u"label_11")
+        sizePolicy2.setHeightForWidth(self.label_11.sizePolicy().hasHeightForWidth())
+        self.label_11.setSizePolicy(sizePolicy2)
+        self.label_11.setFont(font6)
+
+        self.verticalLayout_8.addWidget(self.label_11)
+
+        self.label_13 = QLabel(self.frame_25)
+        self.label_13.setObjectName(u"label_13")
+        sizePolicy2.setHeightForWidth(self.label_13.sizePolicy().hasHeightForWidth())
+        self.label_13.setSizePolicy(sizePolicy2)
+        self.label_13.setFont(font6)
+
+        self.verticalLayout_8.addWidget(self.label_13)
+
+        self.label_14 = QLabel(self.frame_25)
+        self.label_14.setObjectName(u"label_14")
+        sizePolicy2.setHeightForWidth(self.label_14.sizePolicy().hasHeightForWidth())
+        self.label_14.setSizePolicy(sizePolicy2)
+        self.label_14.setFont(font6)
+
+        self.verticalLayout_8.addWidget(self.label_14)
+
+        self.label_19 = QLabel(self.frame_25)
+        self.label_19.setObjectName(u"label_19")
+        sizePolicy2.setHeightForWidth(self.label_19.sizePolicy().hasHeightForWidth())
+        self.label_19.setSizePolicy(sizePolicy2)
+        self.label_19.setFont(font6)
+
+        self.verticalLayout_8.addWidget(self.label_19)
+
+        self.label_20 = QLabel(self.frame_25)
+        self.label_20.setObjectName(u"label_20")
+        sizePolicy2.setHeightForWidth(self.label_20.sizePolicy().hasHeightForWidth())
+        self.label_20.setSizePolicy(sizePolicy2)
+        self.label_20.setFont(font6)
+
+        self.verticalLayout_8.addWidget(self.label_20)
+
+        self.label_15 = QLabel(self.frame_25)
+        self.label_15.setObjectName(u"label_15")
+        sizePolicy2.setHeightForWidth(self.label_15.sizePolicy().hasHeightForWidth())
+        self.label_15.setSizePolicy(sizePolicy2)
+        self.label_15.setFont(font6)
+
+        self.verticalLayout_8.addWidget(self.label_15)
+
+        self.verticalSpacer_5 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_8.addItem(self.verticalSpacer_5)
+
+
+        self.horizontalLayout_12.addWidget(self.frame_25)
+
+        self.frame_26 = QFrame(self.frame_23)
+        self.frame_26.setObjectName(u"frame_26")
+        self.frame_26.setStyleSheet(u"* {\n"
+"	border-radius: 10px;\n"
+"}")
+        self.frame_26.setFrameShape(QFrame.StyledPanel)
+        self.frame_26.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_9 = QVBoxLayout(self.frame_26)
+        self.verticalLayout_9.setSpacing(10)
+        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
+        self.edit_product_page_name_Edit = QTextEdit(self.frame_26)
+        self.edit_product_page_name_Edit.setObjectName(u"edit_product_page_name_Edit")
+        sizePolicy3.setHeightForWidth(self.edit_product_page_name_Edit.sizePolicy().hasHeightForWidth())
+        self.edit_product_page_name_Edit.setSizePolicy(sizePolicy3)
+        self.edit_product_page_name_Edit.setMaximumSize(QSize(16777215, 30))
+        self.edit_product_page_name_Edit.setFont(font7)
+        self.edit_product_page_name_Edit.setStyleSheet(u"background-color: white")
+
+        self.verticalLayout_9.addWidget(self.edit_product_page_name_Edit)
+
+        self.edit_product_page_price_edit = QTextEdit(self.frame_26)
+        self.edit_product_page_price_edit.setObjectName(u"edit_product_page_price_edit")
+        sizePolicy3.setHeightForWidth(self.edit_product_page_price_edit.sizePolicy().hasHeightForWidth())
+        self.edit_product_page_price_edit.setSizePolicy(sizePolicy3)
+        self.edit_product_page_price_edit.setMaximumSize(QSize(16777215, 30))
+        self.edit_product_page_price_edit.setFont(font1)
+        self.edit_product_page_price_edit.setStyleSheet(u"background-color: white")
+
+        self.verticalLayout_9.addWidget(self.edit_product_page_price_edit)
+
+        self.edit_product__page_tags_edit = QTextEdit(self.frame_26)
+        self.edit_product__page_tags_edit.setObjectName(u"edit_product__page_tags_edit")
+        sizePolicy3.setHeightForWidth(self.edit_product__page_tags_edit.sizePolicy().hasHeightForWidth())
+        self.edit_product__page_tags_edit.setSizePolicy(sizePolicy3)
+        self.edit_product__page_tags_edit.setMaximumSize(QSize(16777215, 30))
+        self.edit_product__page_tags_edit.setFont(font1)
+        self.edit_product__page_tags_edit.setStyleSheet(u"background-color: white")
+
+        self.verticalLayout_9.addWidget(self.edit_product__page_tags_edit)
+
+        self.edit_product_page_mode_combobox = QComboBox(self.frame_26)
+        self.edit_product_page_mode_combobox.addItem("")
+        self.edit_product_page_mode_combobox.addItem("")
+        self.edit_product_page_mode_combobox.setObjectName(u"edit_product_page_mode_combobox")
+        font11 = QFont()
+        font11.setFamilies([u"Manrope"])
+        font11.setPointSize(12)
+        font11.setBold(False)
+        self.edit_product_page_mode_combobox.setFont(font11)
+
+        self.verticalLayout_9.addWidget(self.edit_product_page_mode_combobox)
+
+        self.edit_product_page_date_edit = QDateEdit(self.frame_26)
+        self.edit_product_page_date_edit.setObjectName(u"edit_product_page_date_edit")
+        self.edit_product_page_date_edit.setFont(font7)
+
+        self.verticalLayout_9.addWidget(self.edit_product_page_date_edit)
+
+        self.edit_product_page_des_edit = QTextEdit(self.frame_26)
+        self.edit_product_page_des_edit.setObjectName(u"edit_product_page_des_edit")
+        sizePolicy4.setHeightForWidth(self.edit_product_page_des_edit.sizePolicy().hasHeightForWidth())
+        self.edit_product_page_des_edit.setSizePolicy(sizePolicy4)
+        self.edit_product_page_des_edit.setFont(font8)
+        self.edit_product_page_des_edit.setStyleSheet(u"background-color: white")
+
+        self.verticalLayout_9.addWidget(self.edit_product_page_des_edit)
+
+        self.verticalSpacer_6 = QSpacerItem(253, 78, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_9.addItem(self.verticalSpacer_6)
+
+
+        self.horizontalLayout_12.addWidget(self.frame_26)
+
+        self.frame_27 = QFrame(self.frame_23)
+        self.frame_27.setObjectName(u"frame_27")
+        self.frame_27.setFrameShape(QFrame.StyledPanel)
+        self.frame_27.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_10 = QVBoxLayout(self.frame_27)
+        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
+        self.frame_28 = QFrame(self.frame_27)
+        self.frame_28.setObjectName(u"frame_28")
+        sizePolicy2.setHeightForWidth(self.frame_28.sizePolicy().hasHeightForWidth())
+        self.frame_28.setSizePolicy(sizePolicy2)
+        self.frame_28.setStyleSheet(u"QPushButton {\n"
+"    background-color:#58827E;\n"
+"	color: white;\n"
+"	border-radius: 8px;\n"
+"	border: none;\n"
+"}\n"
+"\n"
+"QPushButton::hover {\n"
+"	background-color: #4D7672;\n"
+"}")
+        self.frame_28.setFrameShape(QFrame.StyledPanel)
+        self.frame_28.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_13 = QHBoxLayout(self.frame_28)
+        self.horizontalLayout_13.setSpacing(20)
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.horizontalLayout_13.setContentsMargins(0, 0, 0, 0)
+        self.label_16 = QLabel(self.frame_28)
+        self.label_16.setObjectName(u"label_16")
+        sizePolicy5.setHeightForWidth(self.label_16.sizePolicy().hasHeightForWidth())
+        self.label_16.setSizePolicy(sizePolicy5)
+        self.label_16.setFont(font6)
+
+        self.horizontalLayout_13.addWidget(self.label_16)
+
+        self.edit_prodcut_page_add_image_button = QPushButton(self.frame_28)
+        self.edit_prodcut_page_add_image_button.setObjectName(u"edit_prodcut_page_add_image_button")
+        sizePolicy6.setHeightForWidth(self.edit_prodcut_page_add_image_button.sizePolicy().hasHeightForWidth())
+        self.edit_prodcut_page_add_image_button.setSizePolicy(sizePolicy6)
+        self.edit_prodcut_page_add_image_button.setMinimumSize(QSize(0, 30))
+        self.edit_prodcut_page_add_image_button.setMaximumSize(QSize(16777215, 30))
+        self.edit_prodcut_page_add_image_button.setFont(font9)
+
+        self.horizontalLayout_13.addWidget(self.edit_prodcut_page_add_image_button)
+
+        self.horizontalSpacer_16 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_13.addItem(self.horizontalSpacer_16)
+
+
+        self.verticalLayout_10.addWidget(self.frame_28)
+
+        self.stackedWidget_2 = QStackedWidget(self.frame_27)
+        self.stackedWidget_2.setObjectName(u"stackedWidget_2")
+        self.stackedWidget_2.setMaximumSize(QSize(250, 300))
+        self.stackedWidget_2.setStyleSheet(u"QPushButton {\n"
+"    background-color:#58827E;\n"
+"	color: white;\n"
+"	border-radius: 8px;\n"
+"	border: none;\n"
+"}\n"
+"\n"
+"QPushButton::hover {\n"
+"	background-color: #4D7672;\n"
+"}")
+        self.page_3 = QWidget()
+        self.page_3.setObjectName(u"page_3")
+        self.verticalLayout_12 = QVBoxLayout(self.page_3)
+        self.verticalLayout_12.setObjectName(u"verticalLayout_12")
+        self.edit_product_page_image_label = QLabel(self.page_3)
+        self.edit_product_page_image_label.setObjectName(u"edit_product_page_image_label")
+        sizePolicy5.setHeightForWidth(self.edit_product_page_image_label.sizePolicy().hasHeightForWidth())
+        self.edit_product_page_image_label.setSizePolicy(sizePolicy5)
+        self.edit_product_page_image_label.setMinimumSize(QSize(0, 0))
+        self.edit_product_page_image_label.setMaximumSize(QSize(250, 250))
+        self.edit_product_page_image_label.setPixmap(QPixmap(u":/post_images/IMG_7107.jpg"))
+        self.edit_product_page_image_label.setScaledContents(True)
+
+        self.verticalLayout_12.addWidget(self.edit_product_page_image_label)
+
+        self.edit_product_page_delete_button = QPushButton(self.page_3)
+        self.edit_product_page_delete_button.setObjectName(u"edit_product_page_delete_button")
+        font12 = QFont()
+        font12.setFamilies([u"Manrope"])
+        font12.setPointSize(12)
+        font12.setBold(True)
+        self.edit_product_page_delete_button.setFont(font12)
+
+        self.verticalLayout_12.addWidget(self.edit_product_page_delete_button)
+
+        self.stackedWidget_2.addWidget(self.page_3)
+        self.page_4 = QWidget()
+        self.page_4.setObjectName(u"page_4")
+        self.verticalLayout_17 = QVBoxLayout(self.page_4)
+        self.verticalLayout_17.setObjectName(u"verticalLayout_17")
+        self.image_label_2 = QLabel(self.page_4)
+        self.image_label_2.setObjectName(u"image_label_2")
+        sizePolicy5.setHeightForWidth(self.image_label_2.sizePolicy().hasHeightForWidth())
+        self.image_label_2.setSizePolicy(sizePolicy5)
+        self.image_label_2.setMinimumSize(QSize(0, 0))
+        self.image_label_2.setMaximumSize(QSize(250, 250))
+        self.image_label_2.setPixmap(QPixmap(u":/post_images/IMG_7105.jpg"))
+        self.image_label_2.setScaledContents(True)
+        self.image_label_2.setWordWrap(False)
+
+        self.verticalLayout_17.addWidget(self.image_label_2)
+
+        self.delete_button = QPushButton(self.page_4)
+        self.delete_button.setObjectName(u"delete_button")
+        self.delete_button.setFont(font12)
+
+        self.verticalLayout_17.addWidget(self.delete_button)
+
+        self.stackedWidget_2.addWidget(self.page_4)
+
+        self.verticalLayout_10.addWidget(self.stackedWidget_2)
+
+        self.verticalSpacer_7 = QSpacerItem(20, 205, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_10.addItem(self.verticalSpacer_7)
+
+        self.frame_29 = QFrame(self.frame_27)
+        self.frame_29.setObjectName(u"frame_29")
+        sizePolicy2.setHeightForWidth(self.frame_29.sizePolicy().hasHeightForWidth())
+        self.frame_29.setSizePolicy(sizePolicy2)
+        self.frame_29.setStyleSheet(u"QPushButton {\n"
+"    background-color:#58827E;\n"
+"	color: white;\n"
+"	border-radius: 8px;\n"
+"	border: none;\n"
+"}\n"
+"\n"
+"QPushButton::hover {\n"
+"	background-color: #4D7672;\n"
+"}")
+        self.frame_29.setFrameShape(QFrame.StyledPanel)
+        self.frame_29.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_14 = QHBoxLayout(self.frame_29)
+        self.horizontalLayout_14.setSpacing(20)
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.horizontalLayout_14.setContentsMargins(0, 0, 0, 0)
+        self.horizontalSpacer_17 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_14.addItem(self.horizontalSpacer_17)
+
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_14.addItem(self.horizontalSpacer_3)
+
+        self.edit_product_page_save_button = QPushButton(self.frame_29)
+        self.edit_product_page_save_button.setObjectName(u"edit_product_page_save_button")
+        sizePolicy6.setHeightForWidth(self.edit_product_page_save_button.sizePolicy().hasHeightForWidth())
+        self.edit_product_page_save_button.setSizePolicy(sizePolicy6)
+        self.edit_product_page_save_button.setMinimumSize(QSize(0, 30))
+        self.edit_product_page_save_button.setMaximumSize(QSize(16777215, 30))
+        self.edit_product_page_save_button.setFont(font9)
+
+        self.horizontalLayout_14.addWidget(self.edit_product_page_save_button)
+
+
+        self.verticalLayout_10.addWidget(self.frame_29)
+
+
+        self.horizontalLayout_12.addWidget(self.frame_27)
+
+
+        self.verticalLayout_11.addWidget(self.frame_23)
+
+        self.stackedWidget.addWidget(self.edit_product)
+        self.edit_collection = QWidget()
+        self.edit_collection.setObjectName(u"edit_collection")
+        self.verticalLayout_24 = QVBoxLayout(self.edit_collection)
+        self.verticalLayout_24.setSpacing(10)
+        self.verticalLayout_24.setObjectName(u"verticalLayout_24")
+        self.verticalLayout_24.setContentsMargins(0, 0, 0, 0)
+        self.collection_label_2 = QLabel(self.edit_collection)
+        self.collection_label_2.setObjectName(u"collection_label_2")
+        sizePolicy2.setHeightForWidth(self.collection_label_2.sizePolicy().hasHeightForWidth())
+        self.collection_label_2.setSizePolicy(sizePolicy2)
+        self.collection_label_2.setFont(font4)
+
+        self.verticalLayout_24.addWidget(self.collection_label_2)
+
+        self.frame_30 = QFrame(self.edit_collection)
+        self.frame_30.setObjectName(u"frame_30")
+        self.frame_30.setStyleSheet(u"QFrame {\n"
+"    background-color:#DFF1EE;\n"
+"	border: none;\n"
+"	border-radius: 25px;\n"
+"}")
+        self.frame_30.setFrameShape(QFrame.StyledPanel)
+        self.frame_30.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_15 = QHBoxLayout(self.frame_30)
+        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
+        self.frame_31 = QFrame(self.frame_30)
+        self.frame_31.setObjectName(u"frame_31")
+        self.frame_31.setMaximumSize(QSize(180, 16777215))
+        self.frame_31.setFrameShape(QFrame.StyledPanel)
+        self.frame_31.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_18 = QVBoxLayout(self.frame_31)
+        self.verticalLayout_18.setSpacing(10)
+        self.verticalLayout_18.setObjectName(u"verticalLayout_18")
+        self.label_17 = QLabel(self.frame_31)
+        self.label_17.setObjectName(u"label_17")
+        sizePolicy2.setHeightForWidth(self.label_17.sizePolicy().hasHeightForWidth())
+        self.label_17.setSizePolicy(sizePolicy2)
+        self.label_17.setFont(font6)
+
+        self.verticalLayout_18.addWidget(self.label_17)
+
+        self.label_23 = QLabel(self.frame_31)
+        self.label_23.setObjectName(u"label_23")
+        sizePolicy2.setHeightForWidth(self.label_23.sizePolicy().hasHeightForWidth())
+        self.label_23.setSizePolicy(sizePolicy2)
+        self.label_23.setFont(font6)
+
+        self.verticalLayout_18.addWidget(self.label_23)
+
+        self.label_25 = QLabel(self.frame_31)
+        self.label_25.setObjectName(u"label_25")
+        sizePolicy2.setHeightForWidth(self.label_25.sizePolicy().hasHeightForWidth())
+        self.label_25.setSizePolicy(sizePolicy2)
+        self.label_25.setFont(font6)
+
+        self.verticalLayout_18.addWidget(self.label_25)
+
+        self.label_26 = QLabel(self.frame_31)
+        self.label_26.setObjectName(u"label_26")
+        sizePolicy2.setHeightForWidth(self.label_26.sizePolicy().hasHeightForWidth())
+        self.label_26.setSizePolicy(sizePolicy2)
+        self.label_26.setFont(font6)
+
+        self.verticalLayout_18.addWidget(self.label_26)
+
+        self.verticalSpacer_8 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_18.addItem(self.verticalSpacer_8)
+
+        self.label_28 = QLabel(self.frame_31)
+        self.label_28.setObjectName(u"label_28")
+        sizePolicy2.setHeightForWidth(self.label_28.sizePolicy().hasHeightForWidth())
+        self.label_28.setSizePolicy(sizePolicy2)
+        self.label_28.setFont(font6)
+
+        self.verticalLayout_18.addWidget(self.label_28)
+
+
+        self.horizontalLayout_15.addWidget(self.frame_31)
+
+        self.frame_32 = QFrame(self.frame_30)
+        self.frame_32.setObjectName(u"frame_32")
+        self.frame_32.setStyleSheet(u"* {\n"
+"	border-radius: 10px;\n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"    background-color:#58827E;\n"
+"	color: white;\n"
+"	border-radius: 8px;\n"
+"	border: none;\n"
+"}\n"
+"\n"
+"QPushButton::hover {\n"
+"	background-color: #4D7672;\n"
+"}")
+        self.frame_32.setFrameShape(QFrame.StyledPanel)
+        self.frame_32.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_19 = QVBoxLayout(self.frame_32)
+        self.verticalLayout_19.setSpacing(10)
+        self.verticalLayout_19.setObjectName(u"verticalLayout_19")
+        self.edit_collection_name_edit = QTextEdit(self.frame_32)
+        self.edit_collection_name_edit.setObjectName(u"edit_collection_name_edit")
+        sizePolicy3.setHeightForWidth(self.edit_collection_name_edit.sizePolicy().hasHeightForWidth())
+        self.edit_collection_name_edit.setSizePolicy(sizePolicy3)
+        self.edit_collection_name_edit.setMaximumSize(QSize(16777215, 30))
+        self.edit_collection_name_edit.setFont(font7)
+        self.edit_collection_name_edit.setStyleSheet(u"background-color: white")
+
+        self.verticalLayout_19.addWidget(self.edit_collection_name_edit)
+
+        self.edit_collection_tag_edit = QTextEdit(self.frame_32)
+        self.edit_collection_tag_edit.setObjectName(u"edit_collection_tag_edit")
+        sizePolicy3.setHeightForWidth(self.edit_collection_tag_edit.sizePolicy().hasHeightForWidth())
+        self.edit_collection_tag_edit.setSizePolicy(sizePolicy3)
+        self.edit_collection_tag_edit.setMaximumSize(QSize(16777215, 30))
+        self.edit_collection_tag_edit.setFont(font1)
+        self.edit_collection_tag_edit.setStyleSheet(u"background-color: white")
+
+        self.verticalLayout_19.addWidget(self.edit_collection_tag_edit)
+
+        self.edit_collection_page_date_edit = QDateEdit(self.frame_32)
+        self.edit_collection_page_date_edit.setObjectName(u"edit_collection_page_date_edit")
+        self.edit_collection_page_date_edit.setFont(font7)
+
+        self.verticalLayout_19.addWidget(self.edit_collection_page_date_edit)
+
+        self.edit_collection_des_edit = QTextEdit(self.frame_32)
+        self.edit_collection_des_edit.setObjectName(u"edit_collection_des_edit")
+        sizePolicy4.setHeightForWidth(self.edit_collection_des_edit.sizePolicy().hasHeightForWidth())
+        self.edit_collection_des_edit.setSizePolicy(sizePolicy4)
+        self.edit_collection_des_edit.setFont(font8)
+        self.edit_collection_des_edit.setStyleSheet(u"background-color: white")
+
+        self.verticalLayout_19.addWidget(self.edit_collection_des_edit)
+
+        self.spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_19.addItem(self.spacer)
+
+        self.edit_collection_page_add_product = QPushButton(self.frame_32)
+        self.edit_collection_page_add_product.setObjectName(u"edit_collection_page_add_product")
+        sizePolicy9 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Minimum)
+        sizePolicy9.setHorizontalStretch(0)
+        sizePolicy9.setVerticalStretch(0)
+        sizePolicy9.setHeightForWidth(self.edit_collection_page_add_product.sizePolicy().hasHeightForWidth())
+        self.edit_collection_page_add_product.setSizePolicy(sizePolicy9)
+        self.edit_collection_page_add_product.setMinimumSize(QSize(0, 30))
+        self.edit_collection_page_add_product.setMaximumSize(QSize(16777215, 30))
+        self.edit_collection_page_add_product.setFont(font9)
+
+        self.verticalLayout_19.addWidget(self.edit_collection_page_add_product)
+
+
+        self.horizontalLayout_15.addWidget(self.frame_32)
+
+        self.frame_33 = QFrame(self.frame_30)
+        self.frame_33.setObjectName(u"frame_33")
+        self.frame_33.setFrameShape(QFrame.StyledPanel)
+        self.frame_33.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_20 = QVBoxLayout(self.frame_33)
+        self.verticalLayout_20.setObjectName(u"verticalLayout_20")
+        self.frame_34 = QFrame(self.frame_33)
+        self.frame_34.setObjectName(u"frame_34")
+        sizePolicy2.setHeightForWidth(self.frame_34.sizePolicy().hasHeightForWidth())
+        self.frame_34.setSizePolicy(sizePolicy2)
+        self.frame_34.setStyleSheet(u"QPushButton {\n"
+"    background-color:#58827E;\n"
+"	color: white;\n"
+"	border-radius: 8px;\n"
+"	border: none;\n"
+"}\n"
+"\n"
+"QPushButton::hover {\n"
+"	background-color: #4D7672;\n"
+"}")
+        self.frame_34.setFrameShape(QFrame.StyledPanel)
+        self.frame_34.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_20 = QHBoxLayout(self.frame_34)
+        self.horizontalLayout_20.setSpacing(20)
+        self.horizontalLayout_20.setObjectName(u"horizontalLayout_20")
+        self.horizontalLayout_20.setContentsMargins(0, 0, 0, 0)
+        self.label_27 = QLabel(self.frame_34)
+        self.label_27.setObjectName(u"label_27")
+        sizePolicy5.setHeightForWidth(self.label_27.sizePolicy().hasHeightForWidth())
+        self.label_27.setSizePolicy(sizePolicy5)
+        self.label_27.setFont(font6)
+
+        self.horizontalLayout_20.addWidget(self.label_27)
+
+        self.edit_collection_add_img_button = QPushButton(self.frame_34)
+        self.edit_collection_add_img_button.setObjectName(u"edit_collection_add_img_button")
+        sizePolicy6.setHeightForWidth(self.edit_collection_add_img_button.sizePolicy().hasHeightForWidth())
+        self.edit_collection_add_img_button.setSizePolicy(sizePolicy6)
+        self.edit_collection_add_img_button.setMinimumSize(QSize(0, 30))
+        self.edit_collection_add_img_button.setMaximumSize(QSize(16777215, 30))
+        self.edit_collection_add_img_button.setFont(font9)
+
+        self.horizontalLayout_20.addWidget(self.edit_collection_add_img_button)
+
+        self.horizontalSpacer_18 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_20.addItem(self.horizontalSpacer_18)
+
+
+        self.verticalLayout_20.addWidget(self.frame_34)
+
+        self.stackedWidget_3 = QStackedWidget(self.frame_33)
+        self.stackedWidget_3.setObjectName(u"stackedWidget_3")
+        self.stackedWidget_3.setMaximumSize(QSize(250, 300))
+        self.stackedWidget_3.setStyleSheet(u"QPushButton {\n"
+"    background-color:#58827E;\n"
+"	color: white;\n"
+"	border-radius: 8px;\n"
+"	border: none;\n"
+"}\n"
+"\n"
+"QPushButton::hover {\n"
+"	background-color: #4D7672;\n"
+"}")
+        self.page_5 = QWidget()
+        self.page_5.setObjectName(u"page_5")
+        self.verticalLayout_21 = QVBoxLayout(self.page_5)
+        self.verticalLayout_21.setObjectName(u"verticalLayout_21")
+        self.edit_collection_page_pic_label = QLabel(self.page_5)
+        self.edit_collection_page_pic_label.setObjectName(u"edit_collection_page_pic_label")
+        sizePolicy5.setHeightForWidth(self.edit_collection_page_pic_label.sizePolicy().hasHeightForWidth())
+        self.edit_collection_page_pic_label.setSizePolicy(sizePolicy5)
+        self.edit_collection_page_pic_label.setMinimumSize(QSize(0, 0))
+        self.edit_collection_page_pic_label.setMaximumSize(QSize(250, 250))
+        self.edit_collection_page_pic_label.setPixmap(QPixmap(u":/post_images/IMG_7107.jpg"))
+        self.edit_collection_page_pic_label.setScaledContents(True)
+
+        self.verticalLayout_21.addWidget(self.edit_collection_page_pic_label)
+
+        self.edit_collection_page_del_button = QPushButton(self.page_5)
+        self.edit_collection_page_del_button.setObjectName(u"edit_collection_page_del_button")
+        self.edit_collection_page_del_button.setFont(font12)
+
+        self.verticalLayout_21.addWidget(self.edit_collection_page_del_button)
+
+        self.stackedWidget_3.addWidget(self.page_5)
+        self.page_6 = QWidget()
+        self.page_6.setObjectName(u"page_6")
+        self.verticalLayout_22 = QVBoxLayout(self.page_6)
+        self.verticalLayout_22.setObjectName(u"verticalLayout_22")
+        self.image_label_4 = QLabel(self.page_6)
+        self.image_label_4.setObjectName(u"image_label_4")
+        sizePolicy5.setHeightForWidth(self.image_label_4.sizePolicy().hasHeightForWidth())
+        self.image_label_4.setSizePolicy(sizePolicy5)
+        self.image_label_4.setMinimumSize(QSize(0, 0))
+        self.image_label_4.setMaximumSize(QSize(250, 250))
+        self.image_label_4.setPixmap(QPixmap(u":/post_images/IMG_7105.jpg"))
+        self.image_label_4.setScaledContents(True)
+        self.image_label_4.setWordWrap(False)
+
+        self.verticalLayout_22.addWidget(self.image_label_4)
+
+        self.delete_button_4 = QPushButton(self.page_6)
+        self.delete_button_4.setObjectName(u"delete_button_4")
+        self.delete_button_4.setFont(font12)
+
+        self.verticalLayout_22.addWidget(self.delete_button_4)
+
+        self.stackedWidget_3.addWidget(self.page_6)
+
+        self.verticalLayout_20.addWidget(self.stackedWidget_3)
+
+        self.verticalSpacer_11 = QSpacerItem(20, 205, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_20.addItem(self.verticalSpacer_11)
+
+        self.frame_35 = QFrame(self.frame_33)
+        self.frame_35.setObjectName(u"frame_35")
+        sizePolicy2.setHeightForWidth(self.frame_35.sizePolicy().hasHeightForWidth())
+        self.frame_35.setSizePolicy(sizePolicy2)
+        self.frame_35.setStyleSheet(u"QPushButton {\n"
+"    background-color:#58827E;\n"
+"	color: white;\n"
+"	border-radius: 8px;\n"
+"	border: none;\n"
+"}\n"
+"\n"
+"QPushButton::hover {\n"
+"	background-color: #4D7672;\n"
+"}")
+        self.frame_35.setFrameShape(QFrame.StyledPanel)
+        self.frame_35.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_21 = QHBoxLayout(self.frame_35)
+        self.horizontalLayout_21.setSpacing(20)
+        self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
+        self.horizontalLayout_21.setContentsMargins(0, 0, 0, 0)
+        self.horizontalSpacer_20 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_21.addItem(self.horizontalSpacer_20)
+
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_21.addItem(self.horizontalSpacer_4)
+
+        self.edit_collection_page_save_button = QPushButton(self.frame_35)
+        self.edit_collection_page_save_button.setObjectName(u"edit_collection_page_save_button")
+        sizePolicy6.setHeightForWidth(self.edit_collection_page_save_button.sizePolicy().hasHeightForWidth())
+        self.edit_collection_page_save_button.setSizePolicy(sizePolicy6)
+        self.edit_collection_page_save_button.setMinimumSize(QSize(0, 30))
+        self.edit_collection_page_save_button.setMaximumSize(QSize(16777215, 30))
+        self.edit_collection_page_save_button.setFont(font9)
+
+        self.horizontalLayout_21.addWidget(self.edit_collection_page_save_button)
+
+
+        self.verticalLayout_20.addWidget(self.frame_35)
+
+
+        self.horizontalLayout_15.addWidget(self.frame_33)
+
+
+        self.verticalLayout_24.addWidget(self.frame_30)
+
+        self.stackedWidget.addWidget(self.edit_collection)
 
         self.horizontalLayout_2.addWidget(self.stackedWidget)
 
@@ -2144,7 +3027,9 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget_2.setCurrentIndex(0)
+        self.stackedWidget_3.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -2162,18 +3047,46 @@ class Ui_MainWindow(object):
         self.page_label.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" color:#000000;\">History</span></p></body></html>", None))
         self.curate_label.setText("")
         self.label.setText(QCoreApplication.translate("MainWindow", u"My Store", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Information", None))
-        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Products", None))
-        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"Collections", None))
-        self.pushButton_4.setText(QCoreApplication.translate("MainWindow", u"Orders", None))
-        self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"Reviews", None))
+        self.info_button.setText(QCoreApplication.translate("MainWindow", u"Information", None))
+        self.products_button.setText(QCoreApplication.translate("MainWindow", u"Products", None))
+        self.collections_button.setText(QCoreApplication.translate("MainWindow", u"Collections", None))
+        self.orders_button.setText(QCoreApplication.translate("MainWindow", u"Orders", None))
+        self.reviews_button.setText(QCoreApplication.translate("MainWindow", u"Reviews", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Information", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Products", None))
-        self.view_product_button_9.setText(QCoreApplication.translate("MainWindow", u"+", None))
-        self.all_2.setText(QCoreApplication.translate("MainWindow", u"All", None))
-        self.to_pay_2.setText(QCoreApplication.translate("MainWindow", u"Live", None))
-        self.to_be_delivered_2.setText(QCoreApplication.translate("MainWindow", u"Starting", None))
-        self.completed_2.setText(QCoreApplication.translate("MainWindow", u"Completed", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Store Name", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Email", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Phone Number", None))
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"Description", None))
+        self.info_page_name_edit.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Manrope'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">sample_name</p></body></html>", None))
+        self.info_page_email_edit.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">sample_email</span></p></body></html>", None))
+        self.info_page_phone_number_edit.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">sample_phonenumber</span></p></body></html>", None))
+        self.info_page_description_edit.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">sample_description</span></p></body></html>", None))
+        self.label_12.setText(QCoreApplication.translate("MainWindow", u"Store Icon", None))
+        self.info_page_edit_button.setText(QCoreApplication.translate("MainWindow", u"Edit", None))
+        self.info_page_picture.setText("")
+        self.info_page_save_button.setText(QCoreApplication.translate("MainWindow", u"Save", None))
+        self.products_label.setText(QCoreApplication.translate("MainWindow", u"Products", None))
+        self.product_page_add_product_button.setText(QCoreApplication.translate("MainWindow", u"+", None))
+        self.product_page_all_button.setText(QCoreApplication.translate("MainWindow", u"All", None))
+        self.product_page_live_button.setText(QCoreApplication.translate("MainWindow", u"Live", None))
+        self.product_page_starting_button.setText(QCoreApplication.translate("MainWindow", u"Starting", None))
+        self.product_page_completed_button.setText(QCoreApplication.translate("MainWindow", u"Completed", None))
         self.product_image_label.setText("")
         self.product_name_label.setText(QCoreApplication.translate("MainWindow", u"Product Name", None))
         self.price_label.setText(QCoreApplication.translate("MainWindow", u"999 B", None))
@@ -2202,12 +3115,12 @@ class Ui_MainWindow(object):
         self.mode_label_8.setText(QCoreApplication.translate("MainWindow", u"Mode:  CF no CC", None))
         self.status_label_8.setText(QCoreApplication.translate("MainWindow", u"Status: Live", None))
         self.view_product_button_8.setText(QCoreApplication.translate("MainWindow", u"Configure Product", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Collections", None))
-        self.view_product_button_14.setText(QCoreApplication.translate("MainWindow", u"+", None))
-        self.all_3.setText(QCoreApplication.translate("MainWindow", u"All", None))
-        self.to_pay_3.setText(QCoreApplication.translate("MainWindow", u"Live", None))
-        self.to_be_delivered_3.setText(QCoreApplication.translate("MainWindow", u"Starting", None))
-        self.completed_3.setText(QCoreApplication.translate("MainWindow", u"Completed", None))
+        self.collection_label.setText(QCoreApplication.translate("MainWindow", u"Collections", None))
+        self.collection_page_add_collection_button.setText(QCoreApplication.translate("MainWindow", u"+", None))
+        self.collection_page_all_button.setText(QCoreApplication.translate("MainWindow", u"All", None))
+        self.collection_page_live_button.setText(QCoreApplication.translate("MainWindow", u"Live", None))
+        self.collection_page_starting_button.setText(QCoreApplication.translate("MainWindow", u"Starting", None))
+        self.collection_page_completed_button.setText(QCoreApplication.translate("MainWindow", u"Completed", None))
         self.product_image_label_9.setText("")
         self.collection_name_label.setText(QCoreApplication.translate("MainWindow", u"Collection Name", None))
         self.sale_date_label_9.setText(QCoreApplication.translate("MainWindow", u"Sale Date: Mon 26 Jan 19:00", None))
@@ -2226,12 +3139,12 @@ class Ui_MainWindow(object):
         self.mode_label_11.setText(QCoreApplication.translate("MainWindow", u"Mode:  CF no CC", None))
         self.status_label_11.setText(QCoreApplication.translate("MainWindow", u"Status: Live", None))
         self.view_product_button_12.setText(QCoreApplication.translate("MainWindow", u"Configure Product", None))
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Orders", None))
-        self.order_all_button.setText(QCoreApplication.translate("MainWindow", u"All", None))
-        self.unpaid_button.setText(QCoreApplication.translate("MainWindow", u"Unpaid", None))
-        self.shipping_button.setText(QCoreApplication.translate("MainWindow", u"Shipping", None))
-        self.completed_button.setText(QCoreApplication.translate("MainWindow", u"Completed", None))
-        self.cancelled_button.setText(QCoreApplication.translate("MainWindow", u"Cancelled", None))
+        self.order_label.setText(QCoreApplication.translate("MainWindow", u"Orders", None))
+        self.order_page_all_button.setText(QCoreApplication.translate("MainWindow", u"All", None))
+        self.orders_page_unpaid_button.setText(QCoreApplication.translate("MainWindow", u"Unpaid", None))
+        self.orders_page_shipping_button.setText(QCoreApplication.translate("MainWindow", u"Shipping", None))
+        self.orders_page_completed_button.setText(QCoreApplication.translate("MainWindow", u"Completed", None))
+        self.oders_page_cancelled_button.setText(QCoreApplication.translate("MainWindow", u"Cancelled", None))
         self.product_image_label_13.setText("")
         self.product_name_label_9.setText(QCoreApplication.translate("MainWindow", u"Product Name", None))
         self.buyer_name.setText(QCoreApplication.translate("MainWindow", u"Buyer: user_name1", None))
@@ -2256,5 +3169,71 @@ class Ui_MainWindow(object):
         self.mode_label_15.setText(QCoreApplication.translate("MainWindow", u"Mode:  CF no CC", None))
         self.status_label_15.setText(QCoreApplication.translate("MainWindow", u"Status: Unpaid", None))
         self.price_label_11.setText(QCoreApplication.translate("MainWindow", u"Price: 999 B", None))
+        self.label_18.setText(QCoreApplication.translate("MainWindow", u"Edit Product", None))
+        self.label_11.setText(QCoreApplication.translate("MainWindow", u"Product Name", None))
+        self.label_13.setText(QCoreApplication.translate("MainWindow", u"Price", None))
+        self.label_14.setText(QCoreApplication.translate("MainWindow", u"Tags", None))
+        self.label_19.setText(QCoreApplication.translate("MainWindow", u"Mode", None))
+        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Begin Date", None))
+        self.label_15.setText(QCoreApplication.translate("MainWindow", u"Description", None))
+        self.edit_product_page_name_Edit.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Manrope'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">sample_name</p></body></html>", None))
+        self.edit_product_page_price_edit.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">sample_price</span></p></body></html>", None))
+        self.edit_product__page_tags_edit.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">sample_tags</span></p></body></html>", None))
+        self.edit_product_page_mode_combobox.setItemText(0, QCoreApplication.translate("MainWindow", u"cf no cc", None))
+        self.edit_product_page_mode_combobox.setItemText(1, QCoreApplication.translate("MainWindow", u"bidding", None))
+
+        self.edit_product_page_des_edit.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">sample_description</span></p></body></html>", None))
+        self.label_16.setText(QCoreApplication.translate("MainWindow", u"Images", None))
+        self.edit_prodcut_page_add_image_button.setText(QCoreApplication.translate("MainWindow", u"Add Image", None))
+        self.edit_product_page_image_label.setText("")
+        self.edit_product_page_delete_button.setText(QCoreApplication.translate("MainWindow", u"Delete", None))
+        self.image_label_2.setText("")
+        self.delete_button.setText(QCoreApplication.translate("MainWindow", u"Delete", None))
+        self.edit_product_page_save_button.setText(QCoreApplication.translate("MainWindow", u"Save", None))
+        self.collection_label_2.setText(QCoreApplication.translate("MainWindow", u"Edit Collection", None))
+        self.label_17.setText(QCoreApplication.translate("MainWindow", u"Col. Name", None))
+        self.label_23.setText(QCoreApplication.translate("MainWindow", u"Tags", None))
+        self.label_25.setText(QCoreApplication.translate("MainWindow", u"Begin Date", None))
+        self.label_26.setText(QCoreApplication.translate("MainWindow", u"Description", None))
+        self.label_28.setText(QCoreApplication.translate("MainWindow", u"Products", None))
+        self.edit_collection_name_edit.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Manrope'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">sample_name</p></body></html>", None))
+        self.edit_collection_tag_edit.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">sample_tags</span></p></body></html>", None))
+        self.edit_collection_des_edit.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Manrope'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt;\">sample_description</span></p></body></html>", None))
+        self.edit_collection_page_add_product.setText(QCoreApplication.translate("MainWindow", u"Add Products", None))
+        self.label_27.setText(QCoreApplication.translate("MainWindow", u"Images", None))
+        self.edit_collection_add_img_button.setText(QCoreApplication.translate("MainWindow", u"Add Image", None))
+        self.edit_collection_page_pic_label.setText("")
+        self.edit_collection_page_del_button.setText(QCoreApplication.translate("MainWindow", u"Delete", None))
+        self.image_label_4.setText("")
+        self.delete_button_4.setText(QCoreApplication.translate("MainWindow", u"Delete", None))
+        self.edit_collection_page_save_button.setText(QCoreApplication.translate("MainWindow", u"Save", None))
     # retranslateUi
 

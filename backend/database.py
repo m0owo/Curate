@@ -82,6 +82,7 @@ root.posts = BTrees.OOBTree.BTree()
 root.tags = BTrees.OOBTree.BTree()
 root.addresses = BTrees.OOBTree.BTree()
 root.orders = BTrees.OOBTree.BTree()
+root.stores =  BTrees.OOBTree.BTree()
 
 #topic tags, prolly gonna keep information like statistics??
 class Tag(persistent.Persistent):
@@ -463,15 +464,62 @@ class Seller(Account):
         
 
 class Store:
-    def __init__(self, user_name, store_name, email, phone_num, description, picture):
-        self.user_name = user_name
+    def __init__(self, store_id, user_name, store_name, email, phone_num, description, picture):
+        self.store_id = store_id
+        self.store_user_name = user_name
         self.store_name = store_name
         self.email = email
         self.phone_num = phone_num
         self.description = description
-        self.picture = self.picture
+        self.picture = picture
         self.items = persistent.list.PersistentList()
         self.collections = persistent.list.PersistentList()
+        self.orders = persistent.list.PersistentList()
+        self.reviews = persistent.list.PersistentList()
+    def get_id(self):
+        return self.store_id
+    def add_itme(self, item):
+        self.items.append(item)
+    def add_collection(self, collection):
+        self.collections.append(collection)
+    def add_order(self, order):
+        self.orders.append(order)
+    def add_review(self, review):
+        self.reviews.append(review)
+    def change_picture(self, picture):
+        self.picture = picture
+    def serialize(self):
+        collections = [c.serialize() for c in self.collections]
+        items = [i.serialize() for i in self.items]
+        orders = [o.serialize() for o in self.orders]
+
+        return{
+            "store_id" : self.store_id,
+            "store_user_name": self.store_user_name,
+            "store_name" : self.store_name,
+            "email" : self.email,
+            "phone_number" : self.phone_num,
+            "description" : self.description,
+            "picture" : self.picture,
+            "items" : items,
+            "collections" : collections,
+            "orders" : orders 
+            
+        }
+    def print_info(self):
+        serialized_collection = [collection.serialize() for collection in self.collections]
+        serialized_items =  [item.serialize() for item in self.items]
+        serialized_orders = [order.serialize() for order in self.orders]
+        print(f'----Store Info---\n'
+            f'username: {self.store_user_name}\n'
+            f'store name: {self.store_name}\n'
+            f'store_id: {self.store_id}')
+            # f'collections: {serialized_collection}\n'
+            # f'items: {serialized_items}\n'
+            # f'order: {serialized_orders}\n')
+
+        
+        
         
 # accounts
 # key value = username
@@ -586,6 +634,11 @@ root.orders[order2.get_order_id()] = order2
 admin_1.add_wishlist(item1)
 admin_1.add_wishlist(item2)
 admin_1.add_wishlist(item3)
+#self, store_id, user_name, store_name, email, phone_num, description, picture)
+store_admin = Store(generate_id("products"), "adminnajaa~~", "Admin Kai kong", "kaikongaddmin1@gmail.com", "000000000", "Admin yark kai kong ka", col1_pics_data)
+store_admin.collections.append(col1)
+store_admin.items.append(item1)
+root.stores[store_admin.get_id()] = store_admin
 
 transaction.commit()
 if  __name__ == "__main__":
@@ -617,4 +670,16 @@ if  __name__ == "__main__":
     orders_data = [order.serialize() for order in new_order_details]   
     print(orders_data)
     
+        
+    stores = root.stores 
+    for key in stores:
+        stores[key].print_info()
+        
+    print("Check whether create a store yet")
+    stores = root.stores
+    for key in stores:
+        if stores[key].store_user_name == "adminnajaa~~":
+            print({'success' : True, 'exists' : True})
+        else: print({'success' : True, 'exists' : False})
+        
     

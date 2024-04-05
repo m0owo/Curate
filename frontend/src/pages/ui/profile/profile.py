@@ -121,6 +121,8 @@ class ProfileUI(QDialog):
         self.ui.wishlist_button.clicked.connect(self.to_wishlist_page)
         self.ui.info_button.clicked.connect(self.to_info_page)
         self.ui.address_button.clicked.connect(self.to_address_page)
+        self.ui.address_button_2.clicked.connect(self.to_store_page)
+        
         
         self.ui.save_button.clicked.connect(self.save_new_info)
         self.name = self.ui.name_edit
@@ -129,6 +131,8 @@ class ProfileUI(QDialog):
         self.male = self.ui.male_button
         self.female = self.ui.female_button
         # self.other = self.ui.others_button
+        
+        
     def to_home_page(self):
         self.stacked_widget.setCurrentIndex(1) 
     def to_history_page(self):
@@ -140,14 +144,57 @@ class ProfileUI(QDialog):
     def to_address_page(self):
         self.stacked_widget.setCurrentIndex(4)
         print("Clicked to address page from info page")
+    def to_store_page(self):
+        self.stacked_widget.setCurrentIndex(8)
         
     def to_infopage(self):
         print("Clicked info page from info page")
                 
     def save_new_info(self):
         print(f"Name: {self.name.toPlainText()}, Mail: {self.mail.toPlainText()}, Phone: {self.phone.toPlainText()}") 
-             
         
+    def receive_large_data(self, conn):
+        total_chunks = pickle.loads(conn.recv(4096))
+        received_data = b''
+        for _ in range(total_chunks):
+            chunk = conn.recv(4096)
+            received_data += chunk
+            # print(f'chunk {chunk}')
+        return pickle.loads(received_data)
+    
+    def send_large_data(self, sock, data):
+        serialized_data = pickle.dumps(data)
+        total_size = len(serialized_data)
+        bytes_sent = 0
+
+        while bytes_sent < total_size:
+            chunk = serialized_data[bytes_sent : bytes_sent + 4096]  # Chunk size of 4096 bytes
+            sock.sendall(chunk)
+            bytes_sent += len(chunk)
+    
+    def fetch_check_store_exist(self, user_id, user_name):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+            try:
+                print("Checking Store exists")
+                print("Step 1: Establishing connection...")
+                client_socket.connect((self.server_host, self.server_port))
+                print("Step 2: Sending request...")
+                request_data = {'action': 'check_store', 'user_name': user_name["username"]}
+                client_socket.sendall(pickle.dumps(request_data))
+                print("Step 3: Receiving response...")
+                response_data = self.receive_large_data(client_socket)
+                print("Received response:", response_data)
+                print("Step 4: Unpacking response...")
+                if response_data['success']:
+                    print("Check store exists")
+                    if response_data['exists']:
+                        print("Bro change my name alr")
+                        self.ui.address_button_2.setText("Manage Shop")
+                else:
+                    print("Failed to check to store:", response_data['message'])
+            except Exception as e:
+                print("Failed to check to store::", e)
+                
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id
         self.user_data = user_data
@@ -172,6 +219,7 @@ class ProfileUI(QDialog):
             year, month, day = birthdate.year, birthdate.month, birthdate.day
             qdate = QDate(year, month, day)
             self.ui.date_edit.setDate(qdate)
+            
             
     def save_new_info(self):
         if self.user_data is None:
@@ -217,6 +265,7 @@ class ProfileAddressUI(QDialog):
         self.ui.info_button.clicked.connect(self.to_info_page)
         self.ui.address_button.clicked.connect(self.to_address_page)
         self.ui.add_address_button.clicked.connect(self.add_address)
+        self.ui.create_shop_button.clicked.connect(self.to_store_page)
         
         # Create a QTimer object for periodic updates
         self.timer = QTimer(self)
@@ -233,6 +282,8 @@ class ProfileAddressUI(QDialog):
         self.stacked_widget.setCurrentIndex(3)
     def to_address_page(self):
         self.stacked_widget.setCurrentIndex(4)
+    def to_store_page(self):
+        self.stacked_widget.setCurrentIndex(8)
     
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id
@@ -274,7 +325,7 @@ class ProfileAddressUI(QDialog):
                 response = client_socket.recv(4096)
                 response_data = pickle.loads(response)
                 if response_data['success']:
-                    print("Get new user data done!")
+                    # print("Get new user data done!")
                     return response_data['user_data']
                 else:
                     print("Failed to save new information:", response_data['message'])
@@ -282,14 +333,13 @@ class ProfileAddressUI(QDialog):
                 print("Error saving new information:", e)
                 
     def update_address_data(self):
-        # Dummy method for updating address data periodically
-        print("Updating address data...")
+        # print("Updating address data...")
         username = self.user_data.get("username")
         if username:
             user_data = self.fetch_user_data(username)
             if user_data:
                 self.populate_address_widgets(user_data.get("addresses"))
-                print("Address data updated successfully")
+                # print("Address data updated successfully")
             else:
                 print("Failed to fetch updated user data")
         
