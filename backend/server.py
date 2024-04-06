@@ -244,7 +244,7 @@ def get_posts_by_name(data_dict):
                 product_name = post_details.get_product().get_name()
                 score = process.extractOne(name, [product_name], scorer=fuzz.token_set_ratio)
                 print(f"Post Name: {product_name}, Search Query: {name}, Score: {score}")
-                if score[1] >= 70:
+                if score[1] >= 60:
                     search_results.append(post_details)
         else:
             print("No posts found.")
@@ -255,6 +255,47 @@ def get_posts_by_name(data_dict):
         traceback.print_exc()
         print("Error:", e)
         return {'success': False, 'message': 'Failed search'}
+
+def get_tags_by_name(data_dict):
+    try:
+        name = data_dict.get('name')
+        tags = root.tags
+        tag_scores = {}
+
+        search_results = []
+        if tags:
+            for tag in tags:
+                tag_text = tag.get_tag_text()
+                score = process.extractOne(name, [tag_text], scorer=fuzz.token_set_ratio)
+                if score[1] >= 60:
+                    tag_scores[tag] = score[1]
+
+            # Sort the tags based on scores in descending order
+            sorted_tags = sorted(tag_scores.items(), key=lambda x: x[1], reverse=True)
+
+            # Limit the search results to 5 tags with the best scores
+            for tag, score in sorted_tags[:5]:
+                search_results.append(tag)
+        else:
+            print("No tag found")
+        tags = [x.serialize() for x in search_results]
+        return {'success': True, 'tags': tags}
+    except Exception as e:
+        traceback.print_exc()
+        print("Error:", e)
+        return {'success': False, 'message': 'Failed search'}
+
+def get_all_tags():
+    try:
+        tags = root.tags
+        sorted_tags = sorted(tags.values(), key=lambda x: x.times_used, reverse=True)
+        top_5_tags = sorted_tags[:5]
+        result = [tag.serialize() for tag in top_5_tags]
+        return {'success': True, 'tags': result}
+    except Exception as e:
+        traceback.print_exc()
+        print("Error:", e)
+        return {'success': False, 'message': 'Couldnt retrieve tags'}
 
     
 def handle_request(conn):
@@ -318,6 +359,14 @@ def handle_request(conn):
         elif action == "get_posts_by_name":
             print("searching for posts by name")
             response = get_posts_by_name(data_dict)
+            send_large_data(conn, response)
+            
+        elif action == "get_tags_by_name":
+            response = get_tags_by_name(data_dict)
+            send_large_data(conn, response)
+        
+        elif action == "get_all_tags":
+            response = get_all_tags()
             send_large_data(conn, response)
 
         else:

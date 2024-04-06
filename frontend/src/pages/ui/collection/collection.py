@@ -359,7 +359,7 @@ class CollectionUI(QMainWindow):
         i = 0
         total_width = 0
         for tag in tags:
-            tag_button = BigPostTagButton(tag.get('tag_text'))
+            tag_button = BigPostTagButton(tag)
             total_width += set_preferred_size(tag_button.get_tag_button()).size().width()
             total_width += (5 * len(self.tags))
         clear_widget(self.ui.tags_frame_widget)
@@ -368,7 +368,7 @@ class CollectionUI(QMainWindow):
         #     print(f'total width: {total_width}\n {self.ui.tags_frame.viewport().size().width()}')
         num_columns = self.ui.tags_frame.viewport().size().width() // 100
         for tag in tags:
-            tag_button = BigPostTagButton(tag.get('tag_text'), self.ui.tags_frame_widget)
+            tag_button = BigPostTagButton(tag, self.ui.tags_frame_widget)
             row = i // num_columns
             column = i % num_columns
             self.ui.tags_frame_layout.addWidget(set_preferred_size(tag_button.get_tag_button()), row, column, alignment=Qt.AlignTop)

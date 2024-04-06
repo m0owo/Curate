@@ -248,6 +248,8 @@ class HomeUI(QMainWindow):
         self.ui.setupUi(self)
         self.server_host = server_host
         self.server_port = server_port
+        self.search_timer = None
+        self.DEBOUNCE_INTERVAL = 0.5 
 
         # nav bar
         shadow = QGraphicsDropShadowEffect(self)
@@ -305,7 +307,8 @@ class HomeUI(QMainWindow):
     
     def search(self):
         input = self.ui.search_edit.text()
-        self.get_posts(input, 'name')
+        self.get_posts(input)
+        # self.get_pop_tags(input)
 
     def handle_post_click(self, details):
         # sender information is for the path to product and the stackedwidget and stackedwidget index
@@ -372,10 +375,10 @@ class HomeUI(QMainWindow):
             sock.sendall(chunk)
             bytes_sent += len(chunk)
 
-    def get_posts(self, search_by = None, category = None):
+    def get_posts(self, search_by = None):
         retries = 100
         request_data = {}
-        if search_by and category == 'name':
+        if search_by:
             print(f"Getting all posts with name related to {search_by}")
             request_data = {'action': 'get_posts_by_name', 'name': search_by}
         else:
@@ -408,16 +411,47 @@ class HomeUI(QMainWindow):
                     time.sleep(1)
                     continue
 
-    def get_pop_tags(self, user_id = None):
-        #get the most popular tags first if no user_id
-        pop_tags = {"Crochet", "Y2K", "Summer Outfit", "Bam Yang Gang", "Acubi"}
-        self.populate_tags(pop_tags)
+    def get_pop_tags(self, search_by = None, user_id = None):
+        # pop_tags = {"Crochet", "Y2K", "Summer Outfit", "Bam Yang Gang", "Acubi"}
+        retries = 100
+        request_data = {}
+        if search_by:
+            print(f'Getting all tags with name related to {search_by}')
+            request_data = {'action': 'get_tags_by_name', 'name': search_by}
+        else:
+            print('Getting all tags from the server')
+            request_data = {'action': 'get_all_tags'}
+        for attempt in range(retries):
+            try:
+                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+                    client_socket.connect((self.server_host, self.server_port))
+
+                    client_socket.sendall(pickle.dumps(request_data))
+
+                    response = self.receive_large_data(client_socket)
+                    if response.get('success'):
+                        tags = response.get('tags')
+                        print(tags)
+                        self.populate_tags(tags)
+                        break 
+                    else:
+                        print("Failed to get all the data:", response.get('message'))
+            except socket.error as se:
+                print("Socket error:", se)
+            except pickle.PickleError as pe:
+                print("Error in pickle operation:", pe)
+            except Exception as e:
+                print("An unexpected error occurred:", e)
+                traceback.print_exc()
+                if attempt < retries - 1: 
+                    print("Retrying...")
+                    time.sleep(1)
+                    continue
 
     def populate_tags(self, pop_tags):
         for pop_tag in pop_tags:
             print("Adding tag:", pop_tag)
             TagButton(pop_tag, self.ui.tags_frame)
-        # print("Tags populated successfully.")
     
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id

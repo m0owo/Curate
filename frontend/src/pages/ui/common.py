@@ -54,11 +54,8 @@ class ClickablePost(QFrame):
             self.clicked.emit(self.details)
 
 class TagButton():
-    def __init__(self, text, container = None, tag = None):
-        if tag:
-            self.tag_text = tag.get_tag_text()
-            self.get_link = tag.get_link()
-        self.temp_text = text.lower()
+    def __init__(self, tag, container = None):
+        self.temp_text = tag.get('tag_text').lower()
         self.container = container
         if container:
             self.tag_button = QPushButton()
@@ -80,34 +77,48 @@ class TagButton():
         return self.tag_button
     
 class BigPostTagButton(TagButton):
-    def __init__(self, text, container = None, tag = None):
-        super().__init__(text, container, tag)
+    def __init__(self, tag, container = None):
+        super().__init__(tag, container)
         self.tag_button.setStyleSheet("QPushButton {font:600 16pt Manrope;color:rgb(137, 153, 211);"
                                       "text-align: center; background-color: #E8F3F2;"
                                       "border-radius: 5px;}QPushButton:hover{background-color:rgb(201, 212, 249); color:rgb(238, 248, 255);}")
         set_preferred_size(self.tag_button, 60, 40)
 
 class PostTagButton(TagButton):
-    def __init__(self, text, container = None, tag = None):
-        super().__init__(text, container, tag)
+    def __init__(self, tag, container = None):
+        super().__init__(tag, container)
         self.tag_button.setStyleSheet("QPushButton {font:600 11pt Manrope;color:rgb(137, 153, 211);"
                                       "text-align: center; background-color: #E8F3F2;"
                                       "border-radius: 5px;}QPushButton:hover{background-color:rgb(201, 212, 249); color:rgb(238, 248, 255);}")
         set_preferred_size(self.tag_button, 10)
 
-class SaleTypeTagButton(PostTagButton):
-    def __init__(self, text, container = None, tag = None):
-        super().__init__(text, container, tag)
+class SaleTypeTagButton():
+    def __init__(self, text, container = None):
+        self.temp_text = text
+        self.container = container
+
+        if container:
+            self.tag_button = QPushButton()
+            self.container.layout().addWidget(self.tag_button)
+        else:
+            self.tag_button = QPushButton()
+
+        self.tag_button.setText(self.temp_text)
         self.tag_button.setStyleSheet("QPushButton {font:600 11pt Manrope;text-align:center;"
                                       "background-color: rgb(250, 234, 225);color:rgb(176, 98, 106);"
                                       "border-radius: 5px;}QPushButton:hover{background-color:rgb(242, 207, 199); color:rgb(179, 85, 82);}")
+        
+        set_preferred_size(self.tag_button, 20)
+    def get_tag_button(self):
+        return self.tag_button
 
-class ProductTypeTagButton(PostTagButton):
-    def __init__(self, text, container = None, tag = None):
-        super().__init__(text, container, tag)
+class ProductTypeTagButton(SaleTypeTagButton):
+    def __init__(self, text, container = None):
+        super().__init__(text, container)
         self.tag_button.setStyleSheet("QPushButton {font:600 11pt Manrope;text-align:center;"
                                       "background-color:#feecc7;color:#fba224;"
                                       "border-radius: 5px;}QPushButton:hover{background-color:#fdd78a; color:#fff5e1;}")
+        
 def clear_frame(frame):
     for widget in frame.findChildren(QPushButton):
         frame.layout().removeWidget(widget)
