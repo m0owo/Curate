@@ -976,14 +976,24 @@ post23 = PostDetails(generate_id('posts'), store_5, item23, item23.get_pr_descri
 root.posts[post23.get_id()] = post23
 
 # order history appear only in admin_1 interface (admin_1 is the buyer)
-order1 = Order(10000, item1, user_2.get_username(), user_1.get_username())
+
+order1 = Order(10000, item1, admin_1.get_username(), user_1.get_username())
 root.orders[order1.get_order_id()] = order1
 
-order2 = Order(10001, item2, user_2.get_username(), user_1.get_username(), status="shipping")
+order2 = Order(10001, item2, admin_1.get_username(), user_1.get_username(), status="shipping")
 root.orders[order2.get_order_id()] = order2
 
-order3 = Order(10002, item3, user_3.get_username(), user_1.get_username())
+order3 = Order(10002, item1, user_1.get_username(), user_1.get_username())
 root.orders[order3.get_order_id()] = order3
+
+# order1 = Order(10000, item1, user_2.get_username(), user_1.get_username())
+# root.orders[order1.get_order_id()] = order1
+
+# order2 = Order(10001, item2, user_2.get_username(), user_1.get_username(), status="shipping")
+# root.orders[order2.get_order_id()] = order2
+
+# order3 = Order(10002, item3, user_3.get_username(), user_1.get_username())
+# root.orders[order3.get_order_id()] = order3
 
 order4 = Order(10003, item4, user_3.get_username(), user_1.get_username())
 root.orders[order4.get_order_id()] = order4

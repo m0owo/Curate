@@ -17,7 +17,7 @@ if __name__ == "__main__":
     
     server_host = 'localhost'
     # server_host = 'k.tail8a472.ts.net'
-    server_port = 9999
+    server_port = 8888
 
     login_ui = LoginUI(widget,server_host, server_port)
     home_ui = HomeUI(widget, server_host, server_port)

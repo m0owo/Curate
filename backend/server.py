@@ -430,4 +430,4 @@ def start_server(host, port):
             print("Server shutting down.")
 
 if __name__ == "__main__":
-    start_server('localhost', 9999)  # Change host and port as needed
+    start_server('localhost', 8888)  # Change host and port as needed
