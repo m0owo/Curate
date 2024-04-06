@@ -167,20 +167,12 @@ class ProfileUI(QDialog):
             received_data += chunk
             # print(f'chunk {chunk}')
         return pickle.loads(received_data)
-    
-    def send_large_data(self, sock, data):
-        serialized_data = pickle.dumps(data)
-        total_size = len(serialized_data)
-        bytes_sent = 0
 
-        while bytes_sent < total_size:
-            chunk = serialized_data[bytes_sent : bytes_sent + 4096]  # Chunk size of 4096 bytes
-            sock.sendall(chunk)
-            bytes_sent += len(chunk)
     
     def fetch_check_store_exist(self, user_id, user_name):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             try:
+                
                 print("Checking Store exists")
                 print("Step 1: Establishing connection...")
                 client_socket.connect((self.server_host, self.server_port))

@@ -393,7 +393,7 @@ class HomeUI(QMainWindow):
                         post_details = response.get('post_details')
                         print(post_details)
                         self.populate_posts(post_details)
-                        break 
+                        break;     
                     else:
                         print("Failed to get all the data:", response.get('message'))
             except socket.error as se:
@@ -407,7 +407,6 @@ class HomeUI(QMainWindow):
                     print("Retrying...")
                     time.sleep(1)
                     continue
-
     def get_pop_tags(self, user_id = None):
         #get the most popular tags first if no user_id
         pop_tags = {"Crochet", "Y2K", "Summer Outfit", "Bam Yang Gang", "Acubi"}

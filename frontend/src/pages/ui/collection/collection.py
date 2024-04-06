@@ -56,7 +56,28 @@ class CollectionUI(QMainWindow):
         self.ui.history_button.clicked.connect(self.to_history)
         self.ui.wishlist_button.clicked.connect(self.to_wishlist)
         self.ui.home_button.clicked.connect(self.to_home)
-    
+        
+        self.ui.buy_bt.clicked.connect(self.make_order)
+        
+    def send_large_data(self, conn, data):
+        try:
+            # Send metadata or instructions about the data
+            if isinstance(data, dict):
+                conn.sendall(pickle.dumps(data))
+                return
+
+            # Send total number of chunks for large data
+            total_chunks = len(data) // 4096 + 1
+            conn.sendall(pickle.dumps(total_chunks))
+
+            # Send actual data chunks
+            for i in range(0, len(data), 4096):
+                chunk = data[i:i+4096]
+                print(chunk)
+                conn.sendall(chunk)
+        except Exception as e:
+            print("Error sending data:", e)
+        
     def show_item_data(self, item_index):
         if item_index == 0:
             print("old path", self.old_path)
@@ -260,7 +281,7 @@ class CollectionUI(QMainWindow):
             self.ui.horizontalLayout_3.addWidget(self.ui.go_to_item)
             self.ui.go_to_item.clicked.connect(self.show_item_data(1))
         print("Post data loaded.")
-
+        
     def update_status_label(self, new_status):
         new_status[1].upper()
         self.ui.status_label.setText(new_status)
@@ -302,7 +323,32 @@ class CollectionUI(QMainWindow):
                 if attempt < retries - 1: 
                     print("Retrying...")
                     continue
-
+    # def __init__(self, order_id, product, buyer, seller, status="unpaid"):        
+    def make_order(self):
+        print('\n\n\n\n MAKE ORDER \n\n\n\n\n')
+        if self.ui.status_label.text() == "Available":
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+                try:
+                    print("Creating new order")
+                    print("Step 1: Establishing connection...")
+                    client_socket.connect((self.server_host, self.server_port))
+                    print("Step 2: Sending request...")
+                    request_data = {'action': 'make_order', 'product' : self.product, 'buyer' : self.user_data['username'], 'seller' : self.ui.store_name_label.text(), "status": "unpaid"}
+                    print(f"REQUEST DATA {request_data}")
+                    self.send_large_data(client_socket, pickle.dumps(request_data))
+                    #For small data
+                    # client_socket.sendall(pickle.dumps(request_data))
+                    print("Step 3: Receiving response...")
+                    response_data = self.receive_large_data(client_socket)
+                    print("Received response:", response_data)
+                    print("Step 4: Unpacking response...")
+                    if response_data['success']:
+                        print(response_data['success'])
+                    else:
+                        print("Creating new order:", response_data['success'])
+                except Exception as e:
+                    print("Failed to Creating new order(e):", e)
+        else: print("STATUS NONONO")
     def update_store_data(self, store_data):
         print('store data', store_data.get('store_id'))
         author_pic = store_data.get('picture')
@@ -403,12 +449,12 @@ class CollectionUI(QMainWindow):
         print(f'{path_source.get_stacked_widget()}')
         print(f'{path_source.get_stacked_index()}\n')
         stacked_widget = path_source.get_stacked_widget()
-        index = path_source.get_stacked_index()
+        self.index = path_source.get_stacked_index()
         if isinstance(stacked_widget, QStackedWidget):
-            stacked_widget.setCurrentIndex(index)
+            stacked_widget.setCurrentIndex(self.index)
         elif isinstance(stacked_widget, list):
-            print("index", index)
-            self.show_item_data(self.items[index])
+            print("index", self.index)
+            self.show_item_data(self.items[self.index])       
 
     def to_profile(self):
         self.stacked_widget.setCurrentIndex(3)

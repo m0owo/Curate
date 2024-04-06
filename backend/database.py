@@ -42,7 +42,7 @@ images_path_k = r'C:\Users\Miki Ajiki\Desktop\Curate\frontend\public\images\post
 
 # getting webP image data
 def get_webp_data(image_name):
-    full_image_path = images_path_putter + image_name
+    full_image_path = images_path_k + image_name
     try:
         with Image.open(full_image_path) as img:
             webp_data = io.BytesIO()
@@ -134,6 +134,8 @@ class Product(persistent.Persistent):
         self.description = description
         for tag in tags:
             self.tags.append(tag)
+        self.wishlist = persistent.list.PersistentList()
+        self.queue = persistent.list.PersistentList()
     def get_id(self):
         return self.pr_id
     def get_name(self):
@@ -171,7 +173,10 @@ class Product(persistent.Persistent):
             'end': self.end_date,
             'images' : self.images,
             'tags': [tag.serialize() for tag in self.tags],
-            'description': self.description
+            'description': self.description,
+            'wishlist' : [w for w in self.wishlist],
+            'queue' : [q for q in self.queue]
+             
         }
         
 #collection of items in a post, items would be persistent list in real??
@@ -640,7 +645,7 @@ item5_pics = ['IMG_7106.jpg']
 item5_pics_data = get_webp_datas(item5_pics)
 item5_tags = [root.tags['keychains'], root.tags['handmade'], root.tags['jellyfish']]
 item5 = Item(generate_id('products'), store_1.store_user_name,
-             datetime(2024, 5, 24, 19, 30), 75, 4, "this is item 5", "Jellyfish Keychains",
+             datetime(2024, 4, 4, 19, 30), 75, 4, "this is item 5", "Jellyfish Keychains",
              item5_pics_data, item5_tags)
 root.products[item5.get_seller() + item4.get_id()] = item5
 
@@ -663,13 +668,13 @@ post4 = PostDetails(generate_id('posts'), store_1, item5, "boongboongboong", "Je
 root.posts[post4.get_id()] = post4
 
 # order history appear only in admin_1 interface (admin_1 is the buyer)
-order1 = Order(generate_id('orders'), item1, admin_1.get_username(), user_1.get_username())
+order1 = Order(10000, item1, admin_1.get_username(), user_1.get_username())
 root.orders[order1.get_order_id()] = order1
 
-order2 = Order(generate_id('orders'), item2, admin_1.get_username(), user_1.get_username(), status="shipping")
+order2 = Order(10001, item2, admin_1.get_username(), user_1.get_username(), status="shipping")
 root.orders[order2.get_order_id()] = order2
 
-order3 = Order(generate_id('orders'), item1, user_1.get_username(), user_1.get_username())
+order3 = Order(10002, item1, user_1.get_username(), user_1.get_username())
 root.orders[order3.get_order_id()] = order3
 #wishlist testing admin_1 only
 admin_1.add_wishlist(item1)
@@ -713,7 +718,7 @@ if  __name__ == "__main__":
     for order_detail in order_details:
         if order_details[order_detail].buyer == "adminnajaa~~":
             new_order_details.append(order_details[order_detail])
-    orders_data = [order.serialize() for order in new_order_details]   
+    orders_data = [f"{order.serialize()}\n" for order in new_order_details]   
     print(orders_data)
     
     stores = root.stores 

@@ -1,20 +1,24 @@
 import sys
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
+from PySide6.QtWidgets import QWidget
 from .history_ui import *
 from .historyBox_ui import *
+from .paying_ui import *
 import os
 import pickle
 import socket
 import zlib, base64
 import time
 
+        
 class HistoryBox(QFrame):
     def __init__(self, order_details):
         QFrame.__init__(self, None)
         self.ui = Ui_HistoryBox()
         self.ui.setupUi(self)
-
+        self.order_details = order_details
         self.product_name = order_details.get('product_name')
         self.order_id = order_details.get('order_id')
         self.price = order_details.get('price')
@@ -28,9 +32,16 @@ class HistoryBox(QFrame):
         self.ui.order_id_label.setText(str(self.order_id))
         self.ui.price_label.setText(str(self.price) + " B")
         self.ui.status_label.setText("Status: " + self.order_status)
-        
         self.user_id = None
         self.user_data = None
+        
+    #     self.ui.view_order_button.setText("view order")
+    #     self.ui.view_product_button.clicked.connect(self.pop_paying)
+        
+    # def pop_paying(self):
+    #     if self.ui.status_label.text() == "unpaid":
+    #         paying = Paying(self.order_details)
+    #         paying.exec_()
 
 
 class HistoryUI(QMainWindow):
@@ -94,7 +105,6 @@ class HistoryUI(QMainWindow):
         self.ui.to_be_delivered.clicked.connect(lambda: self.update_history_data("shipping"))
         self.ui.completed.clicked.connect(lambda: self.update_history_data("completed"))
         self.ui.cancelled.clicked.connect(lambda: self.update_history_data("cancelled"))
-
         self.user_id = None
         self.user_data = None
         
@@ -130,6 +140,7 @@ class HistoryUI(QMainWindow):
         layout.addItem(spacer)
 
 
+        
     def receive_large_data(self, conn):
             total_chunks = pickle.loads(conn.recv(4096))
             received_data = b''
@@ -186,7 +197,13 @@ class HistoryUI(QMainWindow):
                     print("Fail")
         except:
             pass
-    
+        
+class Paying(QDialog):
+    def __init__(self):
+        super(Paying, self).__init__()
+        self.ui = Paying()
+        self.ui.setupUi(self)  
+        
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     history_ui = HistoryUI()
