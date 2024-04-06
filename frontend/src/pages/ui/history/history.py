@@ -41,7 +41,17 @@ class HistoryBox(QFrame):
         self.ui.status_label.setText("Status: " + self.order_status)
         self.user_id = None
         self.user_data = None
-        
+
+        if self.order_status == "unpaid":
+            self.ui.view_order_button.setText("Pay By QR")
+            self.ui.view_order_button.clicked.connect(self.show_payment_popup)
+        elif self.order_status == "shipping":
+            self.ui.view_order_button.setText("Confirm Shipping")
+            self.ui.view_order_button.clicked.connect(self.confirm_shipping)
+        elif self.order_status == "completed":
+            self.ui.view_order_button.setText("Completed")
+        elif self.order_status == "cancelled":
+            self.ui.view_order_button.setText("Cancelled")
     #     self.ui.view_order_button.setText("view order")
     #     self.ui.view_product_button.clicked.connect(self.pop_paying)
         
@@ -49,6 +59,30 @@ class HistoryBox(QFrame):
     #     if self.ui.status_label.text() == "unpaid":
     #         paying = Paying(self.order_details)
     #         paying.exec_()
+    def confirm_shipping(self):
+        self.order_status = "completed"
+        self.ui.view_order_button.setText("Completed")
+
+    def show_payment_popup(self):
+        self.ui.view_order_button.setText("Shipping")
+        self.order_status = "shipping"
+
+        payment_popup = QDialog()
+        payment_popup.setWindowTitle("Payment Popup")
+        payment_popup.setFixedSize(300, 300)
+
+        label = QLabel(payment_popup)
+        label.setGeometry(0, 0, 300, 300)
+        label.setAlignment(Qt.AlignCenter)
+
+
+        # QR here
+        pixmap = QPixmap()
+        label.setPixmap(pixmap)
+
+
+        payment_popup.exec_()
+
 
 
 class HistoryUI(QMainWindow):
