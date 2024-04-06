@@ -394,7 +394,7 @@ class HomeUI(QMainWindow):
                     response = self.receive_large_data(client_socket)
                     if response.get('success'):
                         post_details = response.get('post_details')
-                        print(post_details)
+                        # print(post_details)
                         self.populate_posts(post_details)
                         break;     
                     else:
@@ -431,7 +431,7 @@ class HomeUI(QMainWindow):
                     response = self.receive_large_data(client_socket)
                     if response.get('success'):
                         tags = response.get('tags')
-                        print(tags)
+                        # print(tags)
                         self.populate_tags(tags)
                         break 
                     else:

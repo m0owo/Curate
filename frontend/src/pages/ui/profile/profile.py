@@ -181,7 +181,7 @@ class ProfileUI(QDialog):
                 client_socket.sendall(pickle.dumps(request_data))
                 print("Step 3: Receiving response...")
                 response_data = self.receive_large_data(client_socket)
-                print("Received response:", response_data)
+                # print("Received response:", response_data)
                 print("Step 4: Unpacking response...")
                 if response_data['success']:
                     print("Check store exists")
@@ -298,7 +298,7 @@ class ProfileAddressUI(QDialog):
         layout.setSpacing(100)
         # Iterate through addresses and create post widgets
         for post_detail in addresses:
-            print(f'WEE WOO WEE WOOO WEE WOO {post_detail}')
+            # print(f'WEE WOO WEE WOOO WEE WOO {post_detail}')
             post = Post(post_detail, self.ui.scrollAreaWidgetContents)
             post_widget = post.get_post()
             layout.addWidget(post_widget)

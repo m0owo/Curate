@@ -73,7 +73,7 @@ class CollectionUI(QMainWindow):
             # Send actual data chunks
             for i in range(0, len(data), 4096):
                 chunk = data[i:i+4096]
-                print(chunk)
+                # print(chunk)
                 conn.sendall(chunk)
         except Exception as e:
             print("Error sending data:", e)
@@ -340,7 +340,7 @@ class CollectionUI(QMainWindow):
                     # client_socket.sendall(pickle.dumps(request_data))
                     print("Step 3: Receiving response...")
                     response_data = self.receive_large_data(client_socket)
-                    print("Received response:", response_data)
+                    # print("Received response:", response_data)
                     print("Step 4: Unpacking response...")
                     if response_data['success']:
                         print(response_data['success'])

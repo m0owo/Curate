@@ -159,9 +159,9 @@ def get_all_orders(data):
         for order_detail in order_details:
             if order_details[order_detail].get_buyer() == username:
                 new_order_details.append(order_details[order_detail])
-                print(order_details[order_detail])
+                # print(order_details[order_detail])
         orders_data = [order.serialize() for order in new_order_details]   
-        print(f'order data {orders_data}\n\n')
+        # print(f'order data {orders_data}\n\n')
         return {'success': True, 'message': 'Get all order successfully', 'order_details': orders_data}
     except Exception as e:
         print(e)
@@ -263,7 +263,7 @@ def get_posts_by_name(data_dict):
         print("Received data:", data_dict)
         name = data_dict.get('name')
         posts = root.posts
-        print("Posts:", posts)
+        # print("Posts:", posts)
         
         search_results = []
         print("Searching for posts with name related to:", name)
