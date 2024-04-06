@@ -42,7 +42,7 @@ images_path_k = r'C:\Users\Miki Ajiki\Desktop\Curate\frontend\public\images\post
 
 # getting webP image data
 def get_webp_data(image_name):
-    full_image_path = images_path_k + image_name
+    full_image_path = images_path_ms + image_name
     try:
         with Image.open(full_image_path) as img:
             webp_data = io.BytesIO()
@@ -138,14 +138,16 @@ class Product(persistent.Persistent):
         self.queue = persistent.list.PersistentList()
     def get_id(self):
         return self.pr_id
-    def get_name(self):
-        return self.pr_name
     def get_seller(self):
         return self.seller
     def get_status(self):
         return self.status
     def get_start_date(self):
         return self.start_date
+    def get_pr_name(self):
+        return self.pr_name
+    def get_pr_description(self):
+        return self.description
     def get_end_date(self): #ends sale when sold out
         if self.end_date:
             return self.end_date
@@ -175,8 +177,7 @@ class Product(persistent.Persistent):
             'tags': [tag.serialize() for tag in self.tags],
             'description': self.description,
             'wishlist' : [w for w in self.wishlist],
-            'queue' : [q for q in self.queue]
-             
+            'queue' : [q for q in self.queue]    
         }
         
 #collection of items in a post, items would be persistent list in real??
@@ -377,8 +378,6 @@ class Order(persistent.Persistent):
         serialized_data.update(self.product.serialize())
 
         return serialized_data
-    
-
 
 class Account(persistent.Persistent):
     def __init__(self, id, email, password, username = "", sex = "", pic = ""):
@@ -485,7 +484,6 @@ class Seller(Account):
     def __init__(self, id, email, password, username = ""):
         super().__init__(id, email, password, username)
         
-
 class Store:
     def __init__(self, store_id, user_name, store_name, email, phone_num, description, picture):
         self.store_id = store_id
@@ -569,85 +567,334 @@ root.accounts[user_1.get_username()] = user_1
 
 store_1_pic = get_webp_data('user1.jpeg')
 store_1 = Store(user_1.get_id() + generate_id('stores'),
-                user_1.get_username(), "User 1's Store",
+                user_1.get_username(), "Gumie Preorder",
                 user_1.get_email(), user_1.get_phone_num(),
-                "Secondhand Clothings", store_1_pic)
+                "preorder goods and toys", store_1_pic)
 
 user_2 = Account(generate_id('accounts'), "user2@gmail.com", "1234")
-user_2.set_username("iammuser2")
+user_2.set_username("user2day")
 root.accounts[user_2.get_username()] = user_2
 
 store_2_pic = get_webp_data('user2.jpeg')
 store_2 = Store(user_2.get_id() + generate_id('stores'),
                 user_2.get_username(), "User 2's Store",
                 user_2.get_email(), user_2.get_phone_num(),
-                "Handmade Goods and Toys", store_2_pic)
+                "Secondhand Coquette Fits", store_2_pic)
+
+user_3 = Account(generate_id('accounts'), "user3@gmail.com", "1234")
+user_3.set_username("me3")
+root.accounts[user_3.get_username()] = user_3
+
+store_3_pic = get_webp_data('user3.JPG')
+store_3 = Store(user_3.get_id() + generate_id('stores'),
+                user_3.get_username(), "Secondhand Coquette Fits",
+                user_3.get_email(), user_3.get_phone_num(),
+                "Coquette outfits and clothes", store_3_pic)
+
+user_4 = Account(generate_id('accounts'), "user4@gmail.com", "1234")
+user_4.set_username("4youtoo")
+root.accounts[user_4.get_username()] = user_4
+
+store_4_pic = get_webp_data('user4.JPG')
+store_4 = Store(user_4.get_id() + generate_id('stores'),
+                user_4.get_username(), "Home Decoo",
+                user_4.get_email(), user_4.get_phone_num(),
+                "Secondhand home deco from Japan", store_4_pic)
+
+user_5 = Account(generate_id('accounts'), "user5@gmail.com", "1234")
+user_5.set_username("5h.aha")
+root.accounts[user_5.get_username()] = user_5
+
+store_5_pic = get_webp_data('user5.JPG')
+store_5 = Store(user_5.get_id() + generate_id('stores'),
+                user_5.get_username(), "Q_rochet",
+                user_5.get_email(), user_5.get_phone_num(),
+                "handmade crocheted goods", store_5_pic)
+
+user_6 = Account(generate_id('accounts'), "user6@gmail.com", "1234")
+user_6.set_username("Plen6")
+root.accounts[user_6.get_username()] = user_6
+
+store_6_pic = get_webp_data('user6.JPG')
+store_6 = Store(user_6.get_id() + generate_id('stores'),
+                user_6.get_username(), "Ceram6",
+                user_6.get_email(), user_6.get_phone_num(),
+                "Ceramics and Paint", store_6_pic)
+
+user_7 = Account(generate_id('accounts'), "user7@gmail.com", "1234")
+user_7.set_username("say_ven")
+root.accounts[user_7.get_username()] = user_7
+
+store_7_pic = get_webp_data('user7.JPG')
+store_7 = Store(user_7.get_id() + generate_id('stores'),
+                user_7.get_username(), "VenShop",
+                user_7.get_email(), user_7.get_phone_num(),
+                "premium vintage secondhand gadgets", store_7_pic)
 
 # tags
 # key value = tag text
-tag1 = Tag("secondhand")
-root.tags[tag1.get_tag_text()] = tag1
-tag2 = Tag("fashion")
-root.tags[tag2.get_tag_text()] = tag2
-tag3 = Tag("cute")
-root.tags[tag3.get_tag_text()] = tag3
-tag4 = Tag("jellyfish")
-root.tags[tag4.get_tag_text()] = tag4
-tag5 = Tag("keychains")
-root.tags[tag5.get_tag_text()] = tag5
-tag6 = Tag("handmade")
-root.tags[tag6.get_tag_text()] = tag6
-tag7 = Tag("custom")
-root.tags[tag7.get_tag_text()] = tag7
-tag8 = Tag("cottagecore")
-root.tags[tag8.get_tag_text()] = tag8
-tag9 = Tag("coquette")
-root.tags[tag9.get_tag_text()] = tag9
+second_hand = Tag("secondhand")
+root.tags[second_hand.get_tag_text()] = second_hand
+
+fashion = Tag("fashion")
+root.tags[fashion.get_tag_text()] = fashion
+
+cute = Tag("cute")
+root.tags[cute.get_tag_text()] = cute
+
+jellyfish = Tag("jellyfish")
+root.tags[jellyfish.get_tag_text()] = jellyfish
+
+keychain = Tag("keychain")
+root.tags[keychain.get_tag_text()] = keychain
+
+handmade = Tag("handmade")
+root.tags[handmade.get_tag_text()] = handmade
+
+custom = Tag("custom")
+root.tags[custom.get_tag_text()] = custom
+
+cottagecore = Tag("cottagecore")
+root.tags[cottagecore.get_tag_text()] = cottagecore
+
+coquette = Tag("coquette")
+root.tags[coquette.get_tag_text()] = coquette
+
+toy = Tag("toy")
+root.tags[toy.get_tag_text()] = toy
+
+crochet = Tag("crochet")
+root.tags[crochet.get_tag_text()] = crochet
+
+gadget = Tag("gadget")
+root.tags[gadget.get_tag_text()] = gadget
+
+aesthetic = Tag("aesthetic")
+root.tags[aesthetic.get_tag_text()] = aesthetic
+
+flower = Tag("flower")
+root.tags[flower.get_tag_text()] = flower
+
+home = Tag("home")
+root.tags[home.get_tag_text()] = home
+
+minimal = Tag("minimal")
+root.tags[minimal.get_tag_text()] = minimal
 
 # products
 # index = {product_id}
 # value = Collection() or Item()
 # product_id = {seller's user}{1...}
-item1_pics = ['IMG_7369.jpg']
+item1_pics = ['item2.jpg']
 item1_pics_data = get_webp_datas(item1_pics)
 # print(f'pofiasjldfjsd {len(item1_pics_data[0])}')
 # item1_pics_data2 = [get_image_data(x) for x in item1_pics]
 # print(f'pofiasjldfjsd {len(item1_pics_data2[0])}')
-item1_tags = [root.tags['coquette'], root.tags['cute']]
-item1 = Item(generate_id("products"), user_1.username, datetime(2024, 5, 20, 10, 15),
-             50, 5,"This is item 1", "item 1", item1_pics_data, item1_tags)
+item1_tags = [fashion, cute, handmade, crochet]
+item1 = Item(generate_id("products"), store_1.store_user_name, datetime(2024, 5, 20, 10, 15),
+             350, 5, "", "Pastel Fluffy Hats", item1_pics_data, item1_tags)
 root.products[item1.get_seller() + item1.get_id()] = item1
 
-item2_pics = ['IMG_7370.jpg']
+item2_pics = ['item3.jpg']
 item2_pics_data = get_webp_datas(item2_pics)
-item2_tags = [root.tags['coquette'], root.tags['cute']]
-item2 = Item(generate_id("products"), user_1.username, datetime(2024, 5, 20, 10, 15),
-             100, 3, "this is i tem 2", "item 2 laa", item2_pics_data, item2_tags)
+item2_tags = [jellyfish, handmade, custom, keychain]
+item2 = Item(generate_id("products"), store_1.store_user_name, datetime(2024, 5, 20, 10, 15),
+             75, 3, "", "Jellyfish Keychains", item2_pics_data, item2_tags)
 root.products[item2.get_seller() + item2.get_id()] = item2
 
-item3_pics = ['IMG_7102.jpg']
+item3_pics = ['item4.jpg']
 item3_pics_data = get_webp_datas(item3_pics)
-item3_tags = [root.tags['secondhand'], root.tags['fashion'], root.tags['cottagecore']]
-item3 = Item(generate_id('products'), store_2.store_user_name,
-             datetime(2024, 5, 21, 15, 20), 150, 10, "this is item 3", 'Mona Top',
+item3_tags = [toy, cute]
+item3 = Item(generate_id('products'), store_1.store_user_name,
+             datetime(2024, 5, 21, 15, 20), 150, 10, "", 'ODD Club School',
              item3_pics_data, item3_tags)
 root.products[item3.get_seller() + item3.get_id()] = item3
 
-item4_pics = ['IMG_7105.jpg']
+item4_pics = ['item5.jpg']
 item4_pics_data = get_webp_datas(item4_pics)
-item4_tags = [root.tags['custom'], root.tags['handmade'], root.tags['cottagecore']]
-item4 = Item(generate_id('products'), store_2.store_user_name,
-             datetime(2024, 5, 22, 19, 30), 350, 5, "this is item 4", "Crocheted Beanies",
+item4_tags = [second_hand, cottagecore]
+item4 = Item(generate_id('products'), store_1.store_user_name,
+             datetime(2024, 5, 22, 19, 30), 350, 5, "", "Secondhand Knitted Blanket",
              item4_pics_data, item4_tags)
 root.products[item4.get_seller() + item4.get_id()] = item4
 
-item5_pics = ['IMG_7106.jpg']
+item5_pics = ['item6.jpg']
 item5_pics_data = get_webp_datas(item5_pics)
-item5_tags = [root.tags['keychains'], root.tags['handmade'], root.tags['jellyfish']]
+item5_tags = [toy, gadget, cute]
 item5 = Item(generate_id('products'), store_1.store_user_name,
-             datetime(2024, 4, 4, 19, 30), 75, 4, "this is item 5", "Jellyfish Keychains",
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Tomato Handheld Fan",
              item5_pics_data, item5_tags)
-root.products[item5.get_seller() + item4.get_id()] = item5
+root.products[item5.get_seller() + item5.get_id()] = item5
+
+item6_pics = ['item8.jpg']
+item6_pics_data = get_webp_datas(item6_pics)
+item6_tags = [cute, fashion, coquette]
+item6 = Item(generate_id('products'), store_2.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Flower Set 1",
+             item6_pics_data, item6_tags)
+root.products[item6.get_seller() + item6.get_id()] = item6
+
+item7_pics = ['item9.jpg']
+item7_pics_data = get_webp_datas(item7_pics)
+item7_tags = [cute, fashion, coquette]
+item7 = Item(generate_id('products'), store_2.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Dolly Set 1",
+             item7_pics_data, item7_tags)
+root.products[item7.get_seller() + item7.get_id()] = item7
+
+item8_pics = ['item10.jpg']
+item8_pics_data = get_webp_datas(item8_pics)
+item8_tags = [cute, fashion, coquette]
+item8 = Item(generate_id('products'), store_2.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Spaghetti Set 1",
+             item8_pics_data, item8_tags)
+root.products[item8.get_seller() + item8.get_id()] = item8
+
+item9_pics = ['item11.jpg']
+item9_pics_data = get_webp_datas(item9_pics)
+item9_tags = [cute, fashion, coquette]
+item9 = Item(generate_id('products'), store_2.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Dolly Set 2",
+             item9_pics_data, item9_tags)
+root.products[item9.get_seller() + item9.get_id()] = item9
+
+item10_pics = ['item12.jpg']
+item10_pics_data = get_webp_datas(item10_pics)
+item10_tags = [cute, fashion, coquette]
+item10 = Item(generate_id('products'), store_2.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Spaghetti Set 1",
+             item10_pics_data, item10_tags)
+root.products[item10.get_seller() + item10.get_id()] = item8
+
+item11_pics = ['item13.jpg']
+item11_pics_data = get_webp_datas(item11_pics)
+item11_tags = [toy, gadget, cute]
+item11 = Item(generate_id('products'), store_2.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Caramel Set 1",
+             item11_pics_data, item11_tags)
+root.products[item11.get_seller() + item11.get_id()] = item11
+
+item12_pics = ['item14.jpg']
+item12_pics_data = get_webp_datas(item12_pics)
+item12_tags = [home, minimal]
+item12 = Item(generate_id('products'), store_3.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Goldfish Baht Curtains",
+             item12_pics_data, item12_tags)
+root.products[item12.get_seller() + item12.get_id()] = item12
+
+item13_pics = ['item15.jpg']
+item13_pics_data = get_webp_datas(item13_pics)
+item13_tags = [cute, flower, home, cottagecore]
+item13 = Item(generate_id('products'), store_3.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Touch Grass Rug",
+             item13_pics_data, item13_tags)
+root.products[item13.get_seller() + item13.get_id()] = item13
+
+item14_pics = ['item16.jpg']
+item14_pics_data = get_webp_datas(item14_pics)
+item14_tags = [toy, gadget, cute]
+item14 = Item(generate_id('products'), store_3.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Teakub Pom",
+             item14_pics_data, item14_tags)
+root.products[item14.get_seller() + item14.get_id()] = item14
+
+item15_pics = ['item17.jpg']
+item15_pics_data = get_webp_datas(item15_pics)
+item15_tags = [toy, gadget, cute, home, minimal]
+item15 = Item(generate_id('products'), store_3.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Desk Organizer",
+             item15_pics_data, item15_tags)
+root.products[item15.get_seller() + item15.get_id()] = item15
+
+item16_pics = ['item18.jpg']
+item16_pics_data = get_webp_datas(item16_pics)
+item16_tags = [cute, fashion, crochet, handmade]
+item16 = Item(generate_id('products'), store_4.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Lavendar",
+             item16_pics_data, item16_tags)
+root.products[item16.get_seller() + item16.get_id()] = item16
+
+item17_pics = ['item19.jpg']
+item17_pics_data = get_webp_datas(item17_pics)
+item17_tags = [cute, fashion, crochet, handmade]
+item17 = Item(generate_id('products'), store_4.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Matcha Strawberry",
+             item17_pics_data, item17_tags)
+root.products[item17.get_seller() + item17.get_id()] = item17
+
+item18_pics = ['item20.jpg']
+item18_pics_data = get_webp_datas(item18_pics)
+item18_tags = [cute, fashion, crochet, handmade]
+item18 = Item(generate_id('products'), store_4.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Cherry Bunny",
+             item18_pics_data, item18_tags)
+root.products[item18.get_seller() + item18.get_id()] = item18
+
+item19_pics = ['item21.jpg']
+item19_pics_data = get_webp_datas(item19_pics)
+item19_tags = [cottagecore, crochet, fashion]
+item19 = Item(generate_id('products'), store_4.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Star Girl",
+             item19_pics_data, item19_tags)
+root.products[item19.get_seller() + item19.get_id()] = item19
+
+item20_pics = ['item22.jpg']
+item20_pics_data = get_webp_datas(item20_pics)
+item20_tags = [home, cute, aesthetic]
+item20 = Item(generate_id('products'), store_4.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Smiley Cereal",
+             item20_pics_data, item20_tags)
+root.products[item20.get_seller() + item20.get_id()] = item20
+
+item21_pics = ['item23.jpg']
+item21_pics_data = get_webp_datas(item21_pics)
+item21_tags = [toy, cute, aesthetic]
+item21 = Item(generate_id('products'), store_5.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Star Rings",
+             item21_pics_data, item21_tags)
+root.products[item21.get_seller() + item21.get_id()] = item21
+
+item22_pics = ['item24.jpg']
+item22_pics_data = get_webp_datas(item8_pics)
+item22_tags = [toy, gadget, cute]
+item22 = Item(generate_id('products'), store_5.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Orca Ceramug",
+             item22_pics_data, item22_tags)
+root.products[item22.get_seller() + item22.get_id()] = item22
+
+item23_pics = ['item25.jpg']
+item23_pics_data = get_webp_datas(item23_pics)
+item23_tags = [toy, gadget, cute]
+item23 = Item(generate_id('products'), store_5.store_user_name,
+             datetime(2024, 4, 4, 19, 30), 75, 4, "", "Bed Cat Mug",
+             item23_pics_data, item23_tags)
+root.products[item23.get_seller() + item23.get_id()] = item23
+
+# item8_pics = ['item10.jpg']
+# item8_pics_data = get_webp_datas(item8_pics)
+# item8_tags = [toy, gadget, cute]
+# item8 = Item(generate_id('products'), store_1.store_user_name,
+#              datetime(2024, 4, 4, 19, 30), 75, 4, "", "Spaghetti Set 1",
+#              item8_pics_data, item8_tags)
+# root.products[item8.get_seller() + item8.get_id()] = item8
+
+# item8_pics = ['item10.jpg']
+# item8_pics_data = get_webp_datas(item8_pics)
+# item8_tags = [toy, gadget, cute]
+# item8 = Item(generate_id('products'), store_1.store_user_name,
+#              datetime(2024, 4, 4, 19, 30), 75, 4, "", "Spaghetti Set 1",
+#              item8_pics_data, item8_tags)
+# root.products[item8.get_seller() + item8.get_id()] = item8
+
+# item8_pics = ['item10.jpg']
+# item8_pics_data = get_webp_datas(item8_pics)
+# item8_tags = [toy, gadget, cute]
+# item8 = Item(generate_id('products'), store_1.store_user_name,
+#              datetime(2024, 4, 4, 19, 30), 75, 4, "", "Spaghetti Set 1",
+#              item8_pics_data, item8_tags)
+# root.products[item8.get_seller() + item8.get_id()] = item8
+
+#-----------------
 
 # col1_pics = ['IMG_7368.jpg']
 # col1_pics_data = [get_webp_data(x) for x in col1_pics]
@@ -659,59 +906,163 @@ root.products[item5.get_seller() + item4.get_id()] = item5
 # post1 = PostDetails(generate_id('posts'), user_1.get_username(), col1, "TEST INFO", "TEST TITLE")
 # root.posts[post1.get_id()] = post1
 
-post2 = PostDetails(generate_id('posts'), store_2, item3, "haleisfls", "Mona Tops Post")
+post1 = PostDetails(generate_id('posts'), store_1, item1, item1.get_pr_description(), item2.get_pr_name())
+root.posts[post1.get_id()] = post1
+
+post2 = PostDetails(generate_id('posts'), store_1, item2, item2.get_pr_description(), item2.get_pr_name())
 root.posts[post2.get_id()] = post2
-post3 = PostDetails(generate_id('posts'), store_2, item4, "smata baby smata im smata", "Crocheted Beanies")
+
+post3 = PostDetails(generate_id('posts'), store_1, item3, item3.get_pr_description(), item3.get_pr_name())
 root.posts[post3.get_id()] = post3
 
-post4 = PostDetails(generate_id('posts'), store_1, item5, "boongboongboong", "Jellyfish Keychains")
+post4 = PostDetails(generate_id('posts'), store_1, item4, item4.get_pr_description(), item4.get_pr_name())
 root.posts[post4.get_id()] = post4
 
+post5 = PostDetails(generate_id('posts'), store_1, item5, item5.get_pr_description(), item5.get_pr_name())
+root.posts[post5.get_id()] = post5
+
+post6 = PostDetails(generate_id('posts'), store_2, item6, item6.get_pr_description(), item6.get_pr_name())
+root.posts[post6.get_id()] = post6
+
+post7 = PostDetails(generate_id('posts'), store_2, item7, item7.get_pr_description(), item7.get_pr_name())
+root.posts[post7.get_id()] = post7
+
+post8 = PostDetails(generate_id('posts'), store_2, item8, item8.get_pr_description(), item8.get_pr_name())
+root.posts[post8.get_id()] = post8
+
+post9 = PostDetails(generate_id('posts'), store_2, item9, item9.get_pr_description(), item9.get_pr_name())
+root.posts[post9.get_id()] = post9
+
+post10 = PostDetails(generate_id('posts'), store_2, item10, item10.get_pr_description(), item10.get_pr_name())
+root.posts[post10.get_id()] = post10
+
+post11 = PostDetails(generate_id('posts'), store_3, item11, item11.get_pr_description(), item11.get_pr_name())
+root.posts[post11.get_id()] = post11
+
+post12 = PostDetails(generate_id('posts'), store_3, item12, item12.get_pr_description(), item12.get_pr_name())
+root.posts[post12.get_id()] = post3
+
+post13 = PostDetails(generate_id('posts'), store_3, item13, item13.get_pr_description(), item13.get_pr_name())
+root.posts[post13.get_id()] = post13
+
+post14 = PostDetails(generate_id('posts'), store_3, item14, item14.get_pr_description(), item14.get_pr_name())
+root.posts[post14.get_id()] = post14
+
+post15 = PostDetails(generate_id('posts'), store_3, item15, item15.get_pr_description(), item15.get_pr_name())
+root.posts[post15.get_id()] = post15
+
+post16 = PostDetails(generate_id('posts'), store_4, item16, item16.get_pr_description(), item16.get_pr_name())
+root.posts[post16.get_id()] = post16
+
+post17 = PostDetails(generate_id('posts'), store_4, item17, item17.get_pr_description(), item17.get_pr_name())
+root.posts[post17.get_id()] = post17
+
+post18 = PostDetails(generate_id('posts'), store_4, item18, item18.get_pr_description(), item18.get_pr_name())
+root.posts[post18.get_id()] = post18
+
+post19 = PostDetails(generate_id('posts'), store_4, item19, item19.get_pr_description(), item19.get_pr_name())
+root.posts[post19.get_id()] = post19
+
+post20 = PostDetails(generate_id('posts'), store_4, item20, item20.get_pr_description(), item20.get_pr_name())
+root.posts[post14.get_id()] = post14
+
+post21 = PostDetails(generate_id('posts'), store_5, item21, item21.get_pr_description(), item21.get_pr_name())
+root.posts[post21.get_id()] = post21
+
+post22 = PostDetails(generate_id('posts'), store_5, item22, item22.get_pr_description(), item22.get_pr_name())
+root.posts[post22.get_id()] = post22
+
+post23 = PostDetails(generate_id('posts'), store_5, item23, item23.get_pr_description(), item23.get_pr_name())
+root.posts[post23.get_id()] = post23
+
 # order history appear only in admin_1 interface (admin_1 is the buyer)
-order1 = Order(10000, item1, admin_1.get_username(), user_1.get_username())
+order1 = Order(10000, item1, user_2.get_username(), user_1.get_username())
 root.orders[order1.get_order_id()] = order1
 
-order2 = Order(10001, item2, admin_1.get_username(), user_1.get_username(), status="shipping")
+order2 = Order(10001, item2, user_2.get_username(), user_1.get_username(), status="shipping")
 root.orders[order2.get_order_id()] = order2
 
-order3 = Order(10002, item1, user_1.get_username(), user_1.get_username())
+order3 = Order(10002, item3, user_3.get_username(), user_1.get_username())
 root.orders[order3.get_order_id()] = order3
+
+order4 = Order(10003, item4, user_3.get_username(), user_1.get_username())
+root.orders[order4.get_order_id()] = order4
+
+order5 = Order(10004, item5, user_4.get_username(), user_1.get_username())
+root.orders[order5.get_order_id()] = order5
+
+order6 = Order(10005, item6, user_4.get_username(), user_2.get_username())
+root.orders[order6.get_order_id()] = order6
+
+order7 = Order(10006, item6, user_5.get_username(), user_2.get_username())
+root.orders[order7.get_order_id()] = order7
+
+order8 = Order(10007, item6, user_5.get_username(), user_2.get_username())
+root.orders[order8.get_order_id()] = order8
+
+order9 = Order(10008, item7, user_5.get_username(), user_2.get_username())
+root.orders[order9.get_order_id()] = order9
+
+order10 = Order(10009, item10, user_5.get_username(), user_2.get_username())
+root.orders[order10.get_order_id()] = order10
+
+order11 = Order(10010, item9, user_5.get_username(), user_2.get_username())
+root.orders[order11.get_order_id()] = order11
+
 #wishlist testing admin_1 only
 admin_1.add_wishlist(item1)
 admin_1.add_wishlist(item2)
 admin_1.add_wishlist(item3)
-user_1.add_wishlist(item1)
-user_1.add_wishlist(item2)
-user_1.add_wishlist(item3)
-#self, store_id, user_name, store_name, email, phone_num, description, picture)
-store_admin = Store(generate_id("stores"), "adminnajaa~~", "Admin Kai kong", "kaikongaddmin1@gmail.com", "000000000", "Admin yark kai kong ka", item1_pics_data)
-# store_admin.collections.append(col1)
-store_admin.items.append(item1)
-root.stores[store_admin.get_id()] = store_admin
 
+user_1.add_wishlist(item6)
+user_1.add_wishlist(item7)
+user_1.add_wishlist(item8)
 
+user_2.add_wishlist(item4)
+user_2.add_wishlist(item5)
+
+user_3.add_wishlist(item16)
+user_3.add_wishlist(item17)
+
+user_4.add_wishlist(item1)
+user_4.add_wishlist(item2)
+
+user_5.add_wishlist(item3)
+user_5.add_wishlist(item4)
+
+user_6.add_wishlist(item6)
+user_6.add_wishlist(item7)
+
+user_7.add_wishlist(item8)
+user_7.add_wishlist(item9)
+
+# #self, store_id, user_name, store_name, email, phone_num, description, picture)
+# store_admin = Store(generate_id("stores"), "adminnajaa~~", "Admin Kai kong", "kaikongaddmin1@gmail.com", "000000000", "Admin yark kai kong ka", item1_pics_data)
+# # store_admin.collections.append(col1)
+# store_admin.items.append(item1)
+# root.stores[store_admin.get_id()] = store_admin
 
 transaction.commit()
 if  __name__ == "__main__":
     accounts = root.accounts
-    # for key in accounts:
-    #     accounts[key].print_info()
+    for key in accounts:
+        accounts[key].print_info()
 
     products = root.products
     for key in products:
         products[key].print_info()
     
-    # posts = root.posts
-    # for key in posts:
-    #     posts[key].print_info()
+    posts = root.posts
+    for key in posts:
+        posts[key].print_info()
 
-    # tags = root.tags
-    # for key in tags:
-    #     tags[key].print_info()
+    tags = root.tags
+    for key in tags:
+        tags[key].print_info()
 
-    # orders = root.orders
-    # for key in orders:
-    #     orders[key].print_info()
+    orders = root.orders
+    for key in orders:
+        orders[key].print_info()
 
     order_details = root.orders
     new_order_details = []

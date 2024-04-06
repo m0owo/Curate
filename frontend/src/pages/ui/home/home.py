@@ -98,7 +98,7 @@ class Post():
         self.post_image = QLabel(self.post)
         self.post_image.setFixedSize(QSize(self.POST_WIDTH, self.POST_WIDTH))
         self.post_image.setStyleSheet("QLabel { background-color: transparent; }")
-        self.post.layout().addWidget(self.post_image, alignment=Qt.AlignTop | Qt.AlignCenter)
+        self.post.layout().addWidget(self.post_image, alignment=Qt.AlignCenter)
 
         # pic = QPixmap(u":/post_images/IMG_7109.jpg") #test image
         # post image is the first image from the post product
@@ -307,7 +307,7 @@ class HomeUI(QMainWindow):
 
 
         self.ui.search_edit.returnPressed.connect(self.search)
-        self.ui.search_edit.textChanged.connect(self.search)
+        # self.ui.search_edit.textChanged.connect(self.search)
 
         # clearing tags frame
         clear_frame(self.ui.tags_frame)
