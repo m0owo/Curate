@@ -16,30 +16,30 @@ provinces_file_path = os.path.join(current_directory, "provinces.json")
 districts_file_path = os.path.join(current_directory, "districts.json")
 sub_districts_file_path = os.path.join(current_directory, "subdistricts.json")
 
-# # Load JSON data from files
-# with open(provinces_file_path, 'r', encoding='utf-8') as f:
-#     provinces = json.load(f)
+# Load JSON data from files
+with open(provinces_file_path, 'r', encoding='utf-8') as f:
+    provinces = json.load(f)
 
-# with open(districts_file_path, 'r', encoding='utf-8') as f:
-#     districts = json.load(f)
+with open(districts_file_path, 'r', encoding='utf-8') as f:
+    districts = json.load(f)
 
-# with open(sub_districts_file_path, 'r', encoding='utf-8') as f:
-#     sub_districts = json.load(f)
+with open(sub_districts_file_path, 'r', encoding='utf-8') as f:
+    sub_districts = json.load(f)
     
-# def clear_frame(frame):
-#         for widget in frame.findChildren(QPushButton):
-#             widget.deleteLater()
+def clear_frame(frame):
+        for widget in frame.findChildren(QPushButton):
+            widget.deleteLater()
 
-# def clear_widget(widget):
-#     for i in reversed(range(widget.layout().count())):
-#         widget.layout().itemAt(i).widget().setParent(None)
+def clear_widget(widget):
+    for i in reversed(range(widget.layout().count())):
+        widget.layout().itemAt(i).widget().setParent(None)
         
-# def clear_layout(layout):
-#     while layout.count():
-#         item = layout.takeAt(0)
-#         widget = item.widget()
-#         if widget is not None:
-#             widget.deleteLater()
+def clear_layout(layout):
+    while layout.count():
+        item = layout.takeAt(0)
+        widget = item.widget()
+        if widget is not None:
+            widget.deleteLater()
 class Post():
     def __init__(self, details, container):
         if details:
