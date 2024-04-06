@@ -17,7 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
     QLineEdit, QMainWindow, QPushButton, QScrollArea,
-    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QComboBox)
 from .icons_rc import *
 from .delivery_rc import *
 from .logo_rc import *
@@ -79,7 +79,7 @@ class Ui_MainWindow(object):
 "}")
         self.frame.setFrameShape(QFrame.StyledPanel)
         self.frame.setFrameShadow(QFrame.Raised)
-        self.search_frame = QFrame(self.frame)
+        self.search_frame = QFrame()
         self.search_frame.setObjectName(u"search_frame")
         self.search_frame.setEnabled(True)
         self.search_frame.setGeometry(QRect(130, 20, 581, 30))
@@ -104,13 +104,22 @@ class Ui_MainWindow(object):
         self.search_icon.setGeometry(QRect(10, 5, 18, 18))
         self.search_icon.setPixmap(QPixmap(u":/icon_images/search_icon.png"))
         self.search_icon.setScaledContents(True)
-        self.filter_button = QPushButton(self.search_frame)
+
+        self.filter_widget = QWidget()
+        self.filter_widget.setGeometry(QRect(130, 20, 581, 30))
+        self.filter_layout = QHBoxLayout(self.filter_widget)
+
+        self.filter_button = QPushButton(self.filter_widget)
+        self.filter_layout.addWidget(self.filter_button)
         self.filter_button.setObjectName(u"filter_button")
         self.filter_button.setGeometry(QRect(540, 0, 41, 30))
         icon = QIcon()
         icon.addFile(u":/icon_images/filter_icon.png", QSize(), QIcon.Normal, QIcon.Off)
         self.filter_button.setIcon(icon)
         self.filter_button.setIconSize(QSize(20, 20))
+
+
+
         self.search_edit = QLineEdit(self.search_frame)
         self.search_edit.setObjectName(u"search_edit")
         self.search_edit.setGeometry(QRect(40, 5, 491, 16))

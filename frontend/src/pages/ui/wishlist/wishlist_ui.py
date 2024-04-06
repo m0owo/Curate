@@ -78,7 +78,7 @@ class Ui_MainWindow(object):
 "}")
         self.frame.setFrameShape(QFrame.StyledPanel)
         self.frame.setFrameShadow(QFrame.Raised)
-        self.search_frame = QFrame(self.frame)
+        self.search_frame = QFrame()
         self.search_frame.setObjectName(u"search_frame")
         self.search_frame.setEnabled(True)
         self.search_frame.setGeometry(QRect(130, 20, 581, 30))

@@ -12,6 +12,13 @@ import socket
 import zlib, base64
 import time
 
+current_directory = os.getcwd()
+sys.path.append(current_directory)
+sys.path.append(r'/Users/musicauyeung/Documents/KMITL/Year 2/Curate')
+sys.path.append(r'/Users/Miki Ajiki/desktop/Curate')
+
+from frontend.src.pages.ui.common import *
+
         
 class HistoryBox(QFrame):
     def __init__(self, order_details):
@@ -55,11 +62,6 @@ class HistoryUI(QMainWindow):
         self.filter = "all"
 
         # nav bar
-        shadow = QGraphicsDropShadowEffect(self)
-        shadow.setBlurRadius(10)
-        shadow.setXOffset(1)
-        shadow.setYOffset(1)
-        self.ui.search_frame.setGraphicsEffect(shadow)
         shadow2 = QGraphicsDropShadowEffect(self)
         shadow2.setBlurRadius(10)
         shadow2.setXOffset(1)
@@ -139,8 +141,6 @@ class HistoryUI(QMainWindow):
         spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         layout.addItem(spacer)
 
-
-        
     def receive_large_data(self, conn):
             total_chunks = pickle.loads(conn.recv(4096))
             received_data = b''
