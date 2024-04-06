@@ -5,12 +5,14 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import QWidget
 from .history_ui import *
 from .historyBox_ui import *
-from .paying_ui import *
+from .paying_ui import Ui_Dialog as Ui_paying
 import os
 import pickle
 import socket
+import subprocess
 import zlib, base64
 import time
+from promptpay import qrcode
 
 current_directory = os.getcwd()
 sys.path.append(current_directory)
@@ -52,36 +54,18 @@ class HistoryBox(QFrame):
             self.ui.view_order_button.setText("Completed")
         elif self.order_status == "cancelled":
             self.ui.view_order_button.setText("Cancelled")
-    #     self.ui.view_order_button.setText("view order")
-    #     self.ui.view_product_button.clicked.connect(self.pop_paying)
-        
-    # def pop_paying(self):
-    #     if self.ui.status_label.text() == "unpaid":
-    #         paying = Paying(self.order_details)
-    #         paying.exec_()
+
     def confirm_shipping(self):
         self.order_status = "completed"
         self.ui.view_order_button.setText("Completed")
-
+        
+        
     def show_payment_popup(self):
-        self.ui.view_order_button.setText("Shipping")
-        self.order_status = "shipping"
-
-        payment_popup = QDialog()
-        payment_popup.setWindowTitle("Payment Popup")
-        payment_popup.setFixedSize(300, 300)
-
-        label = QLabel(payment_popup)
-        label.setGeometry(0, 0, 300, 300)
-        label.setAlignment(Qt.AlignCenter)
-
-
-        # QR here
-        pixmap = QPixmap()
-        label.setPixmap(pixmap)
-
-
+        # self.ui.view_order_button.setText("Shipping")
+        # self.order_status = "shipping"
+        payment_popup = Paying(self.order_details)
         payment_popup.exec_()
+
 
 
 
@@ -233,10 +217,27 @@ class HistoryUI(QMainWindow):
             pass
         
 class Paying(QDialog):
-    def __init__(self):
+    def __init__(self, order_details):
         super(Paying, self).__init__()
-        self.ui = Paying()
+        self.ui = Ui_paying()
         self.ui.setupUi(self)  
+        self.order_details = order_details
+        self.price = order_details.get('price')
+        self.order_id = order_details.get('order_id')
+        # Generate QR code
+        self.generate_qr_code("0943422221", self.price)
+
+        # Load the generated QR code image
+        pixmap = QPixmap(f"./{self.order_id}")
+        self.ui.qr_label.setPixmap(pixmap)
+        
+    def generate_qr_code(self, id, amount):
+        payload = qrcode.generate_payload(id, amount)
+        print("payload of %s: %s" % (id, payload))
+        filepath = f"./{self.order_id}.png"
+        if filepath:
+            qrcode.to_file(payload, filepath)
+        else: ("YFYFYFYYFYFYFYFYFYFY")
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)
