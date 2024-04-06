@@ -334,7 +334,7 @@ class CollectionUI(QMainWindow):
                     client_socket.connect((self.server_host, self.server_port))
                     print("Step 2: Sending request...")
                     request_data = {'action': 'make_order', 'product' : self.product, 'buyer' : self.user_data['username'], 'seller' : self.ui.store_name_label.text(), "status": "unpaid"}
-                    print(f"REQUEST DATA {request_data}")
+                    # print(f"REQUEST DATA {request_data}")
                     self.send_large_data(client_socket, pickle.dumps(request_data))
                     #For small data
                     # client_socket.sendall(pickle.dumps(request_data))
