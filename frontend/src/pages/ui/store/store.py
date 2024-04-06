@@ -261,8 +261,6 @@ class StoreUI(QMainWindow):
             current_image.save(buffer, "WEBP")
             # Get the binary data from the buffer
             binary_data = buffer.data()
-            # If you need to work with BytesIO, you can convert QByteArray to bytes
-            binary_bytes = bytes(binary_data)
             buffer.close()
             
         new_info_data ={
@@ -310,7 +308,7 @@ class StoreUI(QMainWindow):
         self.ui.info_page_phone_number_edit.setText(store_data["phone_number"]) 
         self.ui.info_page_description_edit.setText(store_data["description"])
         
-        self.info_page_pic = QPixmap(self.convert_image_to_Qimages(store_data["picture"]))
+        self.info_page_pic = QPixmap(self.convert_image_to_Qimages(store_data["picture"].data()))
         self.update_post_image(self.ui.info_page_picture,self.info_page_pic)
         
         #Product page

@@ -2,6 +2,7 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 import socket
+import threading
 import pickle
 import traceback
 from thefuzz import fuzz, process
@@ -89,16 +90,24 @@ def receive_large_data(conn, max_streaming_line=4096):
         if isinstance(initial_message, int):
             total_chunks = initial_message
             received_data = b""
-        
+            chunks_received = 0
             # Receive actual data chunks
-            for _ in range(total_chunks):
+            while chunks_received < total_chunks:
                 chunk = conn.recv(4096)
+                if not chunk:  # Break the loop if no data is received
+                    break
+                chunks_received += 1
                 received_data += chunk
                 
             return pickle.loads(received_data)
+        
+        # Add return statement to make sure the function returns
+        return None
+    
     except Exception as e:
         print("Error receiving data:", e)
         return None
+
 
 def get_all_posts():
     print("getting all posts server oo ee")
@@ -115,9 +124,6 @@ def get_all_items(data):
     print("getting items")
     try:
         username = data.get("user_name")
-        print("\n\n\n\n")
-        print(username)
-        print("\n\n\n\n")
         product_details = root.products
         new_product_details = []
         for product_detail in product_details:
@@ -151,10 +157,11 @@ def get_all_orders(data):
         order_details = root.orders
         new_order_details = []
         for order_detail in order_details:
-            if order_details[order_detail].buyer == username:
+            if order_details[order_detail].get_buyer() == username:
                 new_order_details.append(order_details[order_detail])
+                print(order_details[order_detail])
         orders_data = [order.serialize() for order in new_order_details]   
-        # print(f'order data {orders_data}\n\n')
+        print(f'order data {orders_data}\n\n')
         return {'success': True, 'message': 'Get all order successfully', 'order_details': orders_data}
     except Exception as e:
         print(e)
@@ -227,7 +234,30 @@ def get_store(data_dict):
             return {'success': False, 'message': 'Store not found'}
     except Exception as e:
         return {'success': False, 'message': str(e)}
+def make_order(data_dict):
+    try:
+        root = connection.root
+        orders = root.orders
+        # Find the maximum existing ID
+        max_existing_id = max(orders.keys()) if orders else 0
 
+        # Increment the maximum existing ID to get the next ID
+        next_id = max_existing_id + 1
+        new_post = Order(next_id, data_dict.get('product'),data_dict.get('buyer'),data_dict.get('seller'),data_dict.get('status'))
+        orders[next_id] = new_post
+        
+        #Append the buyer to the queue
+        # data_dict.get('product').queue.append((data_dict.get('buyer'),data_dict.get('seller')))
+        transaction.commit()
+        
+        return {'success': True, 'message': 'New order saved successfully'}
+    
+    except Exception as e:
+        # Log the exception for debugging
+        print(f"An error occurred: {e}")
+
+        # Return error message if an exception occurs
+        return {'success': False, 'message': str(e)}
 def get_posts_by_name(data_dict):
     try:
         print("Received data:", data_dict)
@@ -337,7 +367,9 @@ def handle_request(conn):
         elif action == 'save_new_address':
             response = handle_new_address(data_dict)
             send_large_data(conn, response)
-
+        elif action == "make_order":
+            response = make_order(data_dict)
+            send_large_data(conn, response)
         elif action == "get_user_data":
             response = get_user_data(data_dict)
             send_large_data(conn, response)
@@ -374,9 +406,10 @@ def handle_request(conn):
             response = {'success': False, 'message': 'Invalid action'}
         # print("Sending response to client:", response['message'])
         # Send response to the client
-        print("Sending response to client")
+            print("Sending response to client")
         conn.sendall(pickle.dumps(response))
         conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+
     except Exception as e:
         print("Error handling request:", e)
     finally:
@@ -397,4 +430,4 @@ def start_server(host, port):
             print("Server shutting down.")
 
 if __name__ == "__main__":
-    start_server('localhost', 8888)  # Change host and port as needed
+    start_server('localhost', 9999)  # Change host and port as needed

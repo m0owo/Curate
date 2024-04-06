@@ -396,7 +396,7 @@ class HomeUI(QMainWindow):
                         post_details = response.get('post_details')
                         print(post_details)
                         self.populate_posts(post_details)
-                        break 
+                        break;     
                     else:
                         print("Failed to get all the data:", response.get('message'))
             except socket.error as se:
