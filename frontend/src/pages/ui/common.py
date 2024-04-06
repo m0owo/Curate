@@ -48,6 +48,10 @@ class ClickablePost(QFrame):
         super().__init__(container)
         self.details = details
         self.clicked.connect(home_ui.handle_post_click)
+    def get_product(self):
+        return self.details.get('product')
+    def get_details(self):
+        return self.details
     def mousePressEvent(self, event):
         print("Mouse pressed on post")
         if event.button() == Qt.LeftButton:

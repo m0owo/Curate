@@ -9,6 +9,7 @@ from PySide6.QtGui import QPixmap, QImage
 from .home_ui import *
 from datetime import datetime, timedelta
 import time
+from thefuzz import fuzz, process
 
 current_directory = os.getcwd()
 sys.path.append(current_directory)
@@ -20,6 +21,14 @@ from frontend.src.pages.ui.common import *
 # from .icons_rc import *
 # from .logo_rc import *
 # from .post_images_rc import *
+
+def toggleComboBox(showOptionsButton, comboBox):
+    if comboBox.isHidden():
+        comboBox.show()
+        showOptionsButton.setText("Hide Options")
+    else:
+        comboBox.hide()
+        showOptionsButton.setText("Show Options")
 
 class Post():
     def __init__(self, details, container, home_ui):
@@ -248,8 +257,6 @@ class HomeUI(QMainWindow):
         self.ui.setupUi(self)
         self.server_host = server_host
         self.server_port = server_port
-        self.search_timer = None
-        self.DEBOUNCE_INTERVAL = 0.5 
 
         # nav bar
         shadow = QGraphicsDropShadowEffect(self)
@@ -293,6 +300,12 @@ class HomeUI(QMainWindow):
             "QPushButton::icon:hover { color: rgb(255, 231, 204); }"
         )
         self.ui.filter_button.setStyleSheet(filter_stylesheet)
+        self.ui.filter_button.clicked.connect(self.show_combo_box)
+
+        # Connect the activated signal of the combobox to the slot
+        self.ui.comboBox.activated.connect(self.handle_activation)
+
+
         self.ui.search_edit.returnPressed.connect(self.search)
         self.ui.search_edit.textChanged.connect(self.search)
 
@@ -304,7 +317,35 @@ class HomeUI(QMainWindow):
         
         # drawing posts
         self.get_posts()
-    
+
+        # filter
+    def handle_activation(self, index):
+        self.ui.comboBox.hide()
+        if index == 0:
+            sort_by = 'price'
+            self.populate_posts(self.post_details, sort_by, False)
+        elif index == 1:
+            sort_by = 'price'
+            self.populate_posts(self.post_details, sort_by, True)
+        elif index == 2:
+            sort_by = 'start'
+            self.populate_posts(self.post_details, sort_by, False)
+        elif index == 3:
+            sort_by = 'start'
+            self.populate_posts(self.post_details, sort_by, True)
+        elif index == 4:
+            sort_by = 'created'
+            self.populate_posts(self.post_details, sort_by, False)
+        elif index == 5:
+            sort_by = 'created'
+            self.populate_posts(self.post_details, sort_by, True)
+            
+
+
+    def show_combo_box(self):
+        self.ui.comboBox.show()
+        self.ui.comboBox.showPopup()
+
     def search(self):
         input = self.ui.search_edit.text()
         self.get_posts(input)
@@ -323,17 +364,20 @@ class HomeUI(QMainWindow):
         for child in widget.findChildren(QWidget):
             child.deleteLater()
 
-    def populate_posts(self, post_details):
+    def populate_posts(self, post_details, sort_by=None, reverse_b = None):
         if post_details:
-            #clear the scroll area
+            # Sorting the post details if a sort attribute is specified
+            if sort_by:
+                post_details.sort(key=lambda x: x.get('product').get(sort_by), reverse = reverse_b)
+
+            # Clear the scroll area
             self.clear_widget_children(self.ui.scrollAreaWidgetContents)
             self.ui.gridLayout.setSpacing(20)
-            # self.ui.scrollAreaWidgetContents.setStyleSheet('border: 1px solid black;')
             self.post_widgets = []
             i = 0
             spacers_needed = 0 
 
-            # for each post
+            # For each post
             for post_detail in post_details:
                 post = Post(post_detail, self.ui.scrollAreaWidgetContents, self)
                 post_widget = post.get_post()
@@ -346,10 +390,11 @@ class HomeUI(QMainWindow):
                 self.ui.gridLayout.setAlignment(post_widget, Qt.AlignTop | Qt.AlignLeft)
                 i += 1
 
-            # remaining spacers
+            # Add remaining spacers
             for _ in range(spacers_needed):
                 spacer = Spacer().get_spacer()
                 self.ui.gridLayout.addWidget(spacer)
+
             self.ui.scrollAreaWidgetContents.adjustSize()
             return self.post_widgets
         
@@ -395,6 +440,7 @@ class HomeUI(QMainWindow):
                     if response.get('success'):
                         post_details = response.get('post_details')
                         # print(post_details)
+                        self.post_details = post_details
                         self.populate_posts(post_details)
                         break;     
                     else:

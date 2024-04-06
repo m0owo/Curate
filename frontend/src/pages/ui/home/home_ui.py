@@ -17,7 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QFrame, QGridLayout,
     QLabel, QLineEdit, QMainWindow, QPushButton,
-    QScrollArea, QSizePolicy, QWidget, QHBoxLayout)
+    QScrollArea, QSizePolicy, QWidget, QHBoxLayout, QVBoxLayout, QComboBox)
 from .icons_rc import *
 from .logo_rc import *
 from .posts_images_rc import *
@@ -113,6 +113,21 @@ class Ui_MainWindow(object):
         self.home_button = QPushButton(self.nav_frame)
         self.home_button.setObjectName(u"home_button")
         self.home_button.setGeometry(QRect(750, 20, 41, 30))
+
+        self.comboBox = QComboBox(self.search_frame)
+        # Adjusting the width to match the QLineEdit
+        self.comboBox.setGeometry(QRect(self.filter_button.x(), self.filter_button.y(), 300, 30))
+        self.comboBox.addItem("Price (Asc)")
+        self.comboBox.addItem("Price (Desc)")
+        self.comboBox.addItem("Scheduled Live Date (Asc)")
+        self.comboBox.addItem("Scheduled Live Date (Desc)")
+        self.comboBox.addItem("Created Date (Asc)")
+        self.comboBox.addItem("Created Date (Desc)")
+
+        # Hide the top part of the combobox (the clickable area)
+        self.comboBox.hide()
+
+
         font2 = QFont()
         font2.setFamilies([u"Manrope"])
         font2.setBold(True)
