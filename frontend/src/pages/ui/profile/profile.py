@@ -167,12 +167,10 @@ class ProfileUI(QDialog):
             received_data += chunk
             # print(f'chunk {chunk}')
         return pickle.loads(received_data)
-
     
     def fetch_check_store_exist(self, user_id, user_name):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             try:
-                
                 # print("Checking Store exists")
                 # print("Step 1: Establishing connection...")
                 client_socket.connect((self.server_host, self.server_port))

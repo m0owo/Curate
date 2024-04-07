@@ -3,14 +3,17 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from .seller_order_box_ui import Ui_OrderBox
 from .seller_product_box_ui import Ui_ProductBox
+from .paying_ui import Ui_Dialog as Ui_confirm
 import socket, pickle
 from PySide6.QtGui import *
-import io
+import os
 from PIL import Image
 import socket
 import time
-import shutil
+import traceback
 import datetime
+import shutil
+from promptpay import qrcode
 
 class OrderBox(QFrame):
     def __init__(self, order_details, parent=None):
@@ -24,6 +27,7 @@ class OrderBox(QFrame):
         self.price = order_details.get('price')
         self.order_date = order_details.get('order_date')
         self.order_status = order_details.get('order_status')
+        self.slip_path = order_details.get('slip_picture')
         image_path = order_details.get('images')
         self.pixmap = QPixmap(image_path)
 
@@ -43,7 +47,8 @@ class OrderBox(QFrame):
         self.ui.confirm_button.clicked.connect(self.confirm_status)
 
     def confirm_status(self):
-        # Call the method from StoreUI class
+        confime_payment = Paying(self.slip_path)
+        confime_payment.exec_()
         pass
 
 class ProductBox(QFrame):
@@ -184,7 +189,7 @@ class StoreUI(QMainWindow):
         self.ui.edit_product_page_date_edit.setDate(qdate_obj)
         self.ui.edit_product_page_des_edit.setText(product_detail.get('description'))
 
-        binary_image = product_detail.get('images')[0]
+        binary_image = product_detail.get('images')
         image_path = QPixmap(binary_image)
         self.ui.edit_product_page_image_label.setPixmap(image_path)
         
@@ -245,14 +250,25 @@ class StoreUI(QMainWindow):
         
     def select_picture(self, image_label):
         options = QFileDialog.Options()
-        picture_path, _ = QFileDialog.getOpenFileName(self, "Select Picture", "", "Image Files (*.png *.jpg)", options=options)
-        if picture_path:
-            new_pic = QPixmap(picture_path)
-            shutil.copy(picture_path, picture_path)
+        file_name, _ = QFileDialog.getOpenFileName(self, "Select Picture", "", "Image Files (*.png *.jpg)", options=options)
+        if file_name:
+            new_pic = QPixmap(file_name)
             self.update_post_image(image_label, new_pic)
 
     def save_info_page(self):
-        pixmap = self.info_page_picture.pixmap()
+        # Retrieve current picture from the label if available
+        current_pic = self.ui.info_page_picture.pixmap()
+        if current_pic:
+            # Convert QPixmap to QImage
+            current_image = current_pic.toImage()
+            # Create a QBuffer to hold the binary data
+            buffer = QBuffer()
+            buffer.open(QBuffer.ReadWrite)
+            # Save the image to the buffer
+            current_image.save(buffer, "WEBP")
+            # Get the binary data from the buffer
+            binary_data = buffer.data()
+            buffer.close()
             
         new_info_data ={
             "store_id" : self.store_id,
@@ -261,7 +277,7 @@ class StoreUI(QMainWindow):
             "email" : self.ui.info_page_email_edit.toPlainText(),
             "phone_number" : self.ui.info_page_phone_number_edit.toPlainText(), 
             "description" : self.ui.info_page_description_edit.toPlainText(),
-            "picture" : pixmap
+            "picture" : binary_data
         }
         
         # print(new_info_data)
@@ -466,6 +482,18 @@ class StoreUI(QMainWindow):
         # except:
         #     print("\n\nERROR\n\n")
         
-        
+class Paying(QDialog):
+    def __init__(self, slip_path):
+        super(Paying, self).__init__()
+        self.ui = Ui_confirm()
+        self.ui.setupUi(self)  
+        if slip_path != '':
+            self.ui.queue_label.setText("Customer already pay")
+            self.ui.queue_label_2.setText("Please recheck the slip carefully")
+            self.ui.qr_label.setPixmap(QPixmap(slip_path))
+        else: 
+            self.ui.queue_label.setText("Customer does not pay yet")
+            self.ui.queue_label_2.setText("Waiting for customer to upload the slip")
+
         
  

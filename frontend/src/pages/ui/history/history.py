@@ -21,10 +21,12 @@ from frontend.src.pages.ui.common import *
 
         
 class HistoryBox(QFrame):
-    def __init__(self, order_details):
+    def __init__(self, order_details,server_host, server_port):
         QFrame.__init__(self, None)
         self.ui = Ui_HistoryBox()
         self.ui.setupUi(self)
+        self.server_host = server_host
+        self.server_port = server_port
         self.order_details = order_details
         self.product_name = order_details.get('product_name')
         self.order_id = order_details.get('order_id')
@@ -60,7 +62,7 @@ class HistoryBox(QFrame):
     def show_payment_popup(self):
         # self.ui.view_order_button.setText("Shipping")
         # self.order_status = "shipping"
-        payment_popup = Paying(self.order_details)
+        payment_popup = Paying(self.order_details,self.server_host, self.server_port)
         payment_popup.exec_()
 
 
@@ -147,10 +149,10 @@ class HistoryUI(QMainWindow):
                 # print(f'populating {order_detail}')
                 if order_detail.get('order_buyer') == self.user_data.get('username'):
                     if filter == "all":
-                        order = HistoryBox(order_detail)
+                        order = HistoryBox(order_detail, self.server_host, self.server_port)
                         layout.addWidget(order)
                     elif order_detail.get('order_status') == filter:
-                        order = HistoryBox(order_detail)
+                        order = HistoryBox(order_detail,self.server_host, self.server_port)
                         layout.addWidget(order)
         else: ("No user order details for populate order")
         spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
@@ -213,10 +215,12 @@ class HistoryUI(QMainWindow):
                 print("Error update history data:", e)
         
 class Paying(QDialog):
-    def __init__(self, order_details):
+    def __init__(self, order_details, server_host, server_port):
         super(Paying, self).__init__()
         self.ui = Ui_paying()
         self.ui.setupUi(self)  
+        self.server_host = server_host
+        self.server_port = server_port
         self.order_details = order_details
         self.price = order_details.get('price')
         self.order_id = order_details.get('order_id')
@@ -250,14 +254,45 @@ class Paying(QDialog):
         if picture_path:
             # Modify this path to your desired save location
             save_path = f"slip-{self.order_id}.jpg"
+            
             # Copy the selected picture to the save path
             shutil.copy(picture_path, save_path)
             self.ui.qr_label.setPixmap(QPixmap(save_path))
             self.change_ui()
+            self.save_slip(self.order_id, save_path)
             print("Picture saved successfully.")
             
+    def receive_large_data(self, conn):
+        total_chunks = pickle.loads(conn.recv(4096))
+        received_data = b''
+        for _ in range(total_chunks):
+            chunk = conn.recv(4096)
+            received_data += chunk
+            # print(f'chunk {chunk}')
+        return pickle.loads(received_data)     
         
-    
+    def save_slip(self, order_id, file_path):
+        try:
+            print("\n\n\n")
+            print("SAVE SLIP")
+            print("\n\n\n")
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+                client_socket.connect((self.server_host, self.server_port))
+                request_data = {'action': 'save_slip', 'order_id' : order_id, 'file_path' : file_path}
+                print("SSENT REQEUST DATA")
+                client_socket.sendall(pickle.dumps(request_data))
+                print("RECEIVE DATA")
+                response = self.receive_large_data(client_socket)
+                print("Received response:", response)
+                if response.get('success'):
+                    print('Success saving file path')
+                else:
+                    print("Failed to get all the data:", response.get('message'))
+        except socket.error as se:
+            print("Socket error:", se)
+        except Exception as e:
+            print("ERROR:", e)     
+
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)

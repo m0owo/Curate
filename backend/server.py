@@ -64,6 +64,7 @@ def check_store(data):
             return {'success' : True, 'exists' : True, "store_data" : stores[key].serialize()}
         else: return {'success' : True, 'exists' : False}
     return {'success': False, 'exists': False}
+
         
 def send_large_data(conn, data):
     CHUNK_SIZE = 4096
@@ -214,31 +215,43 @@ def handle_new_address(data_dict):
             return {'success': False, 'message': 'Account not found'}
     except Exception as e:
         return {'success': False, 'message': str(e)}
-    
+
 def handle_new_store_info(data_dict):
     try:
-        new_info = data_dict.get('new_store_info')  
-        store = root.stores[new_info.get("store_id")]
-        if store:
-            store.store_name = new_info.get("store_name")
-            store.email = new_info.get("email")
-            store.phone_number = new_info.get("phone_number")
-            store.description = new_info.get("description")
-            store.picture = new_info.get("picture")
-            transaction.commit()
-            return{'success': True, 'message': 'New store information saved successfully'}
+        new_info = data_dict.get('new_store_info') 
+        store_id = new_info.get("store_id") 
+        if store_id:
+            user_name = new_info.get("user_name")
+            user_id = new_info.get("user_id")
+            store_name = new_info.get("store_name")
+            email = new_info.get("email")
+            phone_number = new_info.get("phone_number")
+            description = new_info.get("description")
+            picture = new_info.get("picture")
+            store = root.stores[store_id]
+            if store:
+                store.store_name = store_name
+                store.email = email
+                store.phone_number = phone_number
+                store.description = description
+                store.picture = picture
+                transaction.commit()
+                return{'success': True, 'message': 'Save store new information saved successfully'}
         else: 
-            return {'success': False, 'message': 'Account not found'}
+            new_store_id = generate_id("stores")
+            store = Store(user_id,new_store_id,user_name,store_name,email,phone_number,description,picture)
+            store[new_store_id] = store
+            transaction.commit()
     except Exception as e:
         return {'success': False, 'message': str(e)}
-    
+
 def get_store(data_dict):
     try:
         store_id = data_dict.get('store_id')
         store = root.stores[store_id]
         if store:
             store_data = store.serialize()
-            return{'success': True, 'store_data': store_data}
+            return{'success': True, 'store_data': store_data, 'message' : "Store found"}
         else:
             return {'success': False, 'message': 'Store not found'}
     except Exception as e:
@@ -270,6 +283,26 @@ def make_order(data_dict):
 
         # Return error message if an exception occurs
         return {'success': False, 'message': str(e)}
+    
+def add_wishlist(data_dict):
+    try:
+        product = data_dict.get('product')
+        username = data_dict.get('user_name')
+        
+        if product.get('product_id') in root.products:
+            product_obj =  root.products[product.get('product_id')]
+        else: raise ValueError("Product not found in database")
+        
+        account = root.accounts[username]
+        if account:
+            account.wishlist.append(product_obj)
+            transaction.commit()
+            return {'success': True, 'message': 'New wishlist saved successfully'}
+        else:
+            return {'success': False, 'message': 'Account not found'}
+    except Exception as e:
+        return {'success': False, 'message': str(e)}
+    
 def get_posts_by_name(data_dict):
     try:
         print("Received data:", data_dict)
@@ -339,7 +372,21 @@ def get_all_tags():
         print("Error:", e)
         return {'success': False, 'message': 'Couldnt retrieve tags'}
 
-    
+def save_slip(data_dict):
+    try:
+        order_id = data_dict.get("order_id")
+        file_path = data_dict.get("file_path")
+        orders = root.orders
+        if order_id in orders:
+            order = orders[order_id]
+            order.slip_picture = file_path
+            transaction.commit()
+            return {'success': True, 'message': "Save slip in database"}
+        else:
+            print("Store not exits")
+    except Exception as e:
+        return {'success': False, 'message': e}
+           
 def handle_request(conn):
     try:
         print("Handling request...")
@@ -379,9 +426,15 @@ def handle_request(conn):
         elif action == 'save_new_address':
             response = handle_new_address(data_dict)
             send_large_data(conn, response)
+            
         elif action == "make_order":
             response = make_order(data_dict)
             send_large_data(conn, response)
+            
+        elif action == "add_wishlist":
+            response = add_wishlist(data_dict)
+            send_large_data(conn, response)
+            
         elif action == "get_user_data":
             response = get_user_data(data_dict)
             send_large_data(conn, response)
@@ -412,7 +465,10 @@ def handle_request(conn):
         elif action == "get_all_tags":
             response = get_all_tags()
             send_large_data(conn, response)
-
+            
+        elif action == "save_slip":
+            response = save_slip(data_dict)
+            send_large_data(conn, response)
         else:
             print("Invalid action")
             response = {'success': False, 'message': 'Invalid action'}

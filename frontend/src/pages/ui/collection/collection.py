@@ -58,7 +58,8 @@ class CollectionUI(QMainWindow):
         self.ui.home_button.clicked.connect(self.to_home)
         
         self.ui.buy_bt.clicked.connect(self.make_order)
-        
+        self.ui.add_to_wishlist_bt.clicked.connect(self.add_wishlist)
+           
     def send_large_data(self, conn, data):
         try:
             # Send metadata or instructions about the data
@@ -319,17 +320,13 @@ class CollectionUI(QMainWindow):
                     continue
     # def __init__(self, order_id, product, buyer, seller, status="unpaid"):        
     def make_order(self):
-        print('\n\n\n\n MAKE ORDER \n\n\n\n\n')
         if self.ui.status_label.text() == "Available":
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
                 try:
                     client_socket.connect((self.server_host, self.server_port))
                     request_data = {'action': 'make_order', 'product' : self.product, 'buyer' : self.user_data['username'], 'seller' : self.ui.store_name_label.text(), "status": "unpaid"}
-                    print("Dump request data")
                     client_socket.sendall(pickle.dumps(request_data))
-                    print("Get response")
                     response = client_socket.recv(4096)
-                    print("Load response")
                     response_data = pickle.loads(response)
                     if response_data['success']:
                         print("New order sucessfully")
@@ -339,11 +336,30 @@ class CollectionUI(QMainWindow):
                     print("Error make_order(e):", e)
         else: print("Status is not live right now")
         
+    def add_wishlist(self):
+        print('\n\n\n\n ADD Wishlist\n\n\n\n\n')
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+            try:
+                client_socket.connect((self.server_host, self.server_port))
+                request_data = {'action': 'add_wishlist', 'product' : self.product, 'user_name' : self.user_data['username']}
+                print("Dump request data")
+                client_socket.sendall(pickle.dumps(request_data))
+                print("Get response")
+                response = client_socket.recv(4096)
+                print("Load response")
+                response_data = pickle.loads(response)
+                if response_data['success']:
+                    print("New wishlist add sucessfully")
+                else:
+                    print("Failed to save wishlist:", response_data['message'])
+            except Exception as e:
+                print("Error add_wishlist(e):", e)      
+                
     def update_store_data(self, store_data):
         print('store data', store_data.get('store_id'))
         author_pic = store_data.get('picture')
         author_pic = QPixmap(author_pic)
-        self.update_store_image(self, author_pic)
+        self.update_store_image(author_pic)
         self.update_store_name_label(store_data.get('store_name'))
         self.update_store_description_label(store_data.get('description'))
 

@@ -105,8 +105,9 @@ class WishlistUI(QMainWindow):
         try:
             self.clear_frame(self.ui.scrollAreaWidgetContents)
             layout = self.ui.scrollAreaWidgetContents.layout()
-            products = self.user_data.get('wishlist')
-            for product_detail in products:
+            userdata = self.fetch_user_data(self.user_data.get('username'))
+            wishlists = userdata.get('wishlist')
+            for product_detail in wishlists:
                 product = WishlistBox(product_detail)
                 layout.addWidget(product)
             spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
@@ -122,7 +123,24 @@ class WishlistUI(QMainWindow):
                 received_data += chunk
                 # print(f'chunk {chunk}')
             return pickle.loads(received_data)
-
+        
+    def fetch_user_data(self, username):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+            try:
+                client_socket.connect((self.server_host, self.server_port))
+                request_data = {'action': 'get_user_data', 'username': username}
+                client_socket.sendall(pickle.dumps(request_data))
+                # response = client_socket.recv(4096)
+                response_data = self.receive_large_data(client_socket)
+                # response_data = pickle.loads(response)
+                if response_data['success']:
+                    print("Get new user data done!")
+                    return response_data['user_data']
+                else:
+                    print("Failed to save new information:", response_data['message'])
+            except Exception as e:
+                print("Error fetch_user_data:", e)
+                
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id
         self.user_data = user_data
