@@ -402,6 +402,22 @@ def update_status(data_dict):
             print("Store not exits")
     except Exception as e:
         return {'success': False, 'message': e}
+
+def get_store_data(data_dict):
+    try:
+        username = data_dict["user_name"]
+        print(f'getting {username} store')
+        users = root.accounts
+        stores = root.stores
+        user = users[username].serialize()
+        if user["store"]:
+            store_id = user["store"]
+            store = stores[store_id].serialize()
+            return {'success': True, 'store_data': store}
+        else:
+            return {'success': True, 'store_data': {}}
+    except Exception as e:
+        return {'success': False, 'message': e}
            
 def handle_request(conn):
     try:
@@ -490,6 +506,11 @@ def handle_request(conn):
             response = update_status(data_dict)
             send_large_data(conn, response)
             
+        elif action == 'get_store_data':
+            print('getting store data')
+            response = get_store_data(data_dict)
+            send_large_data(conn, response)
+
         else:
             print("Invalid action")
             response = {'success': False, 'message': 'Invalid action'}

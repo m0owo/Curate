@@ -43,7 +43,7 @@ if __name__ == "__main__":
     # login_ui.login_successful.connect(profile_ui.fetch_check_store_exist)
     login_ui.login_successful.connect(store_ui.load_user_data)
     login_ui.login_successful.connect(store_ui.save_info_page)
-    # login_ui.login_successful.connect(store_ui.fetch_check_store_exist)
+    login_ui.login_successful.connect(store_ui.get_store_data)
 
     widget.insertWidget(0, login_ui)
     widget.insertWidget(1, home_ui)

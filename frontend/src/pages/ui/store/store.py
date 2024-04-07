@@ -165,7 +165,6 @@ class StoreUI(QMainWindow):
         self.store_stack_widget.setCurrentIndex(5)
 
     # def update_product_to_database(self):
-        
     
     def to_add_product_page(self):
         self.store_stack_widget.setCurrentIndex(4)
@@ -198,7 +197,6 @@ class StoreUI(QMainWindow):
         binary_image = product_detail.get('images')
         image_path = QPixmap(binary_image)
         self.ui.edit_product_page_image_label.setPixmap(image_path)
-        
     
     def receive_large_data(self, conn):
         total_chunks = pickle.loads(conn.recv(4096))
@@ -209,7 +207,6 @@ class StoreUI(QMainWindow):
             # print(f'chunk {chunk}')
         return pickle.loads(received_data)
 
-            
     def send_large_data(self, connection, data):
         try:
             # Calculate the total number of chunks
@@ -226,34 +223,52 @@ class StoreUI(QMainWindow):
         except Exception as e:
             print("Error sending data:", e)
 
-            
-    def fetch_check_store_exist(self, user_id, user_name):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
-            try:
-                print("Checking Store exists")
-                # print("Step 1: Establishing connection...")
-                client_socket.connect((self.server_host, self.server_port))
-                # print("Step 2: Sending request...")
-                request_data = {'action': 'check_store', 'user_name': user_name["username"]}
-                client_socket.sendall(pickle.dumps(request_data))
-                # print("Step 3: Receiving response...")
-                response_data = self.receive_large_data(client_socket)
-                # print("Received response:", response_data)
-                # print("Step 4: Unpacking response...")
-                if response_data['success']:
-                    # print("Check store exists")
-                    if response_data['exists']:
-                        return self.initial_pages(response_data["store_data"])
-                else:
-                    print("Failed to check to store:", response_data['message'])
-            except Exception as e:
-                print("Failed to check to store::", e)
+    # def fetch_check_store_exist(self, user_id, user_name):
+    #     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+    #         try:
+    #             print("Checking Store exists")
+    #             # print("Step 1: Establishing connection...")
+    #             client_socket.connect((self.server_host, self.server_port))
+    #             # print("Step 2: Sending request...")
+    #             request_data = {'action': 'check_store', 'user_name': user_name["username"]}
+    #             client_socket.sendall(pickle.dumps(request_data))
+    #             # print("Step 3: Receiving response...")
+    #             response_data = self.receive_large_data(client_socket)
+    #             # print("Received response:", response_data)
+    #             # print("Step 4: Unpacking response...")
+    #             if response_data['success']:
+    #                 # print("Check store exists")
+    #                 if response_data['exists']:
+    #                     return self.initial_pages(response_data["store_data"])
+    #             else:
+    #                 print("Failed to check to store:", response_data['message'])
+    #         except Exception as e:
+    #             print("Failed to check to store::", e)
+
+    def get_store_data(self, user_id, user_data):
+        user_name = user_data['username']
+        for i in range(10):
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+                try:
+                    print('getting store info')
+                    print(f'getting {user_name}s store')
+                    client_socket.connect((self.server_host, self.server_port))
+                    request_data = {'action': 'get_store_data', 'user_name': user_name}
+                    client_socket.sendall(pickle.dumps(request_data))
+                    response_data = self.receive_large_data(client_socket)
+                    if response_data['success']:
+                        if response_data['store_data']:
+                            return self.initial_pages(response_data["store_data"])
+                    else:
+                        print("Failed to get:", response_data['message'])
+                except Exception as e:
+                    print("Failed to get store:", e)
+
                 
     def update_post_image(self, image_label, new_image):
         scaled_pic = new_image.scaled(QSize(self.POST_WIDTH, self.POST_WIDTH), Qt.KeepAspectRatio, Qt.SmoothTransformation)
         image_label.setPixmap(scaled_pic)
-        
-        
+    
     def select_picture(self, image_label):
         options = QFileDialog.Options()
         file_name, _ = QFileDialog.getOpenFileName(self, "Select Picture", "", "Image Files (*.png *.jpg)", options=options)
