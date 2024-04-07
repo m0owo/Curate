@@ -283,10 +283,10 @@ def get_posts_by_name(data_dict):
         if posts:
             for post in posts:
                 post_details = posts[post]
-                product_name = post_details.get_product().get_name()
+                product_name = post_details.get_product().get_pr_name()
                 score = process.extractOne(name, [product_name], scorer=fuzz.token_set_ratio)
                 print(f"Post Name: {product_name}, Search Query: {name}, Score: {score}")
-                if score[1] >= 60:
+                if score[1] >= 55:
                     search_results.append(post_details)
         else:
             print("No posts found.")
@@ -309,7 +309,7 @@ def get_tags_by_name(data_dict):
             for tag in tags:
                 tag_text = tag.get_tag_text()
                 score = process.extractOne(name, [tag_text], scorer=fuzz.token_set_ratio)
-                if score[1] >= 60:
+                if score[1] >= 45:
                     tag_scores[tag] = score[1]
 
             # Sort the tags based on scores in descending order

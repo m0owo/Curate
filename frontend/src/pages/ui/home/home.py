@@ -304,7 +304,6 @@ class HomeUI(QMainWindow):
 
 
         self.ui.search_edit.returnPressed.connect(self.search)
-        self.ui.search_edit.textChanged.connect(self.search)
 
         # clearing tags frame
         clear_frame(self.ui.tags_frame)
@@ -313,7 +312,7 @@ class HomeUI(QMainWindow):
         self.get_pop_tags()
         
         # drawing posts
-        self.get_posts()
+        self.post_details = self.get_posts()
 
         # filter
     def handle_activation(self, index):
@@ -337,8 +336,6 @@ class HomeUI(QMainWindow):
             sort_by = 'created'
             self.populate_posts(self.post_details, sort_by, True)
             
-
-
     def show_combo_box(self):
         self.ui.comboBox.show()
         self.ui.comboBox.showPopup()
@@ -394,6 +391,9 @@ class HomeUI(QMainWindow):
 
             self.ui.scrollAreaWidgetContents.adjustSize()
             return self.post_widgets
+        else:
+            self.populate_posts(self.post_details)
+
         
     def receive_large_data(self, conn):
         total_chunks = pickle.loads(conn.recv(4096))
@@ -404,7 +404,7 @@ class HomeUI(QMainWindow):
             received_data += chunk
             # print(f'chunk ', chunk)
         result = pickle.loads(received_data)
-        # print('rseult', result.get('post_details'))
+        print('rseult', result.get('post_details'))
         return pickle.loads(received_data)
     
     def send_large_data(self, sock, data):
@@ -437,9 +437,8 @@ class HomeUI(QMainWindow):
                     if response.get('success'):
                         post_details = response.get('post_details')
                         # print(post_details)
-                        self.post_details = post_details
                         self.populate_posts(post_details)
-                        break;     
+                        return post_details
                     else:
                         print("Failed to get all the data:", response.get('message'))
             except socket.error as se:
