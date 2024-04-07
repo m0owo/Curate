@@ -418,6 +418,49 @@ def get_store_data(data_dict):
             return {'success': True, 'store_data': {}}
     except Exception as e:
         return {'success': False, 'message': e}
+
+def create_new_product(data_dict):
+    print(f'Received data: {data_dict}')
+    print('Creating new product')
+    try:
+        username = data_dict["user_name"]
+        name = data_dict["name"]
+        price = data_dict["price"]
+        tags = data_dict["tags"]
+        mode = data_dict["mode"]
+        datein = data_dict["date"]
+        desc = data_dict["description"]
+
+        print(f'Username: {username}')
+        print(f'Name: {name}')
+        print(f'Price: {price}')
+        print(f'Tags: {tags}')
+        print(f'Mode: {mode}')
+        print(f'Date: {datein}')
+        print(f'Description: {desc}')
+        datein = datetime(2024, 4, 7, 10, 15)
+
+        all_tags = []
+        for tag in tags:
+            if tag in [root_tags.get_tag_text() for root_tags in root.tags.values()]:
+                all_tags.append(root.tags[tag])
+            else:
+                all_tags.append(Tag(tag))
+                root.tags[tag] = Tag(tag)
+        print(f'All tags: {all_tags}')
+
+        print(f'Creating item for {username}')
+        new_item = Item(generate_id('products'), username, datein, price, 1,
+                        desc, name, "item2.jpg", all_tags)
+        root.products[new_item.get_id()] = new_item
+        item = root.products[new_item.get_id()]
+        print(item.get_id())
+        transaction.commit()
+        return {'success': True}
+    except Exception as e:
+        print(f'Error occurred: {e}')
+        return {'success': False, 'message': str(e)}
+
            
 def handle_request(conn):
     try:
@@ -510,6 +553,10 @@ def handle_request(conn):
             print('getting store data')
             response = get_store_data(data_dict)
             send_large_data(conn, response)
+        
+        elif action == 'create_new_product':
+            print('creating new product')
+            response = create_new_product(data_dict)
 
         else:
             print("Invalid action")

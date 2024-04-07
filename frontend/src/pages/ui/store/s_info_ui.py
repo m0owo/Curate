@@ -2372,7 +2372,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_11 = QVBoxLayout(self.edit_product)
         self.verticalLayout_11.setSpacing(10)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
-        self.verticalLayout_11.setContentsMargins(0, 0, 0, 0)
         self.label_18 = QLabel(self.edit_product)
         self.label_18.setObjectName(u"label_18")
         sizePolicy2.setHeightForWidth(self.label_18.sizePolicy().hasHeightForWidth())
@@ -2398,7 +2397,7 @@ class Ui_MainWindow(object):
         self.frame_25.setFrameShape(QFrame.StyledPanel)
         self.frame_25.setFrameShadow(QFrame.Raised)
         self.verticalLayout_8 = QVBoxLayout(self.frame_25)
-        self.verticalLayout_8.setSpacing(10)
+        self.verticalLayout_8.setSpacing(15)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.label_11 = QLabel(self.frame_25)
         self.label_11.setObjectName(u"label_11")
@@ -2676,6 +2675,7 @@ class Ui_MainWindow(object):
         self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_14.addItem(self.horizontalSpacer_3)
+        self.status_label_display = QLabel(self.frame_29)
 
         self.edit_product_page_save_button = QPushButton(self.frame_29)
         self.edit_product_page_save_button.setObjectName(u"edit_product_page_save_button")
@@ -2684,6 +2684,12 @@ class Ui_MainWindow(object):
         self.edit_product_page_save_button.setMinimumSize(QSize(0, 30))
         self.edit_product_page_save_button.setMaximumSize(QSize(16777215, 30))
         self.edit_product_page_save_button.setFont(font9)
+
+        self.status_label_display.setMinimumSize(600, 30)
+        self.status_label_display.setFont(font9)
+        self.status_label_display.setText('For displaying errors')
+        self.status_label_display.hide()
+
 
         self.horizontalLayout_14.addWidget(self.edit_product_page_save_button)
 

@@ -120,7 +120,7 @@ class StoreUI(QMainWindow):
         
         #Product page (button)
         self.ui.product_page_add_product_button.clicked.connect(self.to_add_product_page)
-        # self.ui.edit_product_page_save_button.clicked.connect(self.update_product_to_database)
+        self.ui.edit_product_page_save_button.clicked.connect(self.add_product_to_database)
     
         #Item page (button)
         self.ui.collection_page_add_collection_button.clicked.connect(self.to_add_item_page)
@@ -164,8 +164,56 @@ class StoreUI(QMainWindow):
     def to_add_item_page(self):
         self.store_stack_widget.setCurrentIndex(5)
 
-    # def update_product_to_database(self):
-    
+    def add_product_to_database(self):
+        name_input = self.ui.edit_product_page_name_Edit.toPlainText()
+        name = name_input
+        print(f'name: {name}')
+
+        price_input = self.ui.edit_product_page_price_edit.toPlainText()
+        price = int(price_input)
+        print(f'price: {price}')
+
+        tags_input = self.ui.edit_product__page_tags_edit.toPlainText()
+        tags = [tag for tag in tags_input.split()]
+        print(f'tags {tags}')
+
+        mode_input = self.ui.edit_product_page_mode_combobox.currentText()
+        mode = mode_input
+        print(f'mode: {mode}')
+
+        date_input = self.ui.edit_collection_page_date_edit.date()
+        date_string = date_input.toString("d/M/yyyy")
+        print(f'date: {date_string}')
+        date = datetime.date(date_input.year(), date_input.month(), date_input.day())
+        print(f'date {date}')
+
+        description_input = self.ui.edit_collection_des_edit.toPlainText()
+        description = description_input
+        print(f'description: {description}')
+        self.create_new_product(name, price, tags, mode, date, description)
+
+    def create_new_product(self, name, price, tags, mode, date, description):
+        print("Creating new product")
+        print(f'name {name}\nprice {price}\ntags {tags}\nmode {mode}\ndate {date}\ndescription {description}\n')
+        for i in range(10):
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+                try:
+                    print('sending new product info to database')
+                    client_socket.connect((self.server_host, self.server_port))
+                    request_data = {'action': 'create_new_product',
+                                    'name': name, 'price': price,
+                                    'tags': tags, 'mode': mode, 'date': date,
+                                    'description': description, 'user_name': self.user_name}
+                    client_socket.sendall(pickle.dumps(request_data))
+                    response_data = self.receive_large_data(client_socket)
+                    if response_data['success']:
+                        self.ui.status_label_display.setText("Successfully Added Product")
+                    else:
+                        print("Failed to add product:", response_data['error'])
+                except Exception as e:
+                    print("Failed to add product:", e)
+                    # Add more specific error handling if needed
+
     def to_add_product_page(self):
         self.store_stack_widget.setCurrentIndex(4)
         self.ui.edit_product_page_name_Edit.setText("")
@@ -340,7 +388,6 @@ class StoreUI(QMainWindow):
         self.update_post_image(self.ui.info_page_picture,self.info_page_pic)
         #Product page
         
-    
     #orders ui
     def clear_frame(self, frame):
         layout = frame.layout()
@@ -479,6 +526,7 @@ class StoreUI(QMainWindow):
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id
         self.user_data = user_data
+        self.user_name = self.user_data["username"]
 
     def update_order_data(self, filter="all"):
         # try:
@@ -488,8 +536,6 @@ class StoreUI(QMainWindow):
                 user_data = self.get_all_orders()
 
                 self.populate_orders(user_data, filter)
-                
-
         # except:
         #     print("\n\nERROR\n\n")
 
@@ -501,7 +547,6 @@ class StoreUI(QMainWindow):
                 user_data = self.get_all_items()
                 if user_data:
                     self.populate_items(user_data, filter)
-
         # except:
         #     print("\n\nERROR\n\n")
         
