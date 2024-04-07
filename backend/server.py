@@ -123,13 +123,14 @@ def get_all_posts():
 
 def get_all_items(data):
     print("getting items")
+    print(data)
     try:
         username = data.get("user_name")
         product_details = root.products
         new_product_details = []
         for product_detail in product_details:
+            # print(product_details[product_detail].seller)
             if product_details[product_detail].seller == username:
-                # print(product_details[product_detail].seller)
                 new_product_details.append(product_details[product_detail])
 
         # print(new_product_details)

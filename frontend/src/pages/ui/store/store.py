@@ -317,7 +317,6 @@ class StoreUI(QMainWindow):
         
         self.info_page_pic = QPixmap(store_data["picture"])
         self.update_post_image(self.ui.info_page_picture,self.info_page_pic)
-        
         #Product page
         
     
@@ -352,6 +351,7 @@ class StoreUI(QMainWindow):
         self.clear_frame(self.ui.products_crollAreaWidgetContents)
         collection_layout = self.ui.collections_scrollAreaWidgetContents.layout()
         product_layout = self.ui.products_crollAreaWidgetContents.layout()
+        # print('helo', product_details)
 
         for product_detail in product_details:
             # print(f'populating {product_details}')
@@ -431,6 +431,7 @@ class StoreUI(QMainWindow):
                     client_socket.connect((self.server_host, self.server_port))
                     # print("Step 2: Sending request...")
                     request_data = {'action': 'get_all_items', 'user_name' : self.user_data["username"]}
+                    # print(f'sending {request_data}')
                     client_socket.sendall(pickle.dumps(request_data))
                     # print("Step 3: Receiving response...")
                     response = self.receive_large_data(client_socket)
@@ -438,7 +439,7 @@ class StoreUI(QMainWindow):
                     # print("Step 4: Unpacking response...")
                     if response.get('success'):
                         print('Success getting all items')
-                        print(response)
+                        # print(response)
                         return response.get('item_details')
         
                     else:
@@ -460,6 +461,7 @@ class StoreUI(QMainWindow):
 
     def update_order_data(self, filter="all"):
         # try:
+        if self.user_data:
             username = self.user_data.get("username")
             if username:
                 user_data = self.get_all_orders()
@@ -472,12 +474,12 @@ class StoreUI(QMainWindow):
 
     def update_product_data(self, filter="all"):
         # try:
+        if self.user_data:
             username = self.user_data.get("username")
             if username:
                 user_data = self.get_all_items()
-
-
-                self.populate_items(user_data, filter)
+                if user_data:
+                    self.populate_items(user_data, filter)
 
         # except:
         #     print("\n\nERROR\n\n")

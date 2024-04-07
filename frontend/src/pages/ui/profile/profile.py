@@ -52,6 +52,7 @@ class Post():
             self.postal_code = details.get('postal')
             self.container = container
             self.container.setStyleSheet(u"border: None;")
+            self.store = details.get('store')
 
             info_text = f"{self.name} {self.phone_number}"
             self.address = f"{self.details} {self.sub_district} {self.district} {self.province} {self.postal_code}"
@@ -129,7 +130,6 @@ class ProfileUI(QDialog):
         self.ui.address_button.clicked.connect(self.to_address_page)
         self.ui.address_button_2.clicked.connect(self.to_store_page)
         
-        
         self.ui.save_button.clicked.connect(self.save_new_info)
         self.name = self.ui.name_edit
         self.mail = self.ui.mail_edit
@@ -137,8 +137,7 @@ class ProfileUI(QDialog):
         self.male = self.ui.male_button
         self.female = self.ui.female_button
         # self.other = self.ui.others_button
-        
-        
+
     def to_home_page(self):
         self.stacked_widget.setCurrentIndex(1) 
     def to_history_page(self):
@@ -198,6 +197,10 @@ class ProfileUI(QDialog):
         self.ui.name_edit.setPlainText(self.user_data['username'])
         self.ui.mail_edit.setPlainText(self.user_data['email'])
         self.ui.phonenum_edit.setPlainText(self.user_data['phone_number'])
+        if self.user_data.get('store'):
+            print(f'THis is my store')
+            self.ui.address_button_2.setText("Manage Shop")
+            print(self.ui.address_button_2.text())
         
         # Set the sex using radio buttons
         sex = self.user_data['sex']
@@ -262,6 +265,7 @@ class ProfileAddressUI(QDialog):
         self.ui.address_button.clicked.connect(self.to_address_page)
         self.ui.add_address_button.clicked.connect(self.add_address)
         self.ui.create_shop_button.clicked.connect(self.to_store_page)
+        
         self.user_id = None
         self.user_data = None
         
@@ -287,6 +291,10 @@ class ProfileAddressUI(QDialog):
         self.user_id = user_id
         self.user_data = user_data
         self.populate_address_widgets(self.user_data["addresses"])
+        if self.user_data.get('store'):
+            print(f'THis is my store')
+            self.ui.create_shop_button.setText("Manage Shop")
+            print(self.ui.create_shop_button.text())
         
     def populate_address_widgets(self, addresses):
         layout = self.ui.verticalLayout_2
@@ -442,8 +450,6 @@ class AddAddressUI(QDialog):
                 self.ui.sub_district_combobox.addItem(sub_district['subdistrictNameEn'])
                 self.ui.postal_code_combobox.addItem(str(sub_district['subdistrictCode']))
         
-                
-
     def handle_district_changed(self, index):
         # Clear existing items in sub_district_combobox
         self.ui.sub_district_combobox.clear()

@@ -370,7 +370,7 @@ class Order(persistent.Persistent):
 
 
 class Account(persistent.Persistent):
-    def __init__(self, id, email, password, username = "", sex = "", pic = ""):
+    def __init__(self, id, email, password, username = "", sex = "", pic = "", store = None):
         self.id = id
         self.email = email
         self.password = password
@@ -385,9 +385,13 @@ class Account(persistent.Persistent):
         self.orders = persistent.list.PersistentList()
         self.wishlist = persistent.list.PersistentList()
         self.pic = pic
+        self.store = store
 
     def get_pic(self):
         return self.pic
+    
+    def set_store(self, store):
+        self.store = store
 
     def get_email(self):
         return self.email
@@ -421,7 +425,8 @@ class Account(persistent.Persistent):
         print(f'----User Info---\nEmail: {self.email}\n'
               f'Password: {self.password}\n'
               f'Username: {self.username}\n'
-              f'Adderres: {serialized_addresses}')
+              f'Adderres: {serialized_addresses}\n'
+              f'store: {self.store}\n')
 
     def serialize(self):
         serialized_addresses = [address.serialize() for address in self.addresses]
@@ -436,7 +441,8 @@ class Account(persistent.Persistent):
             'phone_number': self.phone_number,
             'follower': self.follower,
             'following': self.following,
-            'wishlist': serialized_products
+            'wishlist': serialized_products,
+            'store': self.store
         }
 
 class Address:
@@ -479,6 +485,7 @@ class Store:
     def __init__(self, store_id, user_name, store_name, email, phone_num, description, picture):
         self.store_id = store_id
         self.store_user_name = user_name
+        root.accounts[self.store_user_name].set_store(self.store_id)
         self.store_name = store_name
         self.email = email
         self.phone_num = phone_num
@@ -1040,46 +1047,6 @@ if  __name__ == "__main__":
 
     tags = root.tags
     for key in tags:
-        tags[key].print_info()
-
-    orders = root.orders
-    for key in orders:
-        orders[key].print_info()
-
-    order_details = root.orders
-    new_order_details = []
-    for order_detail in order_details:
-        if order_details[order_detail].buyer == "adminnajaa~~":
-            new_order_details.append(order_details[order_detail])
-    orders_data = [f"{order.serialize()}\n" for order in new_order_details]   
-    print(orders_data)
-    
-    stores = root.stores 
-    for key in stores:
-        stores[key].print_info()
-        
-    # print("Check whether create a store yet")
-    # stores = root.stores
-    # for key in stores:
-    #     if stores[key].store_user_name == "adminnajaa~~":
-    #         print({'success' : True, 'exists' : True})
-    #     else: print({'success' : True, 'exists' : False})
-
-if  __name__ == "__main__":
-    accounts = root.accounts
-    # for key in accounts:
-    #     accounts[key].print_info()
-
-    products = root.products
-    for key in products:
-        products[key].print_info()
-    
-    # posts = root.posts
-    # for key in posts:
-    #     posts[key].print_info()
-
-    tags = root.tags
-    for key in tags:
         print(key)
         tags[key].print_info()
     
@@ -1087,8 +1054,6 @@ if  __name__ == "__main__":
     if "cute" in tags:
         print("CUTE YES")
     else: print("CUTE NO")
-        
-
 
     # orders = root.orders
     # for key in orders:
