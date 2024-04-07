@@ -164,12 +164,13 @@ def get_all_orders(data):
     try:
         username = data.get("user_name")
         order_details = root.orders
-        new_order_details = []
-        for order_detail in order_details:
-            if order_details[order_detail].get_buyer() == username:
-                new_order_details.append(order_details[order_detail])
-                print(order_details[order_detail])
-        orders_data = [order.serialize() for order in new_order_details]   
+        # new_order_details = []
+        # for order_detail in order_details:
+        #     if order_details[order_detail].get_buyer() == username:
+        #         new_order_details.append(order_details[order_detail])
+        #         print(order_details[order_detail])
+        # orders_data = [order.serialize() for order in new_order_details]
+        orders_data = [order.serialize() for order in order_details.values()]
         return {'success': True, 'message': 'Get all order successfully', 'order_details': orders_data}
     except Exception as e:
         print(e)

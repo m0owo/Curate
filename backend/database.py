@@ -654,7 +654,7 @@ root.orders[order1.get_order_id()] = order1
 order2 = Order(generate_id('orders'), item2, admin_1.get_username(), user_1.get_username(), status="shipping")
 root.orders[order2.get_order_id()] = order2
 
-order3 = Order(generate_id('orders'), item1, user_1.get_username(), user_1.get_username())
+order3 = Order(generate_id('orders'), item3, user_1.get_username(), store_2.store_user_name)
 root.orders[order3.get_order_id()] = order3
 
 #wishlist testing admin_1 only

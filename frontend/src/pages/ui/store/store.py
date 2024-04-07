@@ -29,6 +29,7 @@ class OrderBox(QFrame):
 
 
         self.ui.product_image_label.setPixmap(self.pixmap)
+        self.ui.buyer_name.setText("Buyer: " + self.buyer)
         self.ui.product_name.setText(self.product_name)
         self.ui.order_id_label.setText(str(self.order_id))
         self.ui.order_date_label.setText("Order Date: " + self.order_date.strftime("%Y-%m-%d %H:%M:%S"))
@@ -115,7 +116,7 @@ class StoreUI(QMainWindow):
 
         #Productss page(button)
         self.ui.product_page_all_button.clicked.connect(lambda: self.update_product_data())
-        self.ui.product_page_live_button.clicked.connect(lambda: self.update_product_data("live"))
+        self.ui.product_page_live_button.clicked.connect(lambda: self.update_product_data("available"))
         self.ui.product_page_starting_button.clicked.connect(lambda: self.update_product_data("upcoming"))
         self.ui.product_page_completed_button.clicked.connect(lambda: self.update_product_data("sold out"))
 
@@ -309,7 +310,7 @@ class StoreUI(QMainWindow):
         layout = self.ui.orders_scrollAreaWidgetContents.layout()
         for order_detail in order_details:
             # print(f'populating {order_detail}')
-            if order_detail.get('order_buyer') == self.user_data.get('username'):
+            if order_detail.get('order_seller') == self.user_data.get('username'):
                 if filter == "all":
                     order = OrderBox(order_detail)
                     layout.addWidget(order)
