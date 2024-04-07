@@ -387,6 +387,21 @@ def save_slip(data_dict):
             print("Store not exits")
     except Exception as e:
         return {'success': False, 'message': e}
+    
+def update_status(data_dict):
+    try:
+        order_id = data_dict.get("order_id")
+        status = data_dict.get("status")
+        orders = root.orders
+        if order_id in orders:
+            order = orders[order_id]
+            order.status = status
+            transaction.commit()
+            return {'success': True, 'message': "Updated Order Status"}
+        else:
+            print("Store not exits")
+    except Exception as e:
+        return {'success': False, 'message': e}
            
 def handle_request(conn):
     try:
@@ -470,6 +485,11 @@ def handle_request(conn):
         elif action == "save_slip":
             response = save_slip(data_dict)
             send_large_data(conn, response)
+
+        elif action == "update_status":
+            response = update_status(data_dict)
+            send_large_data(conn, response)
+            
         else:
             print("Invalid action")
             response = {'success': False, 'message': 'Invalid action'}

@@ -16,10 +16,14 @@ import shutil
 from promptpay import qrcode
 
 class OrderBox(QFrame):
-    def __init__(self, order_details, parent=None):
+    def __init__(self, order_details, server_host, server_port, parent=None):
         QFrame.__init__(self, None)
         self.ui = Ui_OrderBox()
         self.ui.setupUi(self)
+        self.server_host = server_host
+        self.server_port = server_port
+
+        self.order_details = order_details
 
         self.product_name = order_details.get('product_name')
         self.buyer = order_details.get('order_buyer')
@@ -43,11 +47,13 @@ class OrderBox(QFrame):
             self.ui.confirm_button.setText("Confirm Payment")
         elif self.order_status == "shipping":
             self.ui.confirm_button.setText("Confirm Shipping")
+        elif self.order_status == "completed":
+            self.ui.confirm_button.setText("Completed")
 
         self.ui.confirm_button.clicked.connect(self.confirm_status)
 
     def confirm_status(self):
-        confime_payment = Paying(self.slip_path)
+        confime_payment = Paying(self.slip_path, self.order_details, self.server_host, self.server_port)
         confime_payment.exec_()
         pass
 
@@ -337,10 +343,10 @@ class StoreUI(QMainWindow):
             # print(f'populating {order_detail}')
             if order_detail.get('order_seller') == self.user_data.get('username'):
                 if filter == "all":
-                    order = OrderBox(order_detail, self)
+                    order = OrderBox(order_detail, self.server_host, self.server_port, self)
                     layout.addWidget(order)
                 elif order_detail.get('order_status') == filter:
-                    order = OrderBox(order_detail, self)
+                    order = OrderBox(order_detail, self.server_host, self.server_port, self)
                     layout.addWidget(order)
         spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         layout.addItem(spacer)
@@ -485,17 +491,62 @@ class StoreUI(QMainWindow):
         #     print("\n\nERROR\n\n")
         
 class Paying(QDialog):
-    def __init__(self, slip_path):
+    def __init__(self, slip_path, order_details, server_host, server_port):
         super(Paying, self).__init__()
+        self.server_host = server_host
+        self.server_port = server_port
+        self.order_id = order_details.get('order_id')
+        self.status = order_details.get('order_status')
         self.ui = Ui_confirm()
-        self.ui.setupUi(self)  
+        self.ui.setupUi(self)
+        self.slip_path = slip_path
+        self.ui.add_silp_button.clicked.connect(self.confirm_status)
         if slip_path != '':
             self.ui.queue_label.setText("Customer already pay")
             self.ui.queue_label_2.setText("Please recheck the slip carefully")
+            self.ui.add_silp_button.setText("Confirm Slip")
             self.ui.qr_label.setPixmap(QPixmap(slip_path))
         else: 
+            self.ui.add_silp_button.setText(" ")
             self.ui.queue_label.setText("Customer does not pay yet")
             self.ui.queue_label_2.setText("Waiting for customer to upload the slip")
+
+    def confirm_status(self):
+        if self.slip_path != '' and self.status == "unpaid":
+            self.update_status(self.order_id, "shipping")
+        elif self.slip_path != '' and self.status == "shipping":
+            self.update_status(self.order_id, "completed")
+    
+    def update_status(self, order_id, status):
+        try:
+            print("\n\n\n")
+            print("UPDATE STATUS TO -> " + status)
+            print("\n\n\n")
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+                client_socket.connect((self.server_host, self.server_port))
+                request_data = {'action': 'update_status', 'order_id' : order_id, 'status': status}
+                print("SSENT REQEUST DATA")
+                client_socket.sendall(pickle.dumps(request_data))
+                print("RECEIVE DATA")
+                response = self.receive_large_data(client_socket)
+                print("Received response:", response)
+                if response.get('success'):
+                    print('Success saving file path')
+                else:
+                    print("Failed to get all the data:", response.get('message'))
+        except socket.error as se:
+            print("Socket error:", se)
+        except Exception as e:
+            print("ERROR:", e)     
+    
+    def receive_large_data(self, conn):
+            total_chunks = pickle.loads(conn.recv(4096))
+            received_data = b''
+            for _ in range(total_chunks):
+                chunk = conn.recv(4096)
+                received_data += chunk
+                # print(f'chunk {chunk}')
+            return pickle.loads(received_data)
 
         
  
