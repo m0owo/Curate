@@ -21,10 +21,11 @@ from frontend.src.pages.ui.common import *
 
         
 class HistoryBox(QFrame):
-    def __init__(self, order_details,server_host, server_port):
+    def __init__(self, order_details,server_host, server_port, parent_class=None):
         QFrame.__init__(self, None)
         self.ui = Ui_HistoryBox()
         self.ui.setupUi(self)
+        self.parent_class = parent_class
         self.server_host = server_host
         self.server_port = server_port
         self.order_details = order_details
@@ -46,8 +47,8 @@ class HistoryBox(QFrame):
         if self.order_status == "unpaid":
             self.ui.view_order_button.setText("Pay By QR")
             self.ui.view_order_button.clicked.connect(self.show_payment_popup)
-        elif self.order_status == "shipping":
-            self.ui.view_order_button.setText("Confirm Shipping")
+        elif self.order_status == "arrived":
+            self.ui.view_order_button.setText("Confirm Arrival")
             self.ui.view_order_button.clicked.connect(self.confirm_shipping)
         elif self.order_status == "completed":
             self.ui.view_order_button.setText("Completed")
@@ -55,8 +56,8 @@ class HistoryBox(QFrame):
             self.ui.view_order_button.setText("Cancelled")
 
     def confirm_shipping(self):
-        self.order_status = "completed"
-        self.ui.view_order_button.setText("Completed")
+        self.parent_class.update_status(self.order_id, "completed")
+
         
         
     def show_payment_popup(self):
@@ -148,11 +149,16 @@ class HistoryUI(QMainWindow):
             for order_detail in order_details:
                 # print(f'populating {order_detail}')
                 if order_detail.get('order_buyer') == self.user_data.get('username'):
+                    status = order_detail.get('order_status')
+                    if status == "arrived":
+                        status = "shipping"
+
                     if filter == "all":
-                        order = HistoryBox(order_detail, self.server_host, self.server_port)
+                        order = HistoryBox(order_detail, self.server_host, self.server_port, self)
                         layout.addWidget(order)
-                    elif order_detail.get('order_status') == filter:
-                        order = HistoryBox(order_detail,self.server_host, self.server_port)
+
+                    elif status == filter:
+                        order = HistoryBox(order_detail,self.server_host, self.server_port, self)
                         layout.addWidget(order)
         else: ("No user order details for populate order")
         spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
@@ -213,6 +219,28 @@ class HistoryUI(QMainWindow):
                     print("Fail")
         except Exception as e:
                 print("Error update history data:", e)
+
+    def update_status(self, order_id, status):
+        try:
+            print("\n\n\n")
+            print("UPDATE STATUS TO -> " + status)
+            print("\n\n\n")
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+                client_socket.connect((self.server_host, self.server_port))
+                request_data = {'action': 'update_status', 'order_id' : order_id, 'status': status}
+                print("SSENT REQEUST DATA")
+                client_socket.sendall(pickle.dumps(request_data))
+                print("RECEIVE DATA")
+                response = self.receive_large_data(client_socket)
+                print("Received response:", response)
+                if response.get('success'):
+                    print('Success saving file path')
+                else:
+                    print("Failed to get all the data:", response.get('message'))
+        except socket.error as se:
+            print("Socket error:", se)
+        except Exception as e:
+            print("ERROR:", e)     
         
 class Paying(QDialog):
     def __init__(self, order_details, server_host, server_port):
