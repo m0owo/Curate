@@ -324,7 +324,8 @@ class CollectionUI(QMainWindow):
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
                 try:
                     client_socket.connect((self.server_host, self.server_port))
-                    request_data = {'action': 'make_order', 'product' : self.product, 'buyer' : self.user_data['username'], 'seller' : self.ui.store_name_label.text(), "status": "unpaid"}
+                    request_data = {'action': 'make_order', 'product' : self.product, 'buyer' : self.user_data['username'], 
+                                    'seller' : self.ui.store_name_label.text(), "status": "unpaid"}
                     client_socket.sendall(pickle.dumps(request_data))
                     response = client_socket.recv(4096)
                     response_data = pickle.loads(response)

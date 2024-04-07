@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'paying.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.1
+## Created by: Qt User Interface Compiler version 6.6.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -15,22 +15,22 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QDialog, QLabel, QPushButton,
-    QSizePolicy, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QDialog, QLabel,
+    QPushButton, QSizePolicy, QVBoxLayout, QWidget)
 import post_images_rc
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(503, 540)
+        Dialog.resize(569, 673)
         Dialog.setLayoutDirection(Qt.LeftToRight)
         Dialog.setStyleSheet(u"QDialog{\n"
 "	background-color: white;\n"
 "}")
         self.verticalLayoutWidget = QWidget(Dialog)
         self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
-        self.verticalLayoutWidget.setGeometry(QRect(50, 20, 391, 441))
+        self.verticalLayoutWidget.setGeometry(QRect(70, 50, 441, 520))
         self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -56,9 +56,14 @@ class Ui_Dialog(object):
 
         self.verticalLayout.addWidget(self.queue_label_2)
 
+        self.address_combobox = QComboBox(self.verticalLayoutWidget)
+        self.address_combobox.setObjectName(u"address_combobox")
+
+        self.verticalLayout.addWidget(self.address_combobox)
+
         self.qr_label = QLabel(self.verticalLayoutWidget)
         self.qr_label.setObjectName(u"qr_label")
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.qr_label.sizePolicy().hasHeightForWidth())
@@ -72,7 +77,7 @@ class Ui_Dialog(object):
 
         self.add_silp_button = QPushButton(Dialog)
         self.add_silp_button.setObjectName(u"add_silp_button")
-        self.add_silp_button.setGeometry(QRect(180, 470, 141, 41))
+        self.add_silp_button.setGeometry(QRect(210, 610, 141, 41))
         font2 = QFont()
         font2.setFamilies([u"Manrope"])
         font2.setPointSize(12)
@@ -85,9 +90,9 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
-        self.queue_label.setText(QCoreApplication.translate("Dialog", u"You are in the queue", None))
-        self.queue_label_2.setText(QCoreApplication.translate("Dialog", u"Please pay within 1 hour making order", None))
+        self.queue_label.setText(QCoreApplication.translate("Dialog", u"Payment", None))
+        self.queue_label_2.setText(QCoreApplication.translate("Dialog", u"Select you address", None))
         self.qr_label.setText("")
-        self.add_silp_button.setText(QCoreApplication.translate("Dialog", u"Add photo", None))
+        self.add_silp_button.setText(QCoreApplication.translate("Dialog", u"Add slip", None))
     # retranslateUi
 

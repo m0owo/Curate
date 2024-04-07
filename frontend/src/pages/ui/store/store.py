@@ -404,10 +404,14 @@ class StoreUI(QMainWindow):
         for order_detail in order_details:
             # print(f'populating {order_detail}')
             if order_detail.get('order_seller') == self.user_data.get('username'):
+                status = order_detail.get('order_status')
+                if status == "arrived":
+                        status = "shipping"
+
                 if filter == "all":
                     order = OrderBox(order_detail, self.server_host, self.server_port, self)
                     layout.addWidget(order)
-                elif order_detail.get('order_status') == filter:
+                elif status == filter:
                     order = OrderBox(order_detail, self.server_host, self.server_port, self)
                     layout.addWidget(order)
         spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
@@ -561,21 +565,35 @@ class Paying(QDialog):
         self.ui.setupUi(self)
         self.slip_path = slip_path
         self.ui.add_silp_button.clicked.connect(self.confirm_status)
-        if slip_path != '':
-            self.ui.queue_label.setText("Customer already pay")
-            self.ui.queue_label_2.setText("Please recheck the slip carefully")
-            self.ui.add_silp_button.setText("Confirm Slip")
-            self.ui.qr_label.setPixmap(QPixmap(slip_path))
-        else: 
-            self.ui.add_silp_button.setText(" ")
-            self.ui.queue_label.setText("Customer does not pay yet")
-            self.ui.queue_label_2.setText("Waiting for customer to upload the slip")
+
+        if self.status == "unpaid":
+            if slip_path != '':
+                self.ui.queue_label.setText("Customer already pay")
+                self.ui.queue_label_2.setText("Please recheck the slip carefully")
+                self.ui.add_silp_button.setText("Confirm Slip")
+                self.ui.qr_label.setPixmap(QPixmap(slip_path))
+            else: 
+                self.ui.add_silp_button.setText(" ")
+                self.ui.queue_label.setText("Customer does not pay yet")
+                self.ui.queue_label_2.setText("Waiting for customer to upload the slip")
+        elif self.status == "shipping":
+                self.ui.queue_label.setText("Would you like to confirm shipment?")
+                self.ui.queue_label_2.setText("")
+                self.ui.add_silp_button.setText("Confirm Shipment")
+        elif self.status == "arrived":
+                self.ui.queue_label.setText("Please wait for buyer to confirm received product.")
+                self.ui.queue_label_2.setText("")
+                self.ui.add_silp_button.setText("")
+        elif self.status == "completed":
+                self.ui.queue_label.setText("Order Completed")
+                self.ui.queue_label_2.setText("")
+                self.ui.add_silp_button.setText("Completed")
 
     def confirm_status(self):
         if self.slip_path != '' and self.status == "unpaid":
             self.update_status(self.order_id, "shipping")
         elif self.slip_path != '' and self.status == "shipping":
-            self.update_status(self.order_id, "completed")
+            self.update_status(self.order_id, "arrived")
     
     def update_status(self, order_id, status):
         try:
