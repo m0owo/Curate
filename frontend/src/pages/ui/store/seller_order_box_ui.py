@@ -16,7 +16,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
+    QPushButton, QSizePolicy, QSpacerItem, QVBoxLayout,
+    QWidget)
 from .posts_images_rc import *
 
 class Ui_OrderBox(object):
@@ -126,9 +127,9 @@ class Ui_OrderBox(object):
 
         self.horizontalLayout.addWidget(self.product_frame_13)
 
-        self.verticalLayout_54 = QVBoxLayout()
-        self.verticalLayout_54.setSpacing(10)
-        self.verticalLayout_54.setObjectName(u"verticalLayout_54")
+        self.verticalLayout_2 = QVBoxLayout()
+        self.verticalLayout_2.setSpacing(10)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.info_frame_13 = QFrame(Form)
         self.info_frame_13.setObjectName(u"info_frame_13")
         self.info_frame_13.setMinimumSize(QSize(0, 0))
@@ -168,10 +169,32 @@ class Ui_OrderBox(object):
         self.verticalLayout_55.addWidget(self.price_label)
 
 
-        self.verticalLayout_54.addWidget(self.info_frame_13)
+        self.verticalLayout_2.addWidget(self.info_frame_13)
+
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+
+        self.horizontalLayout_3.addLayout(self.horizontalLayout_4)
+
+        self.confirm_button = QPushButton(Form)
+        self.confirm_button.setObjectName(u"confirm_button")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.confirm_button.sizePolicy().hasHeightForWidth())
+        self.confirm_button.setSizePolicy(sizePolicy1)
+        self.confirm_button.setMinimumSize(QSize(0, 30))
+        self.confirm_button.setFont(font2)
+
+        self.horizontalLayout_3.addWidget(self.confirm_button)
 
 
-        self.horizontalLayout.addLayout(self.verticalLayout_54)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_3)
+
+
+        self.horizontalLayout.addLayout(self.verticalLayout_2)
 
 
         self.retranslateUi(Form)
@@ -189,5 +212,6 @@ class Ui_OrderBox(object):
         self.mode_label.setText(QCoreApplication.translate("Form", u"Mode:  CF no CC", None))
         self.status_label.setText(QCoreApplication.translate("Form", u"Status: Unpaid", None))
         self.price_label.setText(QCoreApplication.translate("Form", u"Price: 999 B", None))
+        self.confirm_button.setText(QCoreApplication.translate("Form", u"Confirm Status", None))
     # retranslateUi
 

@@ -252,7 +252,7 @@ class Ui_MainWindow(object):
         self.collections_button.setSizePolicy(sizePolicy1)
         self.collections_button.setFont(font5)
 
-        self.verticalLayout.addWidget(self.collections_button)
+        # self.verticalLayout.addWidget(self.collections_button)
 
         self.orders_button = QPushButton(self.frame_4)
         self.orders_button.setObjectName(u"orders_button")
@@ -268,7 +268,7 @@ class Ui_MainWindow(object):
         self.reviews_button.setSizePolicy(sizePolicy1)
         self.reviews_button.setFont(font5)
 
-        self.verticalLayout.addWidget(self.reviews_button)
+        # self.verticalLayout.addWidget(self.reviews_button)
 
         self.verticalSpacer = QSpacerItem(20, 260, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
@@ -3049,9 +3049,9 @@ class Ui_MainWindow(object):
         self.label.setText(QCoreApplication.translate("MainWindow", u"My Store", None))
         self.info_button.setText(QCoreApplication.translate("MainWindow", u"Information", None))
         self.products_button.setText(QCoreApplication.translate("MainWindow", u"Products", None))
-        self.collections_button.setText(QCoreApplication.translate("MainWindow", u"Collections", None))
+        # self.collections_button.setText(QCoreApplication.translate("MainWindow", u"Collections", None))
         self.orders_button.setText(QCoreApplication.translate("MainWindow", u"Orders", None))
-        self.reviews_button.setText(QCoreApplication.translate("MainWindow", u"Reviews", None))
+        # self.reviews_button.setText(QCoreApplication.translate("MainWindow", u"Reviews", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Information", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Store Name", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Email", None))

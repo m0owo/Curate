@@ -13,7 +13,7 @@ import shutil
 import datetime
 
 class OrderBox(QFrame):
-    def __init__(self, order_details):
+    def __init__(self, order_details, parent=None):
         QFrame.__init__(self, None)
         self.ui = Ui_OrderBox()
         self.ui.setupUi(self)
@@ -27,7 +27,6 @@ class OrderBox(QFrame):
         image_path = order_details.get('images')
         self.pixmap = QPixmap(image_path)
 
-
         self.ui.product_image_label.setPixmap(self.pixmap)
         self.ui.buyer_name.setText("Buyer: " + self.buyer)
         self.ui.product_name.setText(self.product_name)
@@ -35,6 +34,17 @@ class OrderBox(QFrame):
         self.ui.order_date_label.setText("Order Date: " + self.order_date.strftime("%Y-%m-%d %H:%M:%S"))
         self.ui.price_label.setText("Price: " + str(self.price) + " B")
         self.ui.status_label.setText("Status: " + self.order_status)
+
+        if self.order_status == "unpaid":
+            self.ui.confirm_button.setText("Confirm Payment")
+        elif self.order_status == "shipping":
+            self.ui.confirm_button.setText("Confirm Shipping")
+
+        self.ui.confirm_button.clicked.connect(self.confirm_status)
+
+    def confirm_status(self):
+        # Call the method from StoreUI class
+        pass
 
 class ProductBox(QFrame):
     def __init__(self, order_details, parent=None):
@@ -79,7 +89,7 @@ class StoreUI(QMainWindow):
         self.store_stack_widget.setCurrentIndex(0)
         self.ui.info_button.clicked.connect(self.to_information_page)
         self.ui.products_button.clicked.connect(self.to_products_page)
-        self.ui.collections_button.clicked.connect(self.to_collections_page)
+        # self.ui.collections_button.clicked.connect(self.to_collections_page)
         self.ui.orders_button.clicked.connect(self.to_orders_page)
         # self.ui.reviews_button.clicked.connect()
         self.new_pic_bytes = None
@@ -312,10 +322,10 @@ class StoreUI(QMainWindow):
             # print(f'populating {order_detail}')
             if order_detail.get('order_seller') == self.user_data.get('username'):
                 if filter == "all":
-                    order = OrderBox(order_detail)
+                    order = OrderBox(order_detail, self)
                     layout.addWidget(order)
                 elif order_detail.get('order_status') == filter:
-                    order = OrderBox(order_detail)
+                    order = OrderBox(order_detail, self)
                     layout.addWidget(order)
         spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         layout.addItem(spacer)
