@@ -321,6 +321,8 @@ class Order(persistent.Persistent):
         self.order_date = datetime.now() #date order created
         self.status = status
         self.slip_picture = ''
+        self.buyer_address = None
+        self.seller_address = None
 
     def get_order_id(self):
         return self.order_id
@@ -361,7 +363,9 @@ class Order(persistent.Persistent):
             'order_seller': self.seller,
             'order_status': self.status,
             'order_date': self.order_date,
-            'slip_picture' : self.slip_picture
+            'slip_picture' : self.slip_picture,
+            'buyer_address' : self.buyer_address,
+            'seller_address' : self.seller_address
         }
         serialized_data.update(self.product.serialize())
 
