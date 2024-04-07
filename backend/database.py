@@ -392,6 +392,9 @@ class Account(persistent.Persistent):
     
     def set_store(self, store):
         self.store = store
+    
+    def get_store(self):
+        return self.store
 
     def get_email(self):
         return self.email
