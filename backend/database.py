@@ -23,45 +23,29 @@ images_path_ms = 'frontend/public/images/post_images/db_test_pics/'
 images_path_putter = 'C:\school\Curate\\frontend\public\images\post_images\db_test_pics\\'
 images_path_k = r'C:\Users\Miki Ajiki\Desktop\Curate\frontend\public\images\post_images\db_test_pics\\'
 
-# # creating a smaller version of the image
-# def create_thumbnail(image_path, thumbnail_size=(230, 230)):
+
+# # getting webP image data
+# def get_webp_data(image_name):
+#     full_image_path = images_path_k + image_name
 #     try:
-#         with Image.open(image_path) as img:
-#             img.thumbnail(thumbnail_size)
-#             thumbnail_data = BytesIO()
-#             img.save(thumbnail_data, format='JPEG')
-#             thumbnail_data.seek(0)
-#             return thumbnail_data.getvalue()
+#         with Image.open(full_image_path) as img:
+#             webp_data = io.BytesIO()
+#             img.save(webp_data, format='WEBP')
+#             return webp_data.getvalue()
 #     except IOError:
-#         print("Unable to create thumbnail.")
-# #getting thumbnail image data
+#         print(f'Unable to convert {full_image_path} to WebP format')
+
+# def get_webp_datas(images_arr):
+#     return [get_webp_data(x) for x in images_arr]
+
+# # getting original image data
 # def get_image_data(images_name):
 #     full_image_path = images_path_ms + images_name
-#     thumbnail_data = create_thumbnail(full_image_path)
-#     return thumbnail_data
+#     original_data = open(full_image_path, 'rb').read()
+#     return original_data
 
-# getting webP image data
-def get_webp_data(image_name):
-    full_image_path = images_path_k + image_name
-    try:
-        with Image.open(full_image_path) as img:
-            webp_data = io.BytesIO()
-            img.save(webp_data, format='WEBP')
-            return webp_data.getvalue()
-    except IOError:
-        print(f'Unable to convert {full_image_path} to WebP format')
-
-def get_webp_datas(images_arr):
-    return [get_webp_data(x) for x in images_arr]
-
-# getting original image data
-def get_image_data(images_name):
-    full_image_path = images_path_ms + images_name
-    original_data = open(full_image_path, 'rb').read()
-    return original_data
-
-def get_image_datas(images_arr):
-    return [get_image_data(x) for x in images_arr]
+# def get_image_datas(images_arr):
+#     return [get_image_data(x) for x in images_arr]
 
 #generates a random unique id
 def generate_id(type):
@@ -113,7 +97,7 @@ class Tag(persistent.Persistent):
 
 #product in the post
 class Product(persistent.Persistent):
-    def __init__(self, pr_id, seller, start, description = "", pr_name = "", images = [], tags = [], end = None, mode = ""):
+    def __init__(self, pr_id, seller, start, description = "", pr_name = "", images = "", tags = [], end = None, mode = ""):
         self.pr_id = pr_id
         self.pr_name = pr_name
         self.seller = seller
@@ -127,9 +111,9 @@ class Product(persistent.Persistent):
         self.modified = self.created #default modified date is date created
         self.start_date = start #time to go live
         self.end_date = end #Date object for time sold
-        self.images = persistent.list.PersistentList()
-        for image in images:
-            self.images.append(image)
+        self.images = images
+        # for image in images:
+        #     self.images.append(image)
         self.tags = persistent.list.PersistentList()
         self.description = description
         for tag in tags:
@@ -159,6 +143,7 @@ class Product(persistent.Persistent):
               f'Status: {self.status}')
         print(f'Start Date: {self.start_date.strftime("%Y-%m-%d %H:%M:%S")}')
         print(f'Description {self.description}')
+        print(f'Images: {self.images}')
     def serialize(self):
         return {
             'product_id': self.pr_id,
@@ -564,25 +549,26 @@ admin_1.birthdate = date(2000, 10, 30)
 root.accounts[admin_1.get_username()] = admin_1
 
 # users
-user_1 = Account(generate_id('accounts'), "user1@gmail.com", "1234", "iammuser1")
+user_1 = Account(generate_id('accounts'), "user1@gmail.com", "1234", "User1")
 root.accounts[user_1.get_username()] = user_1
 
-store_1_pic = get_webp_data('user1.jpeg')
+store_1_pic = 'user1.jpeg'
 store_1 = Store(user_1.get_id() + generate_id('stores'),
                 user_1.get_username(), "User 1's Store",
                 user_1.get_email(), user_1.get_phone_num(),
                 "Secondhand Clothings", store_1_pic)
+root.stores[user_1.get_id()] = store_1
 
 user_2 = Account(generate_id('accounts'), "user2@gmail.com", "1234")
-user_2.set_username("iammuser2")
+user_2.set_username("User2")
 root.accounts[user_2.get_username()] = user_2
 
-store_2_pic = get_webp_data('user2.jpeg')
+store_2_pic = 'user2.jpeg'
 store_2 = Store(user_2.get_id() + generate_id('stores'),
                 user_2.get_username(), "User 2's Store",
                 user_2.get_email(), user_2.get_phone_num(),
                 "Handmade Goods and Toys", store_2_pic)
-
+root.stores[user_2.get_id()] = store_2
 # tags
 # key value = tag text
 tag1 = Tag("secondhand")
@@ -608,46 +594,38 @@ root.tags[tag9.get_tag_text()] = tag9
 # index = {product_id}
 # value = Collection() or Item()
 # product_id = {seller's user}{1...}
-item1_pics = ['IMG_7369.jpg']
-item1_pics_data = get_webp_datas(item1_pics)
-# print(f'pofiasjldfjsd {len(item1_pics_data[0])}')
-# item1_pics_data2 = [get_image_data(x) for x in item1_pics]
-# print(f'pofiasjldfjsd {len(item1_pics_data2[0])}')
+item1_pics = 'item2.jpg'
 item1_tags = [root.tags['coquette'], root.tags['cute']]
 item1 = Item(generate_id("products"), user_1.username, datetime(2024, 5, 20, 10, 15),
-             50, 5,"This is item 1", "item 1", item1_pics_data, item1_tags)
-root.products[item1.get_seller() + item1.get_id()] = item1
+             50, 5,"This is item 1", "item 1", item1_pics, item1_tags)
+root.products[item1.get_id()] = item1
 
-item2_pics = ['IMG_7370.jpg']
-item2_pics_data = get_webp_datas(item2_pics)
+item2_pics = 'item3.jpg'
 item2_tags = [root.tags['coquette'], root.tags['cute']]
 item2 = Item(generate_id("products"), user_1.username, datetime(2024, 5, 20, 10, 15),
-             100, 3, "this is i tem 2", "item 2 laa", item2_pics_data, item2_tags)
-root.products[item2.get_seller() + item2.get_id()] = item2
+             100, 3, "this is i tem 2", "item 2 laa", item2_pics, item2_tags)
+root.products[item2.get_id()] = item2
 
-item3_pics = ['IMG_7102.jpg']
-item3_pics_data = get_webp_datas(item3_pics)
+item3_pics = 'item4.jpg'
 item3_tags = [root.tags['secondhand'], root.tags['fashion'], root.tags['cottagecore']]
 item3 = Item(generate_id('products'), store_2.store_user_name,
              datetime(2024, 5, 21, 15, 20), 150, 10, "this is item 3", 'Mona Top',
-             item3_pics_data, item3_tags)
-root.products[item3.get_seller() + item3.get_id()] = item3
+             item3_pics, item3_tags)
+root.products[item3.get_id()] = item3
 
-item4_pics = ['IMG_7105.jpg']
-item4_pics_data = get_webp_datas(item4_pics)
+item4_pics = 'item5.jpg'
 item4_tags = [root.tags['custom'], root.tags['handmade'], root.tags['cottagecore']]
 item4 = Item(generate_id('products'), store_2.store_user_name,
              datetime(2024, 5, 22, 19, 30), 350, 5, "this is item 4", "Crocheted Beanies",
-             item4_pics_data, item4_tags)
-root.products[item4.get_seller() + item4.get_id()] = item4
+             item4_pics, item4_tags)
+root.products[item4.get_id()] = item4
 
-item5_pics = ['IMG_7106.jpg']
-item5_pics_data = get_webp_datas(item5_pics)
+item5_pics = 'item6.jpg'
 item5_tags = [root.tags['keychains'], root.tags['handmade'], root.tags['jellyfish']]
 item5 = Item(generate_id('products'), store_1.store_user_name,
              datetime(2024, 4, 4, 19, 30), 75, 4, "this is item 5", "Jellyfish Keychains",
-             item5_pics_data, item5_tags)
-root.products[item5.get_seller() + item4.get_id()] = item5
+             item5_pics, item5_tags)
+root.products[item5.get_id()] = item5
 
 # col1_pics = ['IMG_7368.jpg']
 # col1_pics_data = [get_webp_data(x) for x in col1_pics]
@@ -658,36 +636,36 @@ root.products[item5.get_seller() + item4.get_id()] = item5
 
 # post1 = PostDetails(generate_id('posts'), user_1.get_username(), col1, "TEST INFO", "TEST TITLE")
 # root.posts[post1.get_id()] = post1
-
-post2 = PostDetails(generate_id('posts'), store_2, item3, "haleisfls", "Mona Tops Post")
+post1 = PostDetails(generate_id('posts'), store_1, item1, "haleisfls", "Mona Tops Post")
+root.posts[post1.get_id()] = post1
+post2 = PostDetails(generate_id('posts'), store_1, item1, "haleisfls", "Mona Tops Post")
 root.posts[post2.get_id()] = post2
-post3 = PostDetails(generate_id('posts'), store_2, item4, "smata baby smata im smata", "Crocheted Beanies")
+post3 = PostDetails(generate_id('posts'), store_2, item3, "haleisfls", "Mona Tops Post")
 root.posts[post3.get_id()] = post3
-
-post4 = PostDetails(generate_id('posts'), store_1, item5, "boongboongboong", "Jellyfish Keychains")
+post4 = PostDetails(generate_id('posts'), store_2, item4, "smata baby smata im smata", "Crocheted Beanies")
 root.posts[post4.get_id()] = post4
+post5 = PostDetails(generate_id('posts'), store_1, item5, "boongboongboong", "Jellyfish Keychains")
+root.posts[post5.get_id()] = post5
 
 # order history appear only in admin_1 interface (admin_1 is the buyer)
-order1 = Order(10000, item1, admin_1.get_username(), user_1.get_username())
+order1 = Order(generate_id('orders'), item1, admin_1.get_username(), user_1.get_username())
 root.orders[order1.get_order_id()] = order1
 
-order2 = Order(10001, item2, admin_1.get_username(), user_1.get_username(), status="shipping")
+order2 = Order(generate_id('orders'), item2, admin_1.get_username(), user_1.get_username(), status="shipping")
 root.orders[order2.get_order_id()] = order2
 
-order3 = Order(10002, item1, user_1.get_username(), user_1.get_username())
+order3 = Order(generate_id('orders'), item1, user_1.get_username(), user_1.get_username())
 root.orders[order3.get_order_id()] = order3
+
 #wishlist testing admin_1 only
 admin_1.add_wishlist(item1)
 admin_1.add_wishlist(item2)
 admin_1.add_wishlist(item3)
-user_1.add_wishlist(item1)
-user_1.add_wishlist(item2)
+
+user_1.add_wishlist(item4)
+user_1.add_wishlist(item5)
 user_1.add_wishlist(item3)
-#self, store_id, user_name, store_name, email, phone_num, description, picture)
-store_admin = Store(generate_id("stores"), "adminnajaa~~", "Admin Kai kong", "kaikongaddmin1@gmail.com", "000000000", "Admin yark kai kong ka", item1_pics_data)
-# store_admin.collections.append(col1)
-store_admin.items.append(item1)
-root.stores[store_admin.get_id()] = store_admin
+
 
 
 
@@ -705,9 +683,17 @@ if  __name__ == "__main__":
     # for key in posts:
     #     posts[key].print_info()
 
-    # tags = root.tags
+    tags = root.tags
+    for key in tags:
+        print(key)
+        tags[key].print_info()
+    
     # for key in tags:
-    #     tags[key].print_info()
+    if "cute" in tags:
+        print("CUTE YES")
+    else: print("CUTE NO")
+        
+
 
     # orders = root.orders
     # for key in orders:
@@ -716,20 +702,26 @@ if  __name__ == "__main__":
     order_details = root.orders
     new_order_details = []
     for order_detail in order_details:
-        if order_details[order_detail].buyer == "adminnajaa~~":
+        if order_details[order_detail].get_buyer() == 'User1':
             new_order_details.append(order_details[order_detail])
-    orders_data = [f"{order.serialize()}\n" for order in new_order_details]   
+            print(order_details[order_detail].serialize())
+    orders_data = [order.serialize() for order in new_order_details] 
+    print("ADMIN ORDER") 
     print(orders_data)
     
     stores = root.stores 
     for key in stores:
         stores[key].print_info()
-        
+    
+
     # print("Check whether create a store yet")
     # stores = root.stores
     # for key in stores:
     #     if stores[key].store_user_name == "adminnajaa~~":
     #         print({'success' : True, 'exists' : True})
     #     else: print({'success' : True, 'exists' : False})
+    
+
+
         
     

@@ -106,11 +106,7 @@ class CollectionUI(QMainWindow):
         print("Product type label updated:", new_product_label)
     
     def set_images(self, new_images):
-        self.images = []
-        for image_data in new_images:
-            image = QImage.fromData(image_data)
-            self.images.append(image)
-        self.set_image(self.images[0])
+        self.set_image(new_images)
         print("Images set:", len(self.images))
 
     def update_path_label(self, new_path):
@@ -188,13 +184,11 @@ class CollectionUI(QMainWindow):
         self.stock = self.product.get('stock')
 
         #convert image binary data to usable image
-        self.images = []
-        for image_data in self.product.get('images'):
-            image = QImage.fromData(image_data)
-            self.images.append(image)
+        file_path = self.product.get('images')
+        self.image = QPixmap(file_path)
 
         #use the first image as cover
-        self.set_image(self.images[0])
+        self.set_image(self.image)
 
         #font to be used for info
         info_font = QFont()
@@ -264,7 +258,7 @@ class CollectionUI(QMainWindow):
 
         self.update_store_name_label(self.details.get('author_name'))
         author_pic = self.details.get('author_pic')
-        self.author_pic = QImage.fromData(author_pic)
+        self.author_pic = QPixmap(author_pic)
         self.update_store_image(self.author_pic)
         self.store_data = self.get_store_data()
 
@@ -329,30 +323,26 @@ class CollectionUI(QMainWindow):
         if self.ui.status_label.text() == "Available":
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
                 try:
-                    print("Creating new order")
-                    print("Step 1: Establishing connection...")
                     client_socket.connect((self.server_host, self.server_port))
-                    print("Step 2: Sending request...")
                     request_data = {'action': 'make_order', 'product' : self.product, 'buyer' : self.user_data['username'], 'seller' : self.ui.store_name_label.text(), "status": "unpaid"}
-                    # print(f"REQUEST DATA {request_data}")
-                    self.send_large_data(client_socket, pickle.dumps(request_data))
-                    #For small data
-                    # client_socket.sendall(pickle.dumps(request_data))
-                    print("Step 3: Receiving response...")
-                    response_data = self.receive_large_data(client_socket)
-                    # print("Received response:", response_data)
-                    print("Step 4: Unpacking response...")
+                    print("Dump request data")
+                    client_socket.sendall(pickle.dumps(request_data))
+                    print("Get response")
+                    response = client_socket.recv(4096)
+                    print("Load response")
+                    response_data = pickle.loads(response)
                     if response_data['success']:
-                        print(response_data['success'])
+                        print("New order sucessfully")
                     else:
-                        print("Creating new order:", response_data['success'])
+                        print("Failed to save new order:", response_data['message'])
                 except Exception as e:
-                    print("Failed to Creating new order(e):", e)
-        else: print("STATUS NONONO")
+                    print("Error make_order(e):", e)
+        else: print("Status is not live right now")
+        
     def update_store_data(self, store_data):
         print('store data', store_data.get('store_id'))
         author_pic = store_data.get('picture')
-        author_pic = QImage.fromData(author_pic)
+        author_pic = QPixmap(author_pic)
         self.update_store_image(self, author_pic)
         self.update_store_name_label(store_data.get('store_name'))
         self.update_store_description_label(store_data.get('description'))
@@ -361,7 +351,7 @@ class CollectionUI(QMainWindow):
         self.ui.store_description_label.setText(store_description)
 
     def update_store_image(self, store_image):
-        self.ui.label_9.setPixmap(QPixmap(store_image))
+        self.ui.label_9.setPixmap(store_image)
 
     def update_store_name_label(self, store_name):
         self.ui.store_name_label.setText(store_name)
@@ -434,8 +424,7 @@ class CollectionUI(QMainWindow):
         return w
     
     def set_image(self, image):
-        pic = QPixmap(image)
-        scaled_pic = pic.scaled(self.ui.image_label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        scaled_pic = image.scaled(self.ui.image_label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.ui.image_label.setPixmap(scaled_pic)
         print("Image set.")
 

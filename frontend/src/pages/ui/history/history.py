@@ -9,9 +9,7 @@ from .paying_ui import Ui_Dialog as Ui_paying
 import os
 import pickle
 import socket
-import subprocess
-import zlib, base64
-import time
+import shutil
 from promptpay import qrcode
 
 current_directory = os.getcwd()
@@ -32,9 +30,8 @@ class HistoryBox(QFrame):
         self.order_id = order_details.get('order_id')
         self.price = order_details.get('price')
         self.order_status = order_details.get('order_status')
-        binary_image = order_details.get('images')[0]
-        image = QImage.fromData(binary_image)
-        self.pixmap = QPixmap.fromImage(image)
+        file_path = order_details.get('images')
+        self.pixmap = QPixmap(file_path)
 
         self.ui.product_image_label.setPixmap(self.pixmap)
         self.ui.product_name_label.setText(self.product_name)
@@ -65,8 +62,6 @@ class HistoryBox(QFrame):
         # self.order_status = "shipping"
         payment_popup = Paying(self.order_details)
         payment_popup.exec_()
-
-
 
 
 class HistoryUI(QMainWindow):
@@ -118,7 +113,7 @@ class HistoryUI(QMainWindow):
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(lambda: self.update_history_data(self.filter))
-        self.timer.start(2000)
+        self.timer.start(10000)
 
         self.ui.all.clicked.connect(lambda: self.update_history_data())
         self.ui.to_pay.clicked.connect(lambda: self.update_history_data("unpaid"))
@@ -147,15 +142,17 @@ class HistoryUI(QMainWindow):
         self.filter = filter
         self.clear_frame(self.ui.scrollAreaWidgetContents)
         layout = self.ui.scrollAreaWidgetContents.layout()
-        for order_detail in order_details:
-            # print(f'populating {order_detail}')
-            if order_detail.get('order_buyer') == self.user_data.get('username'):
-                if filter == "all":
-                    order = HistoryBox(order_detail)
-                    layout.addWidget(order)
-                elif order_detail.get('order_status') == filter:
-                    order = HistoryBox(order_detail)
-                    layout.addWidget(order)
+        if order_details:
+            for order_detail in order_details:
+                # print(f'populating {order_detail}')
+                if order_detail.get('order_buyer') == self.user_data.get('username'):
+                    if filter == "all":
+                        order = HistoryBox(order_detail)
+                        layout.addWidget(order)
+                    elif order_detail.get('order_status') == filter:
+                        order = HistoryBox(order_detail)
+                        layout.addWidget(order)
+        else: ("No user order details for populate order")
         spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         layout.addItem(spacer)
 
@@ -186,7 +183,6 @@ class HistoryUI(QMainWindow):
                     if response.get('success'):
                         print('Success getting all the data')
                         return response.get('order_details')
-        
                     else:
                         print("Failed to get all the data:", response.get('message'))
             except socket.error as se:
@@ -203,7 +199,7 @@ class HistoryUI(QMainWindow):
     def load_user_data(self, user_id, user_data):
         self.user_id = user_id
         self.user_data = user_data
-        
+                    
     def update_history_data(self, filter="all"):
         try:
             username = self.user_data.get("username")
@@ -213,8 +209,8 @@ class HistoryUI(QMainWindow):
                     self.populate_orders(user_data, filter)
                 else:
                     print("Fail")
-        except:
-            pass
+        except Exception as e:
+                print("Error update history data:", e)
         
 class Paying(QDialog):
     def __init__(self, order_details):
@@ -226,10 +222,18 @@ class Paying(QDialog):
         self.order_id = order_details.get('order_id')
         # Generate QR code
         self.generate_qr_code("0943422221", self.price)
-
-        # Load the generated QR code image
-        pixmap = QPixmap(f"./{self.order_id}")
-        self.ui.qr_label.setPixmap(pixmap)
+        
+        save_path = f"slip-{self.order_id}.jpg"
+        filepath = f"./{self.order_id}.png"
+        
+        if os.path.exists(save_path):
+            self.ui.qr_label.setPixmap(QPixmap(save_path))
+            self.ui.add_silp_button.hide()
+            self.ui.queue_label_2.setText("Thanks you, plase wait for seller to confirm")
+        else:
+            self.ui.qr_label.setPixmap(QPixmap(filepath))
+        
+        self.ui.add_silp_button.clicked.connect(self.upload_slip)
         
     def generate_qr_code(self, id, amount):
         payload = qrcode.generate_payload(id, amount)
@@ -237,7 +241,23 @@ class Paying(QDialog):
         filepath = f"./{self.order_id}.png"
         if filepath:
             qrcode.to_file(payload, filepath)
-        else: ("YFYFYFYYFYFYFYFYFYFY")
+    def change_ui(self):
+        self.ui.add_silp_button.hide()
+        self.ui.queue_label_2.setText("Thanks you, plase wait for seller to confirm")       
+    def upload_slip(self):
+        options = QFileDialog.Options()
+        picture_path, _ = QFileDialog.getOpenFileName(self, "Select Picture", "", "Image Files (*.png *.jpg *.jpeg)", options=options)
+        if picture_path:
+            # Modify this path to your desired save location
+            save_path = f"slip-{self.order_id}.jpg"
+            # Copy the selected picture to the save path
+            shutil.copy(picture_path, save_path)
+            self.ui.qr_label.setPixmap(QPixmap(save_path))
+            self.change_ui()
+            print("Picture saved successfully.")
+            
+        
+    
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)

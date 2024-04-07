@@ -173,16 +173,16 @@ class ProfileUI(QDialog):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             try:
                 
-                print("Checking Store exists")
-                print("Step 1: Establishing connection...")
+                # print("Checking Store exists")
+                # print("Step 1: Establishing connection...")
                 client_socket.connect((self.server_host, self.server_port))
-                print("Step 2: Sending request...")
+                # print("Step 2: Sending request...")
                 request_data = {'action': 'check_store', 'user_name': user_name["username"]}
                 client_socket.sendall(pickle.dumps(request_data))
                 print("Step 3: Receiving response...")
                 response_data = self.receive_large_data(client_socket)
                 # print("Received response:", response_data)
-                print("Step 4: Unpacking response...")
+                # print("Step 4: Unpacking response...")
                 if response_data['success']:
                     print("Check store exists")
                     if response_data['exists']:
@@ -323,13 +323,11 @@ class ProfileAddressUI(QDialog):
                 received_data += chunk
             # print(f'chunk {chunk}')
             return pickle.loads(received_data)   
+        
     def fetch_user_data(self, username):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             try:
-                print("Fetch_user_data") 
-                print("Step 1: Establishing connection...")
                 client_socket.connect((self.server_host, self.server_port))
-                print("Step 2: Sending request...")
                 request_data = {'action': 'get_user_data', 'username': username}
                 client_socket.sendall(pickle.dumps(request_data))
                 # response = client_socket.recv(4096)
@@ -344,7 +342,6 @@ class ProfileAddressUI(QDialog):
                 print("Error fetch_user_data:", e)
                             
     def update_address_data(self):
-        # Dummy method for updating address data periodically
         print("Updating address data...")
         if self.user_data:
             username = self.user_data.get("username")

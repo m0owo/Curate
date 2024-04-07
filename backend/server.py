@@ -149,7 +149,16 @@ def get_all_items(data):
     except Exception as e:
         print(e)
         return {'success': False, 'message': "Failed to return item details"}
-    
+def get_all_posts():
+    print("getting all posts server oo ee")
+    try:
+        post_details = root.posts
+        posts_data = [post.serialize() for post in post_details.values()]
+        # print(f'posts data {posts_data}\n\n')
+        return {'success': True, 'message' : "return post details valid", 'post_details': posts_data}
+    except Exception as e:
+        print(e)
+        return {'success': False, 'message': "Failed to return post details"}   
 def get_all_orders(data):
     print("getting orders")
     try:
@@ -159,9 +168,8 @@ def get_all_orders(data):
         for order_detail in order_details:
             if order_details[order_detail].get_buyer() == username:
                 new_order_details.append(order_details[order_detail])
-                # print(order_details[order_detail])
+                print(order_details[order_detail])
         orders_data = [order.serialize() for order in new_order_details]   
-        # print(f'order data {orders_data}\n\n')
         return {'success': True, 'message': 'Get all order successfully', 'order_details': orders_data}
     except Exception as e:
         print(e)
@@ -239,15 +247,18 @@ def make_order(data_dict):
         root = connection.root
         orders = root.orders
         # Find the maximum existing ID
-        max_existing_id = max(orders.keys()) if orders else 0
+        order_id = generate_id('orders')
+        product = data_dict.get('product')
 
+        if product.get('product_id') in root.products:
+            product_obj =  root.products[product.get('product_id')]
+        else: raise ValueError("Product not found in database")
+        buyer = data_dict.get('buyer')
+        seller = data_dict.get('seller')
+        status = data_dict.get('status')
         # Increment the maximum existing ID to get the next ID
-        next_id = max_existing_id + 1
-        new_post = Order(next_id, data_dict.get('product'),data_dict.get('buyer'),data_dict.get('seller'),data_dict.get('status'))
-        orders[next_id] = new_post
-        
-        #Append the buyer to the queue
-        # data_dict.get('product').queue.append((data_dict.get('buyer'),data_dict.get('seller')))
+        new_post = Order(order_id, product_obj,buyer,seller,status)
+        orders[order_id] = new_post
         transaction.commit()
         
         return {'success': True, 'message': 'New order saved successfully'}
@@ -404,9 +415,8 @@ def handle_request(conn):
         else:
             print("Invalid action")
             response = {'success': False, 'message': 'Invalid action'}
-        # print("Sending response to client:", response['message'])
-        # Send response to the client
-            print("Sending response to client")
+            
+        print("Sending response to client:", response['message'])
         conn.sendall(pickle.dumps(response))
         conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
 

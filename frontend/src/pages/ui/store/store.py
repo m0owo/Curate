@@ -9,7 +9,7 @@ import io
 from PIL import Image
 import socket
 import time
-import traceback
+import shutil
 import datetime
 
 class OrderBox(QFrame):
@@ -24,9 +24,8 @@ class OrderBox(QFrame):
         self.price = order_details.get('price')
         self.order_date = order_details.get('order_date')
         self.order_status = order_details.get('order_status')
-        binary_image = order_details.get('images')[0]
-        image = QImage.fromData(binary_image)
-        self.pixmap = QPixmap.fromImage(image)
+        image_path = order_details.get('images')
+        self.pixmap = QPixmap(image_path)
 
 
         self.ui.product_image_label.setPixmap(self.pixmap)
@@ -47,9 +46,8 @@ class ProductBox(QFrame):
         self.product_name = order_details.get('product_name')
         self.start = order_details.get('start')
         self.status = order_details.get('status')
-        binary_image = order_details.get('images')[0]
-        image = QImage.fromData(binary_image)
-        self.pixmap = QPixmap.fromImage(image)
+        image_path = order_details.get('images')
+        self.pixmap = QPixmap(image_path)
         if order_details.get('price'):
             self.price = order_details.get('price')
             self.ui.price_label.setText("Price: " + str(self.price) + " B")
@@ -176,9 +174,9 @@ class StoreUI(QMainWindow):
         self.ui.edit_product_page_des_edit.setText(product_detail.get('description'))
 
         binary_image = product_detail.get('images')[0]
-        image = QImage.fromData(binary_image)
-        pixmap = QPixmap.fromImage(image)
-        self.ui.edit_product_page_image_label.setPixmap(pixmap)
+        image_path = QPixmap(binary_image)
+        self.ui.edit_product_page_image_label.setPixmap(image_path)
+        
     
     def receive_large_data(self, conn):
         total_chunks = pickle.loads(conn.recv(4096))
@@ -233,35 +231,17 @@ class StoreUI(QMainWindow):
         scaled_pic = new_image.scaled(QSize(self.POST_WIDTH, self.POST_WIDTH), Qt.KeepAspectRatio, Qt.SmoothTransformation)
         image_label.setPixmap(scaled_pic)
         
-    # converting binary image data into QImages 
-    def convert_image_to_Qimages(self, pictures):
-        images = []
-        for image_data in pictures:
-                image = QImage.fromData(image_data)
-                images.append(image) 
-        return images[0]
         
     def select_picture(self, image_label):
         options = QFileDialog.Options()
-        file_name, _ = QFileDialog.getOpenFileName(self, "Select Picture", "", "Image Files (*.png *.jpg)", options=options)
-        if file_name:
-            new_pic = QPixmap(file_name)
+        picture_path, _ = QFileDialog.getOpenFileName(self, "Select Picture", "", "Image Files (*.png *.jpg)", options=options)
+        if picture_path:
+            new_pic = QPixmap(picture_path)
+            shutil.copy(picture_path, picture_path)
             self.update_post_image(image_label, new_pic)
 
     def save_info_page(self):
-        # Retrieve current picture from the label if available
-        current_pic = self.ui.info_page_picture.pixmap()
-        if current_pic:
-            # Convert QPixmap to QImage
-            current_image = current_pic.toImage()
-            # Create a QBuffer to hold the binary data
-            buffer = QBuffer()
-            buffer.open(QBuffer.ReadWrite)
-            # Save the image to the buffer
-            current_image.save(buffer, "WEBP")
-            # Get the binary data from the buffer
-            binary_data = buffer.data()
-            buffer.close()
+        pixmap = self.info_page_picture.pixmap()
             
         new_info_data ={
             "store_id" : self.store_id,
@@ -270,7 +250,7 @@ class StoreUI(QMainWindow):
             "email" : self.ui.info_page_email_edit.toPlainText(),
             "phone_number" : self.ui.info_page_phone_number_edit.toPlainText(), 
             "description" : self.ui.info_page_description_edit.toPlainText(),
-            "picture" : binary_data
+            "picture" : pixmap
         }
         
         # print(new_info_data)
@@ -308,7 +288,7 @@ class StoreUI(QMainWindow):
         self.ui.info_page_phone_number_edit.setText(store_data["phone_number"]) 
         self.ui.info_page_description_edit.setText(store_data["description"])
         
-        self.info_page_pic = QPixmap(self.convert_image_to_Qimages(store_data["picture"].data()))
+        self.info_page_pic = QPixmap(store_data["picture"])
         self.update_post_image(self.ui.info_page_picture,self.info_page_pic)
         
         #Product page

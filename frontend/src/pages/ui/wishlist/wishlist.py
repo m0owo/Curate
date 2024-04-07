@@ -20,9 +20,8 @@ class WishlistBox(QFrame):
         self.start_date = product_details.get('start')
         self.shop_name = product_details.get('seller')
         self.status = product_details.get('status')
-        binary_image = product_details.get('images')[0]
-        image = QImage.fromData(binary_image)
-        self.pixmap = QPixmap.fromImage(image)
+        file_path = product_details.get('images')
+        self.pixmap = QPixmap(file_path)
 
         self.ui.wl_product_image_label.setPixmap(self.pixmap)
         self.ui.wl_product_name_label.setText(self.product_name)

@@ -78,11 +78,8 @@ class Post():
                 self.price = self.product.get('price')
                 self.price_str = f'฿{str(self.price)}'
 
-            # converting binary image data into QImages
-            self.images = []
-            for image_data in self.product.get('images'):
-                image = QImage.fromData(image_data)
-                self.images.append(image)
+            self.image_path = self.product.get('images')
+            self.image = QPixmap(self.image_path)
             
             self.container = container #the post frame
 
@@ -90,8 +87,12 @@ class Post():
             self.draw_post_info()
 
     def update_post_image(self, new_image):
-        scaled_pic = new_image.scaled(QSize(self.POST_WIDTH, self.POST_WIDTH), Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        self.post_image.setPixmap(scaled_pic)
+        if not new_image.isNull():
+            scaled_pic = new_image.scaled(QSize(self.POST_WIDTH, self.POST_WIDTH), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            self.post_image.setPixmap(scaled_pic)
+        else:
+            print("New image is null" + {self.image_path})
+
 
     def draw_post_image(self):
         #post image
@@ -99,11 +100,7 @@ class Post():
         self.post_image.setFixedSize(QSize(self.POST_WIDTH, self.POST_WIDTH))
         self.post_image.setStyleSheet("QLabel { background-color: transparent; }")
         self.post.layout().addWidget(self.post_image, alignment=Qt.AlignTop | Qt.AlignCenter)
-
-        # pic = QPixmap(u":/post_images/IMG_7109.jpg") #test image
-        # post image is the first image from the post product
-        pic = QPixmap(self.images[0])
-        self.update_post_image(pic)
+        pic = self.update_post_image(self.image)
         return pic
         
     def update_post_title(self, new_title):
