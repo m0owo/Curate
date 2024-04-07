@@ -337,6 +337,7 @@ class HomeUI(QMainWindow):
             self.populate_posts(self.post_details, sort_by, True)
             
     def show_combo_box(self):
+        print('clicked filter')
         self.ui.comboBox.show()
         self.ui.comboBox.showPopup()
 
@@ -393,6 +394,7 @@ class HomeUI(QMainWindow):
             return self.post_widgets
         else:
             self.populate_posts(self.post_details)
+            return self.post_widgets
 
         
     def receive_large_data(self, conn):
